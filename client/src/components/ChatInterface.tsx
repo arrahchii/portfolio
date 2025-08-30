@@ -8,6 +8,7 @@ import { ChatMessage } from './ChatMessage';
 import { QuickQuestions } from './QuickQuestions';
 import { TabNavigation, type TabType } from './TabNavigation';
 import { TabContent } from './TabContent';
+import { ThemeToggle } from './ThemeToggle';
 import { useChat } from '@/hooks/useChat';
 import { cn } from '@/lib/utils';
 
@@ -78,11 +79,14 @@ export function ChatInterface({ profile, sessionId }: ChatInterfaceProps) {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Tab Navigation - Sticky */}
-      <div className="sticky top-0 z-50 bg-background border-b border-border">
-        <TabNavigation
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-        />
+      <div className="sticky top-0 z-50 bg-background/90 backdrop-blur-sm border-b border-border">
+        <div className="flex items-center justify-between px-4">
+          <TabNavigation
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+          />
+          <ThemeToggle />
+        </div>
       </div>
 
       <div className="max-w-4xl mx-auto w-full">
@@ -96,11 +100,11 @@ export function ChatInterface({ profile, sessionId }: ChatInterfaceProps) {
               </Avatar>
             </div>
             
-            <h1 className="text-2xl font-semibold text-foreground mb-2" data-testid="text-profile-title">
+            <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 tracking-tight" data-testid="text-profile-title">
               I'm {profile.name.split(' ')[0]}'s digital twin
             </h1>
             
-            <p className="text-muted-foreground mb-4" data-testid="text-profile-subtitle">
+            <p className="text-lg text-muted-foreground mb-6 font-medium" data-testid="text-profile-subtitle">
               Begin your interview with my digital twin.
             </p>
             

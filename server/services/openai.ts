@@ -88,7 +88,24 @@ Guidelines:
       return response.choices[0].message.content || "I'd be happy to help you learn more about Lance! Could you please rephrase your question?";
     } catch (error) {
       console.error('OpenAI API Error:', error);
-      throw new Error('Failed to generate AI response. Please try again later.');
+      
+      // Fallback to predefined responses when API is unavailable
+      const fallbackResponses = {
+        "tell me about yourself": "Hi! I'm Lance Cabanit, a passionate full-stack developer with expertise in modern web technologies and AI integration. I love creating interactive applications that solve real-world problems and have 3+ years of professional development experience.",
+        "what are your skills": "My technical expertise spans the full development stack including React, Next.js, TypeScript, Node.js, Express, Python, PostgreSQL, AWS, and AI/ML technologies like OpenAI API and TensorFlow.",
+        "what projects have you worked on": "I've built several exciting projects including this AI-powered portfolio website, a full-stack e-commerce platform with real-time features, and a machine learning market predictor using Python and TensorFlow.",
+        "are you available": "Yes, I'm actively seeking exciting opportunities! I'm particularly interested in full-stack development roles, AI/ML integration projects, and innovative startups with modern tech stacks.",
+        "how can i contact you": "You can reach me via email at lance.cabanit@email.com, connect with me on LinkedIn at linkedin.com/in/lance-cabanit, or check out my work on GitHub at github.com/lancecanbanit"
+      };
+      
+      const userMessageLower = userMessage.toLowerCase();
+      for (const [key, response] of Object.entries(fallbackResponses)) {
+        if (userMessageLower.includes(key) || key.includes(userMessageLower)) {
+          return response;
+        }
+      }
+      
+      return "Thanks for your question! While my AI responses are temporarily unavailable due to API limits, you can explore my portfolio using the tabs above or try the quick question buttons. Feel free to reach out directly at lance.cabanit@email.com for detailed discussions!";
     }
   }
 
