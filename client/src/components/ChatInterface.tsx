@@ -11,6 +11,7 @@ import { TabContent } from './TabContent';
 import { ThemeToggle } from './ThemeToggle';
 import { useChat } from '@/hooks/useChat';
 import { cn } from '@/lib/utils';
+import lanceProfileImage from '@/assets/lance-profile.jpg';
 
 interface ProfileData {
   name: string;
@@ -94,9 +95,9 @@ export function ChatInterface({ profile, sessionId }: ChatInterfaceProps) {
         {(activeTab === 'me' || messages.length > 0) && (
           <header className="flex-shrink-0 p-6 text-center border-b border-border" data-testid="header-profile">
             <div className="mb-6">
-              <Avatar className="w-20 h-20 mx-auto avatar-glow border-4 border-white shadow-lg">
-                <AvatarImage src={profile.avatar} alt={`${profile.name} Professional Avatar`} />
-                <AvatarFallback className="text-lg font-semibold">LC</AvatarFallback>
+              <Avatar className="w-32 h-32 mx-auto avatar-glow border-4 border-white shadow-lg">
+                <AvatarImage src={lanceProfileImage} alt={`${profile.name} Professional Avatar`} className="object-cover" />
+                <AvatarFallback className="text-xl font-semibold">LC</AvatarFallback>
               </Avatar>
             </div>
             

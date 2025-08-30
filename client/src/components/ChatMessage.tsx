@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import type { ChatMessage as ChatMessageType } from '@/hooks/useChat';
+import lanceProfileImage from '@/assets/lance-profile.jpg';
 
 interface ChatMessageProps {
   message: ChatMessageType;
@@ -14,7 +15,7 @@ export function ChatMessage({ message, assistantAvatar }: ChatMessageProps) {
       <div className="chat-bubble">
         <div className="flex gap-3">
           <Avatar className="w-8 h-8 flex-shrink-0">
-            <AvatarImage src={assistantAvatar} alt="Lance Avatar" />
+            <AvatarImage src={lanceProfileImage} alt="Lance Avatar" className="object-cover" />
             <AvatarFallback className="text-xs">LC</AvatarFallback>
           </Avatar>
           <div className="chat-message-assistant rounded-lg px-4 py-3">
@@ -50,7 +51,7 @@ export function ChatMessage({ message, assistantAvatar }: ChatMessageProps) {
     <div className="chat-bubble">
       <div className="flex gap-3">
         <Avatar className="w-8 h-8 flex-shrink-0">
-          <AvatarImage src={assistantAvatar} alt="Lance Avatar" />
+          <AvatarImage src={lanceProfileImage} alt="Lance Avatar" className="object-cover" />
           <AvatarFallback className="text-xs">LC</AvatarFallback>
         </Avatar>
         <div className="chat-message-assistant rounded-lg px-4 py-3 max-w-xs sm:max-w-md">
