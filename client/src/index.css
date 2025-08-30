@@ -157,8 +157,9 @@
 }
 
 .tab-active {
-  background: var(--primary);
-  color: var(--primary-foreground);
+  background: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+  box-shadow: 0 2px 8px rgba(232, 90, 79, 0.3);
 }
 
 .chat-message-user {

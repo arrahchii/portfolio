@@ -1,0 +1,59 @@
+Tab Navigation: I want a tab navigation bar at the top of the page with the following tabs:
+
+Me
+
+Projects
+
+Skills
+
+Resume
+
+Contact
+
+Each of these tabs should lead to a separate landing page or section when clicked. When a user clicks on a tab, they should be taken to the corresponding content (such as a new page or dynamically loaded content) within the same webpage.
+
+Functionality for Each Tab:
+
+Me Tab:
+
+Clicking the "Me" tab should load a section that introduces who I am—a brief bio about my background, career, and achievements.
+
+The page should have a professional and personal description of my career, achievements, and expertise, including a high-quality image of me (or placeholder for now).
+
+Projects Tab:
+
+The "Projects" tab should show a detailed overview of all my ongoing and completed projects.
+
+Each project should have a title, description, technologies used, and links to project demos or case studies.
+
+The projects should be visually interactive, using hover effects or modals that provide more information when clicked.
+
+Skills Tab:
+
+The "Skills" tab should display a detailed breakdown of my professional skills in web development, copywriting, video editing, AI utilization, etc.
+
+Use interactive icons for each skill that have hover effects and can be clicked to provide additional information about my expertise in each area.
+
+The page should also feature a list of programming languages, tools, and technologies I am proficient in, with each skill having its own short description.
+
+Resume Tab:
+
+Clicking the "Resume" tab should display my resume, either as a downloadable PDF or in a visually appealing, scrollable format directly on the page.
+
+Ensure the content of the resume is easy to read, with sections like Education, Work Experience, and Certifications clearly laid out.
+
+Contact Tab:
+
+The "Contact" tab should contain a contact form that allows visitors to send inquiries directly via email.
+
+Include social media links and contact details such as email and phone number.
+
+The contact form should be simple yet professional, including fields like Name, Email, Message, and a Send button.
+
+Tab Navigation Implementation:
+
+Ensure the navigation is sticky, remaining at the top of the page as users scroll through the website.
+
+Use smooth scrolling so that when a user clicks on any tab, they are smoothly scrolled down to the corresponding content (no page reload).
+
+The active tab should be visually indicated with a distinct color or highlight to show the user which section they are currently viewing.
