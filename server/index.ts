@@ -1,13 +1,18 @@
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import dotenv from "dotenv";
 dotenv.config();
 
 import express, { Request, Response } from "express";
 import cors from "cors";
-import path from "path";
 import { Groq } from "groq-sdk";
 import Imap from "imap";
 import nodemailer from "nodemailer";
+
+// ES module __dirname equivalent
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Type declaration for mailparser
 declare module 'mailparser' {
@@ -56,7 +61,6 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../dist/index.html'));
   }
 });
-
 
 // Serve static assets - PRODUCTION READY
 const staticPath = process.env.NODE_ENV === 'production' 
@@ -564,7 +568,7 @@ class EmailService {
   constructor() {
     if (process.env.EMAIL_ADDRESS && process.env.EMAIL_PASSWORD) {
       this.isEmailEnabled = true;
-      this.transporter = nodemailer.createTransport({
+      this.transporter = nodemailer.createTransporter({
         service: 'gmail',
         auth: {
           user: process.env.EMAIL_ADDRESS,
@@ -650,6 +654,19 @@ class EmailService {
 
 // Initialize email service
 const emailService = new EmailService();
+
+// ===== MIDDLEWARE =====
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Health check endpoint
+app.get('/health', (req: Request, res: Response) => {
+  res.json({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
 
 // ===== API ENDPOINTS =====
 
