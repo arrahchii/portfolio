@@ -181,7 +181,7 @@ function Portfolio() {
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Chat state
   const [inputValue, setInputValue] = useState('');
   const [activeTab, setActiveTab] = useState<TabType>('me');
@@ -191,11 +191,14 @@ function Portfolio() {
   const inputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // API Base URL - Uses environment variable in production, localhost in development
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   // Fetch portfolio data
   useEffect(() => {
     console.log('🚀 PORTFOLIO FETCH STARTING...');
     
-    fetch('http://localhost:5000/api/portfolio/profile')
+    fetch(`${API_BASE_URL}/api/portfolio/profile`)
       .then(response => {
         console.log('🚀 Response status:', response.status);
         if (!response.ok) {
@@ -219,7 +222,7 @@ function Portfolio() {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [API_BASE_URL]);
 
   // Scroll to bottom
   useEffect(() => {
@@ -244,7 +247,7 @@ function Portfolio() {
     try {
       console.log('🎯 Sending message to chat API:', messageContent.trim());
       
-      const response = await fetch('http://localhost:5000/api/chat', {
+      const response = await fetch(`${API_BASE_URL}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -259,14 +262,14 @@ function Portfolio() {
       });
 
       console.log('🎯 Chat API response status:', response.status);
-
+      
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
       console.log('🎯 Chat API response data:', data);
-
+      
       if (data.success && data.message) {
         setMessages(prev => [...prev, data.message]);
         console.log('🎯 Message added to chat history');
@@ -409,22 +412,21 @@ function Portfolio() {
                     {/* Renovated Chat Input */}
                     <div className="border-t border-gray-200/50 bg-white/50 backdrop-blur-sm p-6">
                       <div className="flex items-center gap-4">
-                       <Input
-  ref={inputRef}
-  type="text"
-  placeholder="Ask me anything about Lance..."
-  value={inputValue}
-  onChange={(e) => setInputValue(e.target.value)}
-  onKeyDown={handleKeyDown}
-  disabled={isLoading}
-  className="flex-1 h-12 px-6 bg-white/95 border-2 border-gray-300/50 rounded-full focus:border-blue-400 focus:ring-4 focus:ring-blue-400/20 transition-all duration-300 shadow-lg text-base font-bold text-gray-900 placeholder:text-gray-500 placeholder:font-semibold"
-  style={{ 
-    fontWeight: '700',
-    color: '#111827',
-    fontSize: '16px'
-  }}
-/>
-
+                        <Input
+                          ref={inputRef}
+                          type="text"
+                          placeholder="Ask me anything about Lance..."
+                          value={inputValue}
+                          onChange={(e) => setInputValue(e.target.value)}
+                          onKeyDown={handleKeyDown}
+                          disabled={isLoading}
+                          className="flex-1 h-12 px-6 bg-white/95 border-2 border-gray-300/50 rounded-full focus:border-blue-400 focus:ring-4 focus:ring-blue-400/20 transition-all duration-300 shadow-lg text-base font-bold text-gray-900 placeholder:text-gray-500 placeholder:font-semibold"
+                          style={{ 
+                            fontWeight: '700',
+                            color: '#111827',
+                            fontSize: '16px'
+                          }}
+                        />
                         <Button
                           onClick={handleSendMessage}
                           disabled={!inputValue.trim() || isLoading}
@@ -489,22 +491,21 @@ function Portfolio() {
                     {/* Renovated Chat Input */}
                     <div className="border-t border-gray-200/50 bg-white/50 backdrop-blur-sm p-6">
                       <div className="flex items-center gap-4">
-                       <Input
-                        ref={inputRef}
-            type="text"
-  placeholder="Ask me anything about Lance..."
-  value={inputValue}
-  onChange={(e) => setInputValue(e.target.value)}
-  onKeyDown={handleKeyDown}
-  disabled={isLoading}
-  className="flex-1 h-12 px-6 bg-white/95 border-2 border-gray-300/50 rounded-full focus:border-blue-400 focus:ring-4 focus:ring-blue-400/20 transition-all duration-300 shadow-lg text-base font-bold text-gray-900 placeholder:text-gray-500 placeholder:font-semibold"
-  style={{ 
-    fontWeight: '700',
-    color: '#111827',
-    fontSize: '16px'
-  }}
-/>
-
+                        <Input
+                          ref={inputRef}
+                          type="text"
+                          placeholder="Ask me anything about Lance..."
+                          value={inputValue}
+                          onChange={(e) => setInputValue(e.target.value)}
+                          onKeyDown={handleKeyDown}
+                          disabled={isLoading}
+                          className="flex-1 h-12 px-6 bg-white/95 border-2 border-gray-300/50 rounded-full focus:border-blue-400 focus:ring-4 focus:ring-blue-400/20 transition-all duration-300 shadow-lg text-base font-bold text-gray-900 placeholder:text-gray-500 placeholder:font-semibold"
+                          style={{ 
+                            fontWeight: '700',
+                            color: '#111827',
+                            fontSize: '16px'
+                          }}
+                        />
                         <Button
                           onClick={handleSendMessage}
                           disabled={!inputValue.trim() || isLoading}
