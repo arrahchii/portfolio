@@ -31,7 +31,7 @@ const groq = new Groq({
 const allowedOrigins = [
   'http://localhost:5173', 
   'http://127.0.0.1:5173',
-  'https://lanceport-fullstack.onrender.com',  // Your actual production URL
+  'https://lanceport-fullstack.onrender.com', // Your actual production URL
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
@@ -50,17 +50,6 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
-
-// ===== UPDATED STATIC FILE SERVING SECTION =====
-// Serve static files from the dist folder (where your React build files are)
-app.use(express.static(path.join(__dirname, '../dist')));
-
-// Serve static assets - PRODUCTION READY
-const staticPath = process.env.NODE_ENV === 'production' 
-  ? path.join(process.cwd(), 'public') 
-  : path.join(process.cwd(), 'attached_assets');
-  
-app.use('/attached_assets', express.static(staticPath));
 
 // Portfolio data
 const portfolioProfile = {
@@ -651,6 +640,17 @@ const emailService = new EmailService();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// ===== STATIC FILE SERVING - FIXED =====
+// Serve static files from dist directory FIRST
+app.use(express.static(path.join(__dirname, '../dist')));
+
+// Serve static assets - PRODUCTION READY
+const staticPath = process.env.NODE_ENV === 'production' 
+  ? path.join(process.cwd(), 'public') 
+  : path.join(process.cwd(), 'attached_assets');
+  
+app.use('/attached_assets', express.static(staticPath));
+
 // Health check endpoint
 app.get('/health', (req: Request, res: Response) => {
   res.json({
@@ -1002,120 +1002,119 @@ app.get('/api/ai-status', (req: Request, res: Response) => {
   });
 });
 
-// ===== UPDATED SPA ROUTING SECTION =====
-// Handle React Router - PRODUCTION OPTIMIZED
+// ===== FIXED SPA ROUTING SECTION =====
+// Handle React routing - PROPERLY EXCLUDE ASSET FILES
 app.get('*', (req: Request, res: Response) => {
+  // Don't serve React app for API routes
   if (req.path.startsWith('/api/')) {
-    res.status(404).json({ error: 'API endpoint not found' });
-  } else {
-    // Try to serve the React app index.html file
-    const indexPath = path.join(__dirname, '../dist', 'index.html');
-    
-    // Check if the React build exists
-    try {
-      res.sendFile(indexPath, (err) => {
-        if (err) {
-          console.log('❌ React build not found, serving fallback page');
-          // Fallback HTML page if React build doesn't exist
-          res.send(`
-            <html>
-              <head>
-                <title>Lance Cabanit's Intelligent Portfolio</title>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <style>
-                  body { 
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-                    padding: 50px; 
-                    text-align: center; 
-                    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); 
-                    color: white; 
-                    margin: 0;
-                    min-height: 100vh;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                  }
-                  .container { 
-                    max-width: 700px; 
-                    margin: 0 auto; 
-                  }
-                  a { 
-                    color: #fff; 
-                    text-decoration: none; 
-                    margin: 0 15px; 
-                    padding: 12px 24px; 
-                    background: rgba(255,255,255,0.2); 
-                    border-radius: 8px; 
-                    transition: all 0.3s ease; 
-                    display: inline-block;
-                    margin-bottom: 10px;
-                  }
-                  a:hover { 
-                    background: rgba(255,255,255,0.3); 
-                    transform: translateY(-2px); 
-                  }
-                  h1 { 
-                    font-size: 2.5em; 
-                    margin-bottom: 0.5em; 
-                  }
-                  .status {
-                    background: rgba(255,255,255,0.1);
-                    padding: 20px;
-                    border-radius: 10px;
-                    margin: 20px 0;
-                  }
-                  .warning {
-                    background: rgba(255,193,7,0.2);
-                    border: 2px solid rgba(255,193,7,0.5);
-                    padding: 15px;
-                    border-radius: 8px;
-                    margin: 20px 0;
-                  }
-                  @media (max-width: 768px) {
-                    body { padding: 20px; }
-                    h1 { font-size: 2em; }
-                    a { display: block; margin: 10px 0; }
-                  }
-                </style>
-              </head>
-              <body>
-                <div class="container">
-                  <h1>🧠 Intelligent AI Portfolio</h1>
-                  <p><strong>Lance Cabanit's Advanced AI Assistant</strong></p>
-                  <p>Thoughtful • Professional • Insightful</p>
-                  
-                  <div class="warning">
-                    <p><strong>⚠️ Frontend Build Missing</strong></p>
-                    <p>React app needs to be built and deployed to display portfolio properly.</p>
-                  </div>
-                  
-                  <div class="status">
-                    <p><strong>Backend Status:</strong> Online & Ready</p>
-                    <p><strong>Environment:</strong> ${process.env.NODE_ENV || 'development'}</p>
-                    <p><strong>AI Service:</strong> Active</p>
-                    <p><strong>Email Monitoring:</strong> ${gmailHandler.isEnabled() ? 'Enabled' : 'Disabled'}</p>
-                  </div>
-                  
-                  <div style="margin: 40px 0;">
-                    <a href="/api/portfolio/profile">Portfolio API</a>
-                    <a href="/api/ai-status">AI Status</a>
-                    <a href="/api/emails/stats">Email Stats</a>
-                    <a href="/health">Health Check</a>
-                  </div>
-                  
-                  <p><strong>Backend Services Running Successfully</strong></p>
-                  <p><small>Upload your React build files to the 'dist' folder to display the full portfolio.</small></p>
-                </div>
-              </body>
-            </html>
-          `);
-        }
-      });
-    } catch (error) {
-      console.error('❌ Error serving React app:', error);
-      res.status(500).send('Internal Server Error');
-    }
+    return res.status(404).json({ error: 'API endpoint not found' });
   }
+  
+  // Don't serve React app for asset files - THIS IS THE KEY FIX
+  if (req.path.startsWith('/assets/') || req.path.match(/\.(js|jsx|ts|tsx|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$/)) {
+    return res.status(404).send('Asset not found');
+  }
+  
+  // Only serve React app for actual page routes
+  const indexPath = path.join(__dirname, '../dist', 'index.html');
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      console.error('❌ React build not found, serving fallback page');
+      // Fallback HTML page if React build doesn't exist
+      res.send(`
+        <html>
+          <head>
+            <title>Lance Cabanit's Intelligent Portfolio</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+              body { 
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+                padding: 50px; 
+                text-align: center; 
+                background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); 
+                color: white; 
+                margin: 0;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+              .container { 
+                max-width: 700px; 
+                margin: 0 auto; 
+              }
+              a { 
+                color: #fff; 
+                text-decoration: none; 
+                margin: 0 15px; 
+                padding: 12px 24px; 
+                background: rgba(255,255,255,0.2); 
+                border-radius: 8px; 
+                transition: all 0.3s ease; 
+                display: inline-block;
+                margin-bottom: 10px;
+              }
+              a:hover { 
+                background: rgba(255,255,255,0.3); 
+                transform: translateY(-2px); 
+              }
+              h1 { 
+                font-size: 2.5em; 
+                margin-bottom: 0.5em; 
+              }
+              .status {
+                background: rgba(255,255,255,0.1);
+                padding: 20px;
+                border-radius: 10px;
+                margin: 20px 0;
+              }
+              .warning {
+                background: rgba(255,193,7,0.2);
+                border: 2px solid rgba(255,193,7,0.5);
+                padding: 15px;
+                border-radius: 8px;
+                margin: 20px 0;
+              }
+              @media (max-width: 768px) {
+                body { padding: 20px; }
+                h1 { font-size: 2em; }
+                a { display: block; margin: 10px 0; }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1>🧠 Intelligent AI Portfolio</h1>
+              <p><strong>Lance Cabanit's Advanced AI Assistant</strong></p>
+              <p>Thoughtful • Professional • Insightful</p>
+              
+              <div class="warning">
+                <p><strong>⚠️ Frontend Build Missing</strong></p>
+                <p>React app needs to be built and deployed to display portfolio properly.</p>
+              </div>
+              
+              <div class="status">
+                <p><strong>Backend Status:</strong> Online & Ready</p>
+                <p><strong>Environment:</strong> ${process.env.NODE_ENV || 'development'}</p>
+                <p><strong>AI Service:</strong> Active</p>
+                <p><strong>Email Monitoring:</strong> ${gmailHandler.isEnabled() ? 'Enabled' : 'Disabled'}</p>
+              </div>
+              
+              <div style="margin: 40px 0;">
+                <a href="/api/portfolio/profile">Portfolio API</a>
+                <a href="/api/ai-status">AI Status</a>
+                <a href="/api/emails/stats">Email Stats</a>
+                <a href="/health">Health Check</a>
+              </div>
+              
+              <p><strong>Backend Services Running Successfully</strong></p>
+              <p><small>Upload your React build files to the 'dist' folder to display the full portfolio.</small></p>
+            </div>
+          </body>
+        </html>
+      `);
+    }
+  });
 });
 
 // Enhanced error handling
@@ -1165,6 +1164,7 @@ app.listen(port, '0.0.0.0', () => {
   
   console.log(`🎯 Ready for deployment and production use!`);
 });
+
 
 
 
