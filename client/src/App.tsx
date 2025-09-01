@@ -192,7 +192,7 @@ function Portfolio() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // API Base URL - Uses environment variable in production, localhost in development
-  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+  const API_BASE_URL = 'https://lanceport-fullstack.onrender.com';
 
   // Fetch portfolio data
   useEffect(() => {
