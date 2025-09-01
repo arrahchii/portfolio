@@ -1,3 +1,4 @@
+import path from 'path';
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -46,17 +47,16 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: false, limit: '10mb' }));
+// Serve static files from the React build output directory
+app.use(express.static(path.join(__dirname, '../dist')));
 
-// Health check endpoint (important for hosting platforms)
-app.get('/health', (req: Request, res: Response) => {
-  res.status(200).json({ 
-    status: 'healthy', 
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
-  });
+// SPA fallback — respond with index.html for all non-API routes
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api') && req.path !== '/health') {
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
+  }
 });
+
 
 // Serve static assets - PRODUCTION READY
 const staticPath = process.env.NODE_ENV === 'production' 
