@@ -31,9 +31,8 @@ const groq = new Groq({
 const allowedOrigins = [
   'http://localhost:5173', 
   'http://127.0.0.1:5173',
+  'https://lanceport-fullstack.onrender.com',  // Your actual production URL
   process.env.FRONTEND_URL,
-  // Add your actual frontend URL when deployed
-  'https://your-app-name.onrender.com'
 ].filter(Boolean);
 
 app.use(cors({
