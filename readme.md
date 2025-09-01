@@ -1,13 +1,4 @@
-# replit.md
-
-## Overview
-
-This is an AI-powered portfolio website for Lance Cabanit featuring an interactive digital twin chatbot. The application combines a modern React frontend with an Express.js backend to create an engaging, conversational portfolio experience. Users can interact with an AI assistant that represents Lance's professional persona, answering questions about skills, projects, experience, and availability. The design emphasizes clean aesthetics with interactive elements and smooth user experience.
-
-## User Preferences
-
-Preferred communication style: Simple, everyday language.
-
+LANCE CABANIT
 ## System Architecture
 
 ### Frontend Architecture

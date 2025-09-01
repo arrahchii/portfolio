@@ -1,5 +1,8 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
+// Direct API calls to backend
+const API_BASE_URL = 'http://localhost:5000';
+
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
     const text = (await res.text()) || res.statusText;
@@ -12,13 +15,22 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  const res = await fetch(url, {
+  // Always use full URL to backend
+  const fullUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url}`;
+  
+  console.log(`🌐 API Request: ${method} ${fullUrl}`);
+
+  const res = await fetch(fullUrl, {
     method,
-    headers: data ? { "Content-Type": "application/json" } : {},
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: data ? JSON.stringify(data) : undefined,
+    mode: "cors",
     credentials: "include",
   });
 
+  console.log(`✅ API Response: ${res.status} ${res.statusText}`);
   await throwIfResNotOk(res);
   return res;
 }
@@ -29,7 +41,13 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const res = await fetch(queryKey.join("/") as string, {
+    const url = queryKey.join("/") as string;
+    const fullUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url}`;
+    
+    console.log(`🔍 Query: ${fullUrl}`);
+
+    const res = await fetch(fullUrl, {
+      mode: "cors",
       credentials: "include",
     });
 
@@ -38,7 +56,9 @@ export const getQueryFn: <T>(options: {
     }
 
     await throwIfResNotOk(res);
-    return await res.json();
+    const data = await res.json();
+    console.log(`📥 Query Data:`, data);
+    return data;
   };
 
 export const queryClient = new QueryClient({
@@ -55,3 +75,5 @@ export const queryClient = new QueryClient({
     },
   },
 });
+
+

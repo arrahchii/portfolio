@@ -7,6 +7,9 @@ export interface ChatMessage {
   message: string;
   timestamp: Date;
   isTyping?: boolean;
+  // Personal query properties
+  specialFormatting?: 'profile' | 'standard';
+  imageUrl?: string;
 }
 
 export function useChat(sessionId: string) {
@@ -27,6 +30,8 @@ export function useChat(sessionId: string) {
     if (!message.trim() || isLoading) return;
 
     setError(null);
+    
+    console.log("🚀 Client sending message:", message);
     
     // Add user message immediately
     const userMessage: ChatMessage = {
@@ -51,6 +56,8 @@ export function useChat(sessionId: string) {
     setMessages(prev => [...prev, typingMessage]);
 
     try {
+      console.log("📤 Making API request...");
+      
       const response = await apiRequest('POST', '/api/chat', {
         message: message.trim(),
         sessionId,
@@ -58,25 +65,58 @@ export function useChat(sessionId: string) {
       });
 
       const data = await response.json();
+      console.log("📥 RAW API response:", data);
+      console.log("📥 API response keys:", Object.keys(data));
+      console.log("📥 specialFormatting value:", data.specialFormatting);
+      console.log("📥 imageUrl value:", data.imageUrl);
 
       if (data.success) {
         // Remove typing indicator and add assistant response
         setMessages(prev => {
           const filtered = prev.filter(msg => msg.id !== 'typing');
-          return [
-            ...filtered,
-            {
-              id: data.messageId || `assistant-${Date.now()}`,
-              role: 'assistant' as const,
-              message: data.message,
-              timestamp: new Date(),
-            }
-          ];
+          
+          // Create assistant message
+          const assistantMessage: ChatMessage = {
+            id: data.messageId || `assistant-${Date.now()}`,
+            role: 'assistant' as const,
+            message: data.message,
+            timestamp: new Date(),
+          };
+
+          // EXPLICITLY check for special formatting
+          console.log("🔍 Checking for special formatting...");
+          console.log("   data.specialFormatting:", data.specialFormatting);
+          console.log("   typeof data.specialFormatting:", typeof data.specialFormatting);
+          console.log("   data.imageUrl:", data.imageUrl);
+          console.log("   typeof data.imageUrl:", typeof data.imageUrl);
+
+          // Add special formatting properties if they exist
+          if (data.specialFormatting) {
+            assistantMessage.specialFormatting = data.specialFormatting;
+            console.log("✅ Special formatting SET:", data.specialFormatting);
+          } else {
+            console.log("❌ No special formatting found");
+          }
+          
+          if (data.imageUrl) {
+            assistantMessage.imageUrl = data.imageUrl;
+            console.log("✅ Image URL SET:", data.imageUrl);
+          } else {
+            console.log("❌ No image URL found");
+          }
+
+          // Debug: Log the final message object
+          console.log("🔍 FINAL assistant message object:", assistantMessage);
+          console.log("🔍 Final message specialFormatting:", assistantMessage.specialFormatting);
+          console.log("🔍 Final message imageUrl:", assistantMessage.imageUrl);
+          
+          return [...filtered, assistantMessage];
         });
       } else {
         throw new Error(data.error || 'Failed to send message');
       }
     } catch (error) {
+      console.error("❌ Send message error:", error);
       setError(error instanceof Error ? error.message : 'Failed to send message');
       // Remove typing indicator
       setMessages(prev => prev.filter(msg => msg.id !== 'typing'));

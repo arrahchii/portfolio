@@ -16,7 +16,9 @@ import {
   Database,
   Cloud,
   Brain,
-  Palette
+  Palette,
+  Send,
+  CheckCircle
 } from 'lucide-react';
 import type { TabType } from './TabNavigation';
 
@@ -62,12 +64,54 @@ export function TabContent({ activeTab, profile }: TabContentProps) {
     message: ''
   });
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: 'success' | 'error' | null;
+    message: string;
+  }>({ type: null, message: '' });
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle contact form submission
-    console.log('Contact form submitted:', contactForm);
-    // Reset form
-    setContactForm({ name: '', email: '', message: '' });
+    
+    // Start submitting
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: '' });
+    
+    console.log('📧 Submitting contact form:', contactForm);
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(contactForm),
+      });
+
+      const result = await response.json();
+      console.log('📧 Contact form response:', result);
+
+      if (result.success) {
+        setSubmitStatus({
+          type: 'success',
+          message: result.message || 'Thank you! Your message has been sent successfully.'
+        });
+        
+        // Reset form on success
+        setContactForm({ name: '', email: '', message: '' });
+      } else {
+        throw new Error(result.message || 'Failed to send message');
+      }
+
+    } catch (error) {
+      console.error('📧 Contact form error:', error);
+      setSubmitStatus({
+        type: 'error',
+        message: error instanceof Error ? error.message : 'Failed to send message. Please try again.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (activeTab === 'me') {
@@ -192,10 +236,17 @@ export function TabContent({ activeTab, profile }: TabContentProps) {
       <div className="space-y-6" data-testid="content-resume">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold">Resume</h2>
-          <Button>
+          {/* Fixed: Direct HTML download link */}
+          <a
+            href="/CABANITLANCERESUME.pdf"
+            download="CABANITLANCERESUME.pdf"
+            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Download className="w-4 h-4 mr-2" />
             Download PDF
-          </Button>
+          </a>
         </div>
         
         <Card>
@@ -315,6 +366,7 @@ export function TabContent({ activeTab, profile }: TabContentProps) {
                     value={contactForm.name}
                     onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
                     required
+                    disabled={isSubmitting}
                     data-testid="input-contact-name"
                   />
                 </div>
@@ -325,6 +377,7 @@ export function TabContent({ activeTab, profile }: TabContentProps) {
                     value={contactForm.email}
                     onChange={(e) => setContactForm(prev => ({ ...prev, email: e.target.value }))}
                     required
+                    disabled={isSubmitting}
                     data-testid="input-contact-email"
                   />
                 </div>
@@ -335,12 +388,42 @@ export function TabContent({ activeTab, profile }: TabContentProps) {
                     onChange={(e) => setContactForm(prev => ({ ...prev, message: e.target.value }))}
                     required
                     rows={4}
+                    disabled={isSubmitting}
                     data-testid="textarea-contact-message"
                   />
                 </div>
-                <Button type="submit" className="w-full" data-testid="button-contact-submit">
-                  <Mail className="w-4 h-4 mr-2" />
-                  Send Message
+
+                {/* Status Messages */}
+                {submitStatus.type && (
+                  <div className={`p-3 rounded-md ${
+                    submitStatus.type === 'success' 
+                      ? 'bg-green-50 text-green-800 border border-green-200' 
+                      : 'bg-red-50 text-red-800 border border-red-200'
+                  }`}>
+                    <div className="flex items-center gap-2">
+                      {submitStatus.type === 'success' && <CheckCircle className="w-4 h-4" />}
+                      <span className="text-sm">{submitStatus.message}</span>
+                    </div>
+                  </div>
+                )}
+
+                <Button 
+                  type="submit" 
+                  className="w-full" 
+                  disabled={isSubmitting}
+                  data-testid="button-contact-submit"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-4 h-4 mr-2 animate-spin rounded-full border-2 border-background border-t-transparent" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4 mr-2" />
+                      Send Message
+                    </>
+                  )}
                 </Button>
               </form>
             </CardContent>
@@ -352,3 +435,4 @@ export function TabContent({ activeTab, profile }: TabContentProps) {
 
   return null;
 }
+
