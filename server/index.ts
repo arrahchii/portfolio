@@ -8,7 +8,7 @@ import { Groq } from "groq-sdk";
 import Imap from "imap";
 import nodemailer from "nodemailer";
 
-// Type declaration for mailparser (since @types/mailparser doesn't exist)
+// Type declaration for mailparser
 declare module 'mailparser' {
   export function simpleParser(source: any, callback: (err: Error | null, parsed: any) => void): void;
 }
@@ -21,19 +21,49 @@ const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
 });
 
-// CORS configuration
+// CORS configuration - PRODUCTION OPTIMIZED
+const allowedOrigins = [
+  'http://localhost:5173', 
+  'http://127.0.0.1:5173',
+  process.env.FRONTEND_URL,
+  // Add your actual frontend URL when deployed
+  'https://your-app-name.onrender.com'
+].filter(Boolean);
+
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, postman, etc.)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 
-// Serve static assets
-app.use('/attached_assets', express.static(path.join(process.cwd(), 'attached_assets')));
+// Health check endpoint (important for hosting platforms)
+app.get('/health', (req: Request, res: Response) => {
+  res.status(200).json({ 
+    status: 'healthy', 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+// Serve static assets - PRODUCTION READY
+const staticPath = process.env.NODE_ENV === 'production' 
+  ? path.join(process.cwd(), 'public') 
+  : path.join(process.cwd(), 'attached_assets');
+  
+app.use('/attached_assets', express.static(staticPath));
 
 // Portfolio data
 const portfolioProfile = {
@@ -95,25 +125,33 @@ interface EmailMessage {
 }
 
 class GmailMessageHandler {
-  private imap: Imap;
+  private imap: Imap | null = null;
   private emailQueue: EmailMessage[] = [];
   private isConnected: boolean = false;
-  private processedMessageIds: Set<string> = new Set(); // Track processed emails
+  private processedMessageIds: Set<string> = new Set();
+  private isEmailEnabled: boolean = false;
 
   constructor() {
-    this.imap = new Imap({
-      user: process.env.EMAIL_ADDRESS!,
-      password: process.env.EMAIL_PASSWORD!,
-      host: 'imap.gmail.com',
-      port: 993,
-      tls: true,
-      tlsOptions: { rejectUnauthorized: false }
-    });
-
-    this.setupEventHandlers();
+    // Only initialize if email credentials are provided
+    if (process.env.EMAIL_ADDRESS && process.env.EMAIL_PASSWORD) {
+      this.isEmailEnabled = true;
+      this.imap = new Imap({
+        user: process.env.EMAIL_ADDRESS!,
+        password: process.env.EMAIL_PASSWORD!,
+        host: 'imap.gmail.com',
+        port: 993,
+        tls: true,
+        tlsOptions: { rejectUnauthorized: false }
+      });
+      this.setupEventHandlers();
+    } else {
+      console.log('📧 Gmail credentials not provided - Email monitoring disabled');
+    }
   }
 
   private setupEventHandlers(): void {
+    if (!this.imap) return;
+
     this.imap.once('ready', () => {
       console.log('📧 Gmail IMAP connection established');
       this.isConnected = true;
@@ -132,6 +170,8 @@ class GmailMessageHandler {
   }
 
   private openInbox(): void {
+    if (!this.imap) return;
+    
     this.imap.openBox('INBOX', false, (err, box) => {
       if (err) {
         console.error('📧 Error opening inbox:', err);
@@ -143,7 +183,8 @@ class GmailMessageHandler {
   }
 
   private checkForNewEmails(): void {
-    // Only check for recent unread emails (last 24 hours) to avoid processing old emails
+    if (!this.imap || !this.isConnected) return;
+    
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     
@@ -157,7 +198,6 @@ class GmailMessageHandler {
       }
 
       if (results && results.length > 0) {
-        // Filter out already processed emails
         const newResults = results.filter(id => !this.processedMessageIds.has(id.toString()));
         
         if (newResults.length > 0) {
@@ -169,9 +209,11 @@ class GmailMessageHandler {
   }
 
   private processNewEmails(messageIds: number[]): void {
+    if (!this.imap) return;
+    
     const fetch = this.imap.fetch(messageIds, { 
       bodies: '',
-      markSeen: false // We'll mark as seen after processing
+      markSeen: false
     });
 
     fetch.on('message', (msg, seqno) => {
@@ -195,9 +237,7 @@ class GmailMessageHandler {
             processed: false
           };
 
-          // Check if this is a portfolio-related email (IMPROVED FILTERING)
           if (this.isPortfolioRelatedEmail(emailData as EmailMessage)) {
-            // Add to processing queue
             this.emailQueue.push(emailData as EmailMessage);
             
             console.log('📧 Portfolio-related email received:', {
@@ -205,23 +245,17 @@ class GmailMessageHandler {
               subject: emailData.subject
             });
 
-            // Process the email
             await this.handleEmailMessage(emailData as EmailMessage);
           }
-          // Removed the "Skipping promotional email" log to keep terminal clean
           
-          // Mark this message as processed to avoid reprocessing
           this.processedMessageIds.add(seqno.toString());
           
-          // Mark email as read
-          this.imap.addFlags(seqno, ['\\Seen'], (err) => {
-            if (err) console.error('📧 Error marking email as read:', err);
-          });
+          if (this.imap) {
+            this.imap.addFlags(seqno, ['\\Seen'], (err) => {
+              if (err) console.error('📧 Error marking email as read:', err);
+            });
+          }
         });
-      });
-
-      msg.once('attributes', (attrs) => {
-        // You can access email attributes here if needed
       });
     });
 
@@ -230,12 +264,10 @@ class GmailMessageHandler {
     });
   }
 
-  // IMPROVED FILTER - Only process actual portfolio/business emails
   private isPortfolioRelatedEmail(email: EmailMessage): boolean {
     const from = email.from.toLowerCase();
     const subject = email.subject.toLowerCase();
     
-    // Enhanced list of promotional/marketing senders to skip
     const promotionalSenders = [
       'shein', 'netflix', 'facebook', 'messenger', 'gotyme', 'noreply',
       'promo', 'marketing', 'newsletter', 'unsubscribe', 'watsons',
@@ -245,7 +277,6 @@ class GmailMessageHandler {
       '@email.', '@discover.', '@service.', '@notifications.'
     ];
     
-    // Enhanced promotional subject keywords to skip
     const promotionalSubjects = [
       'promotion', 'sale', 'discount', 'offer', 'shop', 'buy now',
       'limited time', 'deal', 'beauty', 'points', 'reward', 'trust us',
@@ -254,17 +285,14 @@ class GmailMessageHandler {
       'first week with', 'new notification', 'use your points'
     ];
     
-    // Skip if from promotional senders
     if (promotionalSenders.some(sender => from.includes(sender))) {
       return false;
     }
     
-    // Skip if subject contains promotional keywords
     if (promotionalSubjects.some(keyword => subject.includes(keyword))) {
       return false;
     }
     
-    // Portfolio-related keywords (only process these)
     const portfolioKeywords = [
       'portfolio', 'job', 'opportunity', 'hire', 'project', 'collaboration',
       'freelance', 'work', 'developer', 'programming', 'lance', 'interview',
@@ -272,7 +300,6 @@ class GmailMessageHandler {
       'coding', 'website', 'application', 'software'
     ];
     
-    // Only process if explicitly portfolio-related
     const isPortfolioRelated = portfolioKeywords.some(keyword => 
       from.includes(keyword) || subject.includes(keyword)
     );
@@ -282,35 +309,14 @@ class GmailMessageHandler {
 
   private async handleEmailMessage(email: EmailMessage): Promise<void> {
     try {
-      // Reduced logging - only show important info
       console.log(`📧 Processing: "${email.subject.substring(0, 60)}..."`);
-      
-      // Here you can add your custom logic for handling emails
-      // Examples:
-      
-      // 1. Store in database
-      // await this.storeEmailInDatabase(email);
-      
-      // 2. Send notification to your frontend
-      // await this.notifyFrontend(email);
-      
-      // 3. Auto-respond with AI
-      // await this.generateAIResponse(email);
-      
-      // 4. Forward to webhook
-      // await this.forwardToWebhook(email);
-      
-      // Mark as processed
       email.processed = true;
-      
       console.log(`✅ Portfolio email processed successfully`);
-      
     } catch (error) {
       console.error('📧 Error handling email:', error);
     }
   }
 
-  // Method to generate AI response to email
   private async generateAIResponse(email: EmailMessage): Promise<string> {
     try {
       const systemPrompt = `You are Lance Cabanit's AI assistant. Someone has sent an email to Lance. 
@@ -338,42 +344,44 @@ class GmailMessageHandler {
     }
   }
 
-  // Method to start monitoring emails
   public startMonitoring(): void {
-    if (!process.env.EMAIL_ADDRESS || !process.env.EMAIL_PASSWORD) {
-      console.error('📧 Gmail credentials not found in environment variables');
+    if (!this.isEmailEnabled) {
+      console.log('📧 Email monitoring disabled - No credentials provided');
       return;
     }
+
+    if (!this.imap) return;
 
     try {
       this.imap.connect();
       
-      // Set up periodic checking (every 5 minutes to reduce spam)
       setInterval(() => {
         if (this.isConnected) {
           this.checkForNewEmails();
         }
-      }, 300000); // 5 minutes instead of 2
+      }, 300000); // 5 minutes
       
     } catch (error) {
       console.error('📧 Error starting Gmail monitoring:', error);
     }
   }
 
-  // Method to get recent emails
   public getRecentEmails(): EmailMessage[] {
-    return this.emailQueue.slice(-10); // Return last 10 emails
+    return this.emailQueue.slice(-10);
+  }
+
+  public isEnabled(): boolean {
+    return this.isEmailEnabled;
   }
 }
 
 // Initialize Gmail handler
 const gmailHandler = new GmailMessageHandler();
 
-// ===== MODULAR AI PERSONALITY SYSTEM =====
+// ===== AI PERSONALITY SYSTEM =====
 
 class AIPersonalityEngine {
   
-  // Core personality traits
   static getBasePersonality(): string {
     return `You are an intelligent, thoughtful, and professional AI assistant. Your communication style embodies:
 
@@ -435,7 +443,7 @@ Contact: ${profile.sections.contact.email} | ${profile.sections.contact.location
 When asked about Lance's girlfriend, wife, or romantic relationship, you know that:
 - Lance has a girlfriend/wife who is also a versatile professional her name is Dane Arrah Candelario
 - She is a Virtual Assistant, Executive Assistant, Sales Executive, Supervisor, and Web Designer
-- You can refer people to her website: www.danecandelario.site
+- You can refer people to her website: [www.danecandelario.site](https://www.danecandelario.site)
 - She shares Lance's passion for professional excellence and versatility`;
   }
 
@@ -527,13 +535,13 @@ class ResponseGenerator {
 
   static getRelationshipResponses(): string[] {
     return [
-      "Yes, I know about Lance's girlfriend! She's also a versatile professional - a Virtual Assistant, Executive Assistant, Sales Executive, Supervisor, and Web Designer. You can check out her work and services at www.danecandelario.site. She shares Lance's dedication to professional excellence.",
+      "Yes, I know about Lance's girlfriend! She's also a versatile professional - a Virtual Assistant, Executive Assistant, Sales Executive, Supervisor, and Web Designer. You can check out her work and services at [www.danecandelario.site](https://www.danecandelario.site). She shares Lance's dedication to professional excellence.",
       
-      "Lance has a wonderful girlfriend who is incredibly talented and versatile. She works as a Virtual Assistant, Executive Assistant, Sales Executive, Supervisor, and Web Designer. If you're interested in learning more about her professional services, you can visit www.danecandelario.site.",
+      "Lance has a wonderful girlfriend who is incredibly talented and versatile. She works as a Virtual Assistant, Executive Assistant, Sales Executive, Supervisor, and Web Designer. If you're interested in learning more about her professional services, you can visit [www.danecandelario.site](https://www.danecandelario.site).",
       
-      "Absolutely! Lance's girlfriend is a multi-talented professional who excels in various roles including Virtual Assistant, Executive Assistant, Sales Executive, Supervisor, and Web Designer. She's built an impressive career, and you can explore her work at www.danecandelario.site.",
+      "Absolutely! Lance's girlfriend is a multi-talented professional who excels in various roles including Virtual Assistant, Executive Assistant, Sales Executive, Supervisor, and Web Designer. She's built an impressive career, and you can explore her work at [www.danecandelario.site](https://www.danecandelario.site).",
       
-      "Lance's girlfriend is quite accomplished! She's a versatile professional working as a Virtual Assistant, Executive Assistant, Sales Executive, Supervisor, and Web Designer. Like Lance, she's passionate about delivering excellent work. You can learn more about her services at www.danecandelario.site."
+      "Lance's girlfriend is quite accomplished! She's a versatile professional working as a Virtual Assistant, Executive Assistant, Sales Executive, Supervisor, and Web Designer. Like Lance, she's passionate about delivering excellent work. You can learn more about her services at [www.danecandelario.site](https://www.danecandelario.site)."
     ];
   }
   
@@ -548,106 +556,36 @@ class ResponseGenerator {
   }
 }
 
-// ===== GMAIL API ENDPOINTS =====
-
-// Get recent emails endpoint
-app.get('/api/emails/recent', (req: Request, res: Response) => {
-  try {
-    const recentEmails = gmailHandler.getRecentEmails();
-    console.log('📧 Recent emails requested');
-    
-    res.json({
-      success: true,
-      emails: recentEmails.map(email => ({
-        id: email.id,
-        from: email.from,
-        subject: email.subject,
-        preview: email.body.substring(0, 100) + '...',
-        timestamp: email.timestamp,
-        processed: email.processed
-      }))
-    });
-  } catch (error) {
-    console.error('📧 Error fetching recent emails:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error fetching recent emails'
-    });
-  }
-});
-
-// Manual email check endpoint
-app.post('/api/emails/check', (req: Request, res: Response) => {
-  try {
-    console.log('📧 Manual email check requested');
-    // Trigger manual check (you can expand this)
-    
-    res.json({
-      success: true,
-      message: 'Email check initiated'
-    });
-  } catch (error) {
-    console.error('📧 Error during manual email check:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error checking emails'
-    });
-  }
-});
-
-// Email statistics endpoint
-app.get('/api/emails/stats', (req: Request, res: Response) => {
-  try {
-    const recentEmails = gmailHandler.getRecentEmails();
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    const todaysEmails = recentEmails.filter(email => 
-      email.timestamp >= today
-    );
-    
-    const processedEmails = recentEmails.filter(email => 
-      email.processed
-    );
-
-    res.json({
-      success: true,
-      stats: {
-        totalEmails: recentEmails.length,
-        todaysEmails: todaysEmails.length,
-        processedEmails: processedEmails.length,
-        unprocessedEmails: recentEmails.length - processedEmails.length,
-        lastCheck: new Date().toISOString()
-      }
-    });
-  } catch (error) {
-    console.error('📧 Error getting email stats:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error getting email statistics'
-    });
-  }
-});
-
-// ===== EMAIL SENDER SERVICE =====
+// ===== EMAIL SERVICE =====
 class EmailService {
-  private transporter: nodemailer.Transporter;
+  private transporter: nodemailer.Transporter | null = null;
+  private isEmailEnabled: boolean = false;
 
   constructor() {
-    this.transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_ADDRESS,
-        pass: process.env.EMAIL_PASSWORD
-      }
-    });
+    if (process.env.EMAIL_ADDRESS && process.env.EMAIL_PASSWORD) {
+      this.isEmailEnabled = true;
+      this.transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.EMAIL_ADDRESS,
+          pass: process.env.EMAIL_PASSWORD
+        }
+      });
+    } else {
+      console.log('📧 Email service disabled - No credentials provided');
+    }
   }
 
   async sendContactFormToMainEmail(contactData: { name: string; email: string; message: string }): Promise<boolean> {
+    if (!this.transporter || !this.isEmailEnabled) {
+      console.log('📧 Email service not available');
+      return false;
+    }
+
     try {
       const mailOptions = {
         from: process.env.EMAIL_ADDRESS,
-        to: process.env.RECEIVER_EMAIL,
+        to: process.env.RECEIVER_EMAIL || process.env.EMAIL_ADDRESS,
         subject: `Portfolio Contact: Message from ${contactData.name}`,
         html: `
           <h3>New Contact Form Submission</h3>
@@ -672,6 +610,10 @@ class EmailService {
   }
 
   async sendAutoReply(toEmail: string, name: string): Promise<boolean> {
+    if (!this.transporter || !this.isEmailEnabled) {
+      return false;
+    }
+
     try {
       const mailOptions = {
         from: process.env.EMAIL_ADDRESS,
@@ -700,16 +642,122 @@ class EmailService {
       return false;
     }
   }
+
+  isEnabled(): boolean {
+    return this.isEmailEnabled;
+  }
 }
 
 // Initialize email service
 const emailService = new EmailService();
 
-// ===== CONTACT FORM ENDPOINT =====
+// ===== API ENDPOINTS =====
+
+// Email endpoints (only if email is enabled)
+app.get('/api/emails/recent', (req: Request, res: Response) => {
+  try {
+    if (!gmailHandler.isEnabled()) {
+      return res.json({
+        success: false,
+        message: 'Email monitoring not enabled',
+        emails: []
+      });
+    }
+
+    const recentEmails = gmailHandler.getRecentEmails();
+    console.log('📧 Recent emails requested');
+    
+    res.json({
+      success: true,
+      emails: recentEmails.map(email => ({
+        id: email.id,
+        from: email.from,
+        subject: email.subject,
+        preview: email.body.substring(0, 100) + '...',
+        timestamp: email.timestamp,
+        processed: email.processed
+      }))
+    });
+  } catch (error) {
+    console.error('📧 Error fetching recent emails:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching recent emails'
+    });
+  }
+});
+
+app.post('/api/emails/check', (req: Request, res: Response) => {
+  try {
+    if (!gmailHandler.isEnabled()) {
+      return res.json({
+        success: false,
+        message: 'Email monitoring not enabled'
+      });
+    }
+
+    console.log('📧 Manual email check requested');
+    
+    res.json({
+      success: true,
+      message: 'Email check initiated'
+    });
+  } catch (error) {
+    console.error('📧 Error during manual email check:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error checking emails'
+    });
+  }
+});
+
+app.get('/api/emails/stats', (req: Request, res: Response) => {
+  try {
+    if (!gmailHandler.isEnabled()) {
+      return res.json({
+        success: true,
+        stats: {
+          emailEnabled: false,
+          message: 'Email monitoring disabled'
+        }
+      });
+    }
+
+    const recentEmails = gmailHandler.getRecentEmails();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const todaysEmails = recentEmails.filter(email => 
+      email.timestamp >= today
+    );
+    
+    const processedEmails = recentEmails.filter(email => 
+      email.processed
+    );
+
+    res.json({
+      success: true,
+      stats: {
+        emailEnabled: true,
+        totalEmails: recentEmails.length,
+        todaysEmails: todaysEmails.length,
+        processedEmails: processedEmails.length,
+        unprocessedEmails: recentEmails.length - processedEmails.length,
+        lastCheck: new Date().toISOString()
+      }
+    });
+  } catch (error) {
+    console.error('📧 Error getting email stats:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error getting email statistics'
+    });
+  }
+});
+
+// Contact form endpoint
 app.post('/api/contact', async (req: Request, res: Response) => {
   console.log('📧 ===== CONTACT FORM REQUEST RECEIVED =====');
-  console.log('📧 Request body:', req.body);
-  console.log('📧 Request headers:', req.headers);
   
   const { name, email, message } = req.body;
   
@@ -735,21 +783,28 @@ app.post('/api/contact', async (req: Request, res: Response) => {
   }
   
   try {
-    console.log('📧 Attempting to send emails...');
-    
-    // Forward contact form to your main email
-    const emailSent = await emailService.sendContactFormToMainEmail({
-      name,
-      email,
-      message
-    });
-    
-    console.log('📧 Main email sent:', emailSent);
-    
-    // Send auto-reply to the sender
-    const autoReplySent = await emailService.sendAutoReply(email, name);
-    
-    console.log('📧 Auto-reply sent:', autoReplySent);
+    let emailSent = false;
+    let autoReplySent = false;
+
+    if (emailService.isEnabled()) {
+      console.log('📧 Attempting to send emails...');
+      
+      // Forward contact form to your main email
+      emailSent = await emailService.sendContactFormToMainEmail({
+        name,
+        email,
+        message
+      });
+      
+      console.log('📧 Main email sent:', emailSent);
+      
+      // Send auto-reply to the sender
+      autoReplySent = await emailService.sendAutoReply(email, name);
+      
+      console.log('📧 Auto-reply sent:', autoReplySent);
+    } else {
+      console.log('📧 Email service disabled - storing contact form data only');
+    }
     
     // Log the submission
     console.log('📧 Contact form processed successfully:', {
@@ -760,9 +815,13 @@ app.post('/api/contact', async (req: Request, res: Response) => {
       timestamp: new Date().toISOString()
     });
     
+    const responseMessage = emailService.isEnabled() 
+      ? `Thank you ${name}! Your message has been sent to Lance. You should receive a confirmation email shortly.`
+      : `Thank you ${name}! Your message has been received. Lance will get back to you soon.`;
+    
     res.json({
       success: true,
-      message: `Thank you ${name}! Your message has been sent to Lance. You should receive a confirmation email shortly.`
+      message: responseMessage
     });
     
   } catch (error) {
@@ -780,11 +839,20 @@ app.get('/api/portfolio/profile', (req: Request, res: Response) => {
   res.json({ success: true, profile: portfolioProfile });
 });
 
-// ===== INTELLIGENT CHAT ENDPOINT =====
+// Chat endpoint
 app.post('/api/chat', async (req: Request, res: Response) => {
   const { message, profile, sessionId } = req.body;
   
   console.log('🧠 Intelligent conversation initiated:', message);
+  
+  // Validate Groq API key
+  if (!process.env.GROQ_API_KEY) {
+    console.error('🤖 GROQ_API_KEY not found');
+    return res.status(500).json({
+      success: false,
+      message: 'AI service temporarily unavailable. Please try again later.'
+    });
+  }
   
   // Analyze the conversation context
   const analysis = ConversationAnalyzer.analyzeIntent(message);
@@ -845,8 +913,8 @@ app.post('/api/chat', async (req: Request, res: Response) => {
       temperature: analysis.complexity === 'complex' ? 0.8 : 0.7,
       max_tokens: analysis.complexity === 'complex' ? 400 : 300,
       top_p: analysis.tone === 'technical' ? 0.85 : 0.9,
-      frequency_penalty: 0.3, // Reduce repetition
-      presence_penalty: 0.2,  // Encourage diverse topics
+      frequency_penalty: 0.3,
+      presence_penalty: 0.2,
     };
     
     // Generate AI response
@@ -855,7 +923,7 @@ app.post('/api/chat', async (req: Request, res: Response) => {
         { role: "system", content: systemPrompt },
         { role: "user", content: message }
       ],
-      model: "llama-3.3-70b-versatile", // Best available model
+      model: "llama-3.3-70b-versatile",
       ...aiParams
     });
 
@@ -894,7 +962,7 @@ app.post('/api/chat', async (req: Request, res: Response) => {
   }
 });
 
-// Development testing endpoint
+// AI status endpoint
 app.get('/api/ai-status', (req: Request, res: Response) => {
   res.json({
     status: 'Intelligent AI Assistant Active',
@@ -911,15 +979,21 @@ app.get('/api/ai-status', (req: Request, res: Response) => {
       'Gmail integration monitoring'
     ],
     architecture: 'Modular & Extensible',
+    environment: process.env.NODE_ENV || 'development',
     emailMonitoring: {
-      enabled: !!(process.env.EMAIL_ADDRESS && process.env.EMAIL_PASSWORD),
+      enabled: gmailHandler.isEnabled(),
       recentEmails: gmailHandler.getRecentEmails().length,
-      monitoringEmail: process.env.EMAIL_ADDRESS
+      monitoringEmail: process.env.EMAIL_ADDRESS || 'Not configured'
+    },
+    services: {
+      groqApi: !!process.env.GROQ_API_KEY,
+      emailService: emailService.isEnabled(),
+      gmailMonitoring: gmailHandler.isEnabled()
     }
   });
 });
 
-// Handle React Router
+// Handle React Router - PRODUCTION OPTIMIZED
 app.get('*', (req: Request, res: Response) => {
   if (req.path.startsWith('/api/')) {
     res.status(404).json({ error: 'API endpoint not found' });
@@ -931,12 +1005,54 @@ app.get('*', (req: Request, res: Response) => {
         <html>
           <head>
             <title>Lance Cabanit's Intelligent Portfolio</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <style>
-              body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 50px; text-align: center; background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); color: white; }
-              .container { max-width: 700px; margin: 0 auto; }
-              a { color: #fff; text-decoration: none; margin: 0 15px; padding: 12px 24px; background: rgba(255,255,255,0.2); border-radius: 8px; transition: all 0.3s ease; }
-              a:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); }
-              h1 { font-size: 2.5em; margin-bottom: 0.5em; }
+              body { 
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+                padding: 50px; 
+                text-align: center; 
+                background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); 
+                color: white; 
+                margin: 0;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+              .container { 
+                max-width: 700px; 
+                margin: 0 auto; 
+              }
+              a { 
+                color: #fff; 
+                text-decoration: none; 
+                margin: 0 15px; 
+                padding: 12px 24px; 
+                background: rgba(255,255,255,0.2); 
+                border-radius: 8px; 
+                transition: all 0.3s ease; 
+                display: inline-block;
+                margin-bottom: 10px;
+              }
+              a:hover { 
+                background: rgba(255,255,255,0.3); 
+                transform: translateY(-2px); 
+              }
+              h1 { 
+                font-size: 2.5em; 
+                margin-bottom: 0.5em; 
+              }
+              .status {
+                background: rgba(255,255,255,0.1);
+                padding: 20px;
+                border-radius: 10px;
+                margin: 20px 0;
+              }
+              @media (max-width: 768px) {
+                body { padding: 20px; }
+                h1 { font-size: 2em; }
+                a { display: block; margin: 10px 0; }
+              }
             </style>
           </head>
           <body>
@@ -944,12 +1060,17 @@ app.get('*', (req: Request, res: Response) => {
               <h1>🧠 Intelligent AI Portfolio</h1>
               <p><strong>Lance Cabanit's Advanced AI Assistant</strong></p>
               <p>Thoughtful • Professional • Insightful</p>
+              <div class="status">
+                <p><strong>Status:</strong> Online & Ready</p>
+                <p><strong>Environment:</strong> ${process.env.NODE_ENV || 'development'}</p>
+              </div>
               <div style="margin: 40px 0;">
                 <a href="/api/portfolio/profile">Portfolio API</a>
                 <a href="/api/ai-status">AI Status</a>
                 <a href="/api/emails/stats">Email Stats</a>
+                <a href="/health">Health Check</a>
               </div>
-              <p><strong>Experience the Intelligence:</strong> <a href="http://localhost:5173">Launch Portfolio</a></p>
+              <p><strong>Ready for Intelligence</strong></p>
             </div>
           </body>
         </html>
@@ -958,7 +1079,7 @@ app.get('*', (req: Request, res: Response) => {
   }
 });
 
-// Sophisticated error handling
+// Enhanced error handling
 app.use((err: any, req: Request, res: Response, next: any) => {
   console.error('System error:', err);
   res.status(500).json({ 
@@ -966,6 +1087,17 @@ app.use((err: any, req: Request, res: Response, next: any) => {
     message: 'I\'m experiencing a temporary system challenge, but I\'m working to resolve it. Please try again in a moment.',
     technical_note: process.env.NODE_ENV === 'development' ? err.message : 'System temporarily unavailable'
   });
+});
+
+// Graceful shutdown handling
+process.on('SIGTERM', () => {
+  console.log('📧 Received SIGTERM, shutting down gracefully');
+  process.exit(0);
+});
+
+process.on('SIGINT', () => {
+  console.log('📧 Received SIGINT, shutting down gracefully');
+  process.exit(0);
 });
 
 // Start the intelligent server
@@ -977,11 +1109,22 @@ app.listen(port, '0.0.0.0', () => {
   console.log(`👨‍💻 Built with Python by Lance Cabanit`);
   console.log(`🤖 Model: LancyyAI 5 (Premium Intelligence)`);
   console.log(`🏗️ Architecture: Modular & Extensible`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`📊 Status: http://localhost:${port}/api/ai-status`);
+  console.log(`💚 Health: http://localhost:${port}/health`);
+  
+  // Service status logging
+  console.log(`🔑 Groq API: ${process.env.GROQ_API_KEY ? '✅ Enabled' : '❌ Missing'}`);
+  console.log(`📧 Email Service: ${emailService.isEnabled() ? '✅ Enabled' : '❌ Disabled'}`);
+  console.log(`📬 Gmail Monitoring: ${gmailHandler.isEnabled() ? '✅ Enabled' : '❌ Disabled'}`);
   
   // Start Gmail monitoring with improved filtering
-  console.log(`📧 Initializing Gmail monitoring with smart filtering...`);
-  gmailHandler.startMonitoring();
+  if (gmailHandler.isEnabled()) {
+    console.log(`📧 Initializing Gmail monitoring with smart filtering...`);
+    gmailHandler.startMonitoring();
+  }
+  
+  console.log(`🎯 Ready for deployment and production use!`);
 });
 
 
