@@ -207,6 +207,9 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
   const inputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // API Base URL - Uses environment variable in production, localhost in development
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -230,7 +233,7 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:5000/api/chat', {
+      const response = await fetch(`${API_BASE_URL}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -249,7 +252,6 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
       }
 
       const data = await response.json();
-
       if (data.success && data.message) {
         setMessages(prev => [...prev, data.message]);
       } else {
