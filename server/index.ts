@@ -568,7 +568,7 @@ class EmailService {
   constructor() {
     if (process.env.EMAIL_ADDRESS && process.env.EMAIL_PASSWORD) {
       this.isEmailEnabled = true;
-      this.transporter = nodemailer.createTransporter({
+      this.transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
           user: process.env.EMAIL_ADDRESS,
