@@ -642,7 +642,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // ===== STATIC FILE SERVING - FIXED =====
 // Serve static files from dist directory FIRST
-app.use(express.static(path.join(__dirname, '../dist')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Serve static assets - PRODUCTION READY
 const staticPath = process.env.NODE_ENV === 'production' 
