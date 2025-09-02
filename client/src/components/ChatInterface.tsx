@@ -207,8 +207,10 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
   const inputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // API Base URL - Uses environment variable in production, localhost in development
-  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+  // FIXED: Updated API Base URL to match your backend server
+  const API_BASE_URL = process.env.NODE_ENV === 'production' 
+    ? 'https://lanceport-fullstack.onrender.com/' 
+    : 'http://localhost:10000';
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -457,6 +459,5 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
     </div>
   );
 }
-
 
 
