@@ -1,11 +1,17 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ChevronDown, EyeOff, MessageCircle, Code, Cog, Briefcase, Mail } from 'lucide-react';
+import { ChevronDown, EyeOff, MessageCircle, Code, Cog, Briefcase, Mail, User, FileText, Folder } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+export type TabType = 'me' | 'projects' | 'skills' | 'resume' | 'contact';
 
 interface QuickQuestionsProps {
   onQuestionClick: (question: string) => void;
   disabled?: boolean;
+  activeTab?: TabType;
+  onTabChange?: (tab: TabType) => void;
+  showTabs?: boolean;
 }
 
 const QUICK_QUESTIONS = [
@@ -26,76 +32,72 @@ const QUICK_QUESTIONS = [
   },
   {
     icon: Mail,
-    text: "How can I reach you?",
+    text: "Who is Lance?",
     color: "text-chart-4"
   }
 ];
 
-export function QuickQuestions({ onQuestionClick, disabled = false }: QuickQuestionsProps) {
-  const [isVisible, setIsVisible] = useState(true);
+const TABS = [
+  { id: 'me' as TabType, label: 'Me', icon: User },
+  { id: 'projects' as TabType, label: 'Projects', icon: Folder },
+  { id: 'skills' as TabType, label: 'Skills', icon: Code },
+  { id: 'resume' as TabType, label: 'Resume', icon: FileText },
+  { id: 'contact' as TabType, label: 'Contact', icon: Mail },
+];
 
-  if (!isVisible) {
+export function QuickQuestions({ onQuestionClick, disabled = false, activeTab = 'me', onTabChange, showTabs = false }: QuickQuestionsProps) {
+
+  // If showTabs is true, render only the navigation tabs
+  if (showTabs) {
     return (
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={() => setIsVisible(true)}
-        className="text-muted-foreground hover:text-foreground"
-        data-testid="button-show-quick-questions"
-      >
-        <MessageCircle className="w-4 h-4 mr-2" />
-        Show quick questions
-      </Button>
+      <div className="flex items-center justify-center gap-10 py-4 relative z-20">
+        {TABS.map((tab) => {
+          const IconComponent = tab.icon;
+          const isActive = activeTab === tab.id;
+          
+          return (
+            <button
+              key={tab.id}
+              onClick={() => onTabChange?.(tab.id)}
+              className={cn(
+                "flex items-center gap-2 pb-3 transition-all duration-200 text-sm font-semibold tracking-wide",
+                isActive 
+                  ? "text-gray-900 border-b-2 border-gray-900" 
+                  : "text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300"
+              )}
+            >
+              <IconComponent className="w-4 h-4" />
+              <span>{tab.label}</span>
+            </button>
+          );
+        })}
+      </div>
     );
   }
 
   return (
-    <Card className="shadow-sm" data-testid="card-quick-questions">
-      <CardContent className="p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <MessageCircle className="w-4 h-4 text-primary" />
-          <span className="text-sm font-medium text-foreground">Who are you?</span>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setIsVisible(false)}
-            className="ml-auto text-muted-foreground hover:text-foreground p-1"
-            data-testid="button-hide-quick-questions"
-          >
-            <ChevronDown className="w-4 h-4" />
-          </Button>
-        </div>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
-          {QUICK_QUESTIONS.map((question) => {
-            const IconComponent = question.icon;
-            return (
-              <Button
-                key={question.text}
-                variant="outline"
-                onClick={() => onQuestionClick(question.text)}
-                disabled={disabled}
-                className="quick-question text-left p-3 h-auto justify-start bg-background hover:bg-accent border-border transition-all"
-                data-testid={`button-quick-question-${question.text.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
-              >
-                <IconComponent className={`w-4 h-4 mr-2 flex-shrink-0 ${question.color}`} />
-                <span className="text-sm">{question.text}</span>
-              </Button>
-            );
-          })}
-        </div>
-        
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setIsVisible(false)}
-          className="text-muted-foreground hover:text-foreground flex items-center gap-1"
-          data-testid="button-hide-quick-questions-bottom"
-        >
-          <EyeOff className="w-4 h-4" />
-          Hide quick questions
-        </Button>
-      </CardContent>
-    </Card>
+    <div className="w-full relative z-20" data-testid="card-quick-questions">
+
+      
+      {/* Quick question buttons */}
+      <div className="grid grid-cols-2 gap-5 max-w-3xl mx-auto">
+        {QUICK_QUESTIONS.map((question, index) => {
+          const IconComponent = question.icon;
+          return (
+            <Button
+              key={index}
+              variant="outline"
+              className="h-auto p-6 text-left justify-start bg-white hover:bg-gray-50 border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl flex items-start font-medium"
+              onClick={() => onQuestionClick(question.text)}
+              disabled={disabled}
+              data-testid={`button-quick-question-${index}`}
+            >
+              <IconComponent className="w-5 h-5 mr-4 mt-0.5 flex-shrink-0 text-gray-600" />
+              <span className="text-sm text-gray-800 font-semibold leading-relaxed break-words tracking-wide">{question.text}</span>
+            </Button>
+          );
+        })}
+      </div>
+    </div>
   );
 }

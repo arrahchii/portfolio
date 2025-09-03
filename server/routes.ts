@@ -283,7 +283,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         name: "Lance Cabanit",
         title: "Full-Stack Developer & AI Enthusiast",
         availability: "Available for Opportunities",
-        avatar: "/attached_assets/image_1756544677548.png",
+        avatar: "/src/assets/ICONN.jpg",
         sections: {
           me: {
             bio: "Passionate full-stack developer with expertise in modern web technologies and AI integration. I love creating interactive applications that solve real-world problems.",

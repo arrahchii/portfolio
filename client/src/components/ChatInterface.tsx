@@ -6,9 +6,9 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Send, Sparkles, User, Bot } from 'lucide-react';
 import { QuickQuestions } from './QuickQuestions';
 import { TabNavigation, type TabType } from './TabNavigation';
-import { TabContent } from './TabContent';
+import TabContent from './TabContent';
 import { ThemeToggle } from './ThemeToggle';
-import lanceProfileImage from '@/assets/lance-profile.jpg';
+import lanceProfileImage from '@/assets/ICONN.jpg';
 
 interface Message {
   id: string;
@@ -42,6 +42,8 @@ interface ProfileData {
       email: string;
       linkedin: string;
       github: string;
+      facebook: string;
+      instagram: string;
       location: string;
     };
   };
@@ -110,14 +112,7 @@ function ModernChatMessage({ content, role, profile }: { content: string; role: 
                 <p className="text-gray-600 leading-relaxed text-base">{profile.sections.me.bio}</p>
               </div>
 
-              {/* Experience Section */}
-              <div className="space-y-4">
-                <h4 className="text-lg font-bold text-gray-800 flex items-center">
-                  <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full mr-3"></div>
-                  Experience
-                </h4>
-                <p className="text-gray-600 text-base">{profile.sections.me.experience}</p>
-              </div>
+
             </div>
 
             {/* Skills Preview */}
@@ -159,6 +154,14 @@ function ModernChatMessage({ content, role, profile }: { content: string; role: 
                 <a href={profile.sections.contact.github} target="_blank" rel="noopener noreferrer"
                    className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-xl hover:from-gray-800 hover:to-gray-900 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium">
                   <span className="mr-2">🐙</span> GitHub
+                </a>
+                <a href={profile.sections.contact.facebook} target="_blank" rel="noopener noreferrer"
+                   className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-xl hover:from-blue-700 hover:to-blue-900 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium">
+                  <span className="mr-2">📘</span> Facebook
+                </a>
+                <a href={profile.sections.contact.instagram} target="_blank" rel="noopener noreferrer"
+                   className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl hover:from-pink-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium">
+                  <span className="mr-2">📷</span> Instagram
                 </a>
               </div>
             </div>
@@ -302,13 +305,34 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
         </div>
       </div>
 
+      {/* Floating Profile Image - Only visible during chat */}
+      {activeTab === 'me' && messages.length > 0 && (
+        <div className="fixed top-20 right-6 z-40">
+          <div className="relative group">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-400/30 to-purple-400/30 blur-xl rounded-full"></div>
+            <Avatar className="w-16 h-16 relative ring-4 ring-white/70 shadow-2xl hover:scale-110 transition-all duration-300 cursor-pointer">
+              <AvatarImage src={lanceProfileImage} alt={`${profile.name} Professional Avatar`} className="object-cover" />
+              <AvatarFallback className="text-lg font-bold bg-gradient-to-r from-blue-500 to-purple-600 text-white">LC</AvatarFallback>
+            </Avatar>
+            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-lg animate-pulse"></div>
+            
+            {/* Tooltip on hover */}
+            <div className="absolute right-full mr-3 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+              <div className="bg-black/80 text-white text-sm px-3 py-2 rounded-lg whitespace-nowrap">
+                {profile.name}'s AI
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-6xl mx-auto">
-        {/* Hero Header */}
-        {(activeTab === 'me' || messages.length > 0) && (
+        {/* Hero Header - Only show when no messages */}
+        {activeTab === 'me' && messages.length === 0 && (
           <header className="text-center py-12 px-6">
             <div className="mb-8 relative">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 blur-3xl"></div>
-              <Avatar className="w-40 h-40 mx-auto relative ring-8 ring-white/50 shadow-2xl">
+              <Avatar className="w-52 h-52 mx-auto relative ring-8 ring-white/50 shadow-2xl">
                 <AvatarImage src={lanceProfileImage} alt={`${profile.name} Professional Avatar`} className="object-cover" />
                 <AvatarFallback className="text-4xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 text-white">LC</AvatarFallback>
               </Avatar>
@@ -380,7 +404,7 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
             </div>
           ) : activeTab === 'me' && messages.length > 0 ? (
             /* Chat with Messages */
-            <div className="max-w-4xl mx-auto px-6">
+            <div className="max-w-4xl mx-auto px-6 pt-8">
               <div className="bg-white/60 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/30 overflow-hidden">
                 <ScrollArea className="h-[600px] p-6">
                   <div className="space-y-8">

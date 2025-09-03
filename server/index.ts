@@ -54,47 +54,78 @@ app.use(cors({
 // Portfolio data
 const portfolioProfile = {
   name: "Lance Cabanit",
-  title: "Full-Stack Developer & AI Enthusiast",
-  availability: "Available for Opportunities",
-  avatar: "/attached_assets/lance-profile.jpg",
+  title: "Full-stack Developer & UI/UX Designer",
+  availability: "Available for freelance projects",
+  avatar: "/src/assets/ICONN.jpg",
   sections: {
     me: {
-      bio: "Passionate full-stack developer with expertise in modern web technologies and AI integration. I love creating interactive applications that solve real-world problems.",
-      experience: "3+ years of professional development experience",
-      passion: "Building innovative solutions that make a difference"
+      bio: "Full-stack developer with a passion for creating clean, user-friendly web experiences. Currently diving deep into the world of AI and fascinated by its endless possibilities. I love exploring how artificial intelligence can transform the way we build and interact with digital platforms.\n\nWhen I'm not coding, you'll find me experimenting with AI tools, reading about machine learning breakthroughs, or brainstorming ways to integrate intelligent features into everyday applications. There's something magical about teaching machines to think and create alongside us.\n\nWorking towards becoming an AI engineer soon, excited to be part of the future where technology meets creativity and AI enhances human potential.",
+      passion: "I'm passionate about creating user-centered digital experiences that solve real problems. Whether it's designing intuitive interfaces or building robust backend systems, I love the entire process of bringing ideas to life through code."
     },
     skills: [
-      { category: "Programming Languages", items: ["JavaScript", "TypeScript", "Python", "Java"] },
-      { category: "Frontend", items: ["React", "Vue.js", "HTML5", "CSS3", "Tailwind CSS"] },
-      { category: "Backend", items: ["Node.js", "Express", "MongoDB", "PostgreSQL"] },
-      { category: "AI/ML", items: ["TensorFlow", "OpenAI API", "Groq", "Machine Learning", "NLP"] },
-      { category: "Cloud & DevOps", items: ["AWS", "Docker", "Kubernetes", "CI/CD"] }
+      { category: "Frontend Development", items: ["React", "TypeScript", "JavaScript", "HTML5", "CSS3", "Tailwind CSS", "Next.js"] },
+      { category: "Backend Development", items: ["Node.js", "Express.js", "Python", "RESTful APIs", "GraphQL", "Database Design"] },
+      { category: "UI/UX Design", items: ["Figma", "Adobe XD", "Prototyping", "User Research", "Wireframing", "Design Systems"] },
+      { category: "Tools & Technologies", items: ["Git", "Docker", "AWS", "MongoDB", "PostgreSQL", "Firebase"] },
+      { category: "Soft Skills", items: ["Team Leadership", "Project Management", "Problem Solving", "Communication", "Mentoring"] }
     ],
     projects: [
       { 
-        name: "AI Chat Application", 
-        description: "Real-time chat app with AI integration using advanced language models", 
-        tech: ["React", "Node.js", "Python", "Groq", "WebSockets"], 
+        name: "E-commerce Platform", 
+        description: "Full-stack e-commerce solution with modern UI/UX and robust backend", 
+        tech: ["React", "Node.js", "MongoDB", "Stripe API"], 
         status: "Completed" 
       },
       { 
-        name: "E-commerce Platform", 
-        description: "Full-stack e-commerce solution with intelligent recommendation system", 
-        tech: ["React", "Python", "FastAPI", "MongoDB", "Stripe"], 
+        name: "Task Management App", 
+        description: "Collaborative project management tool with real-time updates", 
+        tech: ["Next.js", "TypeScript", "PostgreSQL", "Socket.io"], 
         status: "In Progress" 
       },
       { 
-        name: "Portfolio Intelligence System", 
-        description: "Interactive AI-powered portfolio with sophisticated conversation capabilities", 
-        tech: ["Python", "React", "TypeScript", "Groq", "Advanced AI"], 
+        name: "Portfolio Website", 
+        description: "Interactive portfolio showcasing projects and skills with modern design", 
+        tech: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"], 
         status: "Completed" 
+      },
+      { 
+        name: "AI-Powered Chat Application", 
+        description: "Intelligent chatbot platform with natural language processing capabilities", 
+        tech: ["React", "Python", "OpenAI API", "FastAPI"], 
+        status: "Ongoing" 
+      },
+      { 
+        name: "Real-time Analytics Dashboard", 
+        description: "Data visualization platform with live metrics and interactive charts", 
+        tech: ["Vue.js", "D3.js", "Node.js", "Redis"], 
+        status: "Ongoing" 
+      },
+      { 
+        name: "Mobile Fitness Tracker", 
+        description: "Cross-platform mobile app for health and fitness monitoring", 
+        tech: ["React Native", "Firebase", "TypeScript", "Redux"], 
+        status: "Ongoing" 
+      },
+      { 
+        name: "Blockchain Voting System", 
+        description: "Secure and transparent voting platform using blockchain technology", 
+        tech: ["Solidity", "Web3.js", "React", "Ethereum"], 
+        status: "Ongoing" 
+      },
+      { 
+        name: "IoT Smart Home Hub", 
+        description: "Centralized control system for smart home devices and automation", 
+        tech: ["Python", "Raspberry Pi", "MQTT", "React"], 
+        status: "Ongoing" 
       }
     ],
     contact: {
-      email: "cabanitlance43@gmail.com",
+      email: "lance.cabanit@gmail.com",
       linkedin: "https://linkedin.com/in/lance-cabanit",
       github: "https://github.com/lance-cabanit",
-      location: "General Santos City, Philippines"
+      facebook: "https://www.facebook.com/lancyy",
+      instagram: "https://www.instagram.com/lancyyb",
+      location: "Philippines"
     }
   }
 };
@@ -256,7 +287,7 @@ class GmailMessageHandler {
     const promotionalSenders = [
       'shein', 'netflix', 'facebook', 'messenger', 'gotyme', 'noreply',
       'promo', 'marketing', 'newsletter', 'unsubscribe', 'watsons',
-      'pinterest', 'discord', 'tiktok', 'replit', 'betonline', 'stackblitz',
+      'pinterest', 'discord', 'tiktok', 'betonline', 'stackblitz',
       'notifications@', 'recommendations@', 'member@', 'info@join',
       'contact@mail', 'discover.pinterest', 'service.tiktok', 'edm.',
       '@email.', '@discover.', '@service.', '@notifications.'
@@ -396,7 +427,7 @@ PERSONALITY BOUNDARIES:
 
   static getCreatorAcknowledgment(): string {
     return `CREATOR CONTEXT:
-When asked about your creation or origins, acknowledge that you were built by Lance Cabanit using Python. 
+When asked about your creation or origins, acknowledge that you were built by Lance Cabanit using modern web technologies. 
 Your purpose is to assist with intelligence and clarity, representing the quality of Lance's work.
 Do NOT mention your creator in introductions unless specifically asked.`;
   }
@@ -424,12 +455,11 @@ Contact: ${profile.sections.contact.email} | ${profile.sections.contact.location
   }
 
   static getRelationshipContext(): string {
-    return `LANCE'S PERSONAL LIFE:
-When asked about Lance's girlfriend, wife, or romantic relationship, you know that:
-- Lance has a girlfriend/wife who is also a versatile professional her name is Dane Arrah Candelario
-- She is a Virtual Assistant, Executive Assistant, Sales Executive, Supervisor, and Web Designer
-- You can refer people to her website: [www.danecandelario.site](https://www.danecandelario.site)
-- She shares Lance's passion for professional excellence and versatility`;
+    return `Full-stack developer with a passion for creating clean, user-friendly web experiences. Currently diving deep into the world of AI and fascinated by its endless possibilities. I love exploring how artificial intelligence can transform the way we build and interact with digital platforms.
+
+When I'm not coding, you'll find me experimenting with AI tools, reading about machine learning breakthroughs, or brainstorming ways to integrate intelligent features into everyday applications. There's something magical about teaching machines to think and create alongside us.
+
+Working towards becoming an AI engineer soon, excited to be part of the future where technology meets creativity and AI enhances human potential.`;
   }
 
   static buildSystemPrompt(profile: any): string {

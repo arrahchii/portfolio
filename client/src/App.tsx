@@ -11,11 +11,10 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, User, Bot } from "lucide-react";
-import { QuickQuestions } from "@/components/QuickQuestions";
-import { TabNavigation, type TabType } from "@/components/TabNavigation";
-import { TabContent } from "@/components/TabContent";
+import { QuickQuestions, type TabType } from "@/components/QuickQuestions";
+import TabContent from "@/components/TabContent";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import lanceProfileImage from "@/assets/lance-profile.jpg";
+import lanceProfileImage from "@/assets/ICONN.jpg";
 
 interface Message {
   id: string;
@@ -48,6 +47,8 @@ interface ProfileData {
       email: string;
       linkedin: string;
       github: string;
+      facebook: string;
+      instagram: string;
       location: string;
     };
   };
@@ -109,13 +110,7 @@ function AestheticChatMessage({
               {profile.sections.me.bio}
             </p>
           </div>
-          {/* Experience */}
-          <div className="mb-6">
-            <h4 className="font-bold text-gray-800 mb-3 text-lg flex items-center">
-              <span className="mr-2">💼</span> Experience
-            </h4>
-            <p className="text-gray-700">{profile.sections.me.experience}</p>
-          </div>
+
           {/* Skills Preview */}
           <div className="mb-6">
             <h4 className="font-bold text-gray-800 mb-3 text-lg flex items-center">
@@ -176,39 +171,47 @@ function AestheticChatMessage({
       </div>
     );
   }
-  // Aesthetic Regular Messages
+  // Professional Regular Messages
   return (
     <div
-      className={`flex items-start gap-3 mb-6 ${
+      className={`flex items-start gap-4 mb-8 ${
         role === "user" ? "flex-row-reverse" : ""
       }`}
     >
-      {/* Avatar */}
+      {/* Refined Avatar */}
       <div
-        className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg ${
+        className={`w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm border-2 ${
           role === "user"
-            ? "bg-gradient-to-br from-blue-500 to-indigo-600"
-            : "bg-gradient-to-br from-purple-500 to-purple-600"
+            ? "bg-white border-gray-200 text-gray-600"
+            : "bg-white border-gray-200 text-gray-600"
         }`}
       >
         {role === "user" ? (
-          <User className="w-5 h-5 text-white" />
+          <User className="w-5 h-5" />
         ) : (
-          <Bot className="w-5 h-5 text-white" />
+          <Bot className="w-5 h-5" />
         )}
       </div>
 
-      {/* Message Bubble */}
+      {/* Professional Message Bubble */}
       <div
-        className={`max-w-[75%] px-5 py-3 rounded-3xl shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-xl ${
+        className={`max-w-[70%] transition-all duration-200 ${
           role === "user"
-            ? "bg-gradient-to-br from-blue-500 to-indigo-600 text-white ml-auto"
-            : "bg-white/90 text-gray-800 border border-gray-200/50"
+            ? "ml-auto"
+            : ""
         }`}
       >
-        <p className="text-base leading-relaxed whitespace-pre-wrap">
-          {messageContent}
-        </p>
+        <div
+          className={`px-6 py-4 shadow-sm border transition-all duration-200 hover:shadow-md ${
+            role === "user"
+              ? "bg-white border-gray-200 text-gray-800 rounded-2xl rounded-tr-md"
+              : "bg-white border-gray-200 text-gray-800 rounded-2xl rounded-tl-md"
+          }`}
+        >
+          <p className="text-[15px] leading-relaxed whitespace-pre-wrap font-normal text-gray-700 tracking-wide">
+            {messageContent}
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -227,6 +230,7 @@ function Portfolio() {
   const [chatError, setChatError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
   // API Base URL - Uses environment variable in production, localhost in development
   const API_BASE_URL = window.location.hostname.endsWith("onrender.com")
     ? "https://lanceport-fullstack.onrender.com"
@@ -260,13 +264,15 @@ function Portfolio() {
         setLoading(false);
       });
   }, [API_BASE_URL]);
-  // Scroll to bottom
+  // Auto-scroll to bottom smoothly when new messages are added
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
   }, [messages]);
   // Send message function
   const sendMessage = async (messageContent: string, isQuickQuestion = false) => {
-    if (!inputValue.trim() || isLoading) return;
+    if (!messageContent.trim() || isLoading) return;
     const userMessage: Message = {
       id: Date.now().toString(),
       content: messageContent.trim(),
@@ -369,54 +375,55 @@ function Portfolio() {
     );
   }
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Tab Navigation - Sticky */}
-      <div className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-        <div className="flex items-center justify-between px-4">
-          <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 relative overflow-hidden">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 opacity-[0.02] pointer-events-none z-0">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-gray-900 to-transparent rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute top-1/3 right-0 w-80 h-80 bg-gradient-to-bl from-gray-800 to-transparent rounded-full blur-3xl transform translate-x-1/2"></div>
+        <div className="absolute bottom-0 left-1/3 w-72 h-72 bg-gradient-to-tr from-gray-700 to-transparent rounded-full blur-3xl transform translate-y-1/2"></div>
+      </div>
+      
+      {/* Geometric accent elements */}
+      <div className="absolute inset-0 opacity-[0.015] pointer-events-none z-0">
+        <div className="absolute top-20 left-10 w-2 h-2 bg-gray-400 rounded-full"></div>
+        <div className="absolute top-40 right-20 w-1 h-1 bg-gray-500 rounded-full"></div>
+        <div className="absolute bottom-32 left-1/4 w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
+        <div className="absolute top-1/2 right-1/3 w-1 h-1 bg-gray-500 rounded-full"></div>
+        <div className="absolute bottom-20 right-10 w-2 h-2 bg-gray-400 rounded-full"></div>
+      </div>
+      {/* Tab Navigation - Top Left */}
+      <div className="sticky top-0 z-50 border-b border-gray-200/50 bg-white/80 backdrop-blur-sm">
+        <div className="flex items-center justify-between px-6 py-4">
+          <div className="flex items-center">
+            <QuickQuestions 
+              activeTab={activeTab} 
+              onTabChange={setActiveTab}
+              onQuestionClick={handleQuickQuestion}
+              disabled={isLoading}
+              showTabs={true}
+            />
+          </div>
           <ThemeToggle />
         </div>
       </div>
-      <div className="max-w-4xl mx-auto w-full">
-        {/* Header Section */}
-        {(activeTab === "me" || messages.length > 0) && (
+      <div className="max-w-4xl mx-auto w-full relative z-10">
+        {/* Header Section - Only show avatar and greeting for initial state */}
+        {activeTab === "me" && messages.length === 0 && (
           <header
-            className="flex-shrink-0 p-6 text-center border-b border-border"
+            className="flex-shrink-0 p-6 text-center"
             data-testid="header-profile"
           >
             <div className="mb-6">
-              <Avatar className="w-32 h-32 mx-auto avatar-glow border-4 border-white shadow-xl ring-2 ring-blue-100">
+              <Avatar className="w-52 h-52 mx-auto border-2 border-border">
                 <AvatarImage
                   src={lanceProfileImage}
                   alt={`${profile.name} Professional Avatar`}
                   className="object-cover"
                 />
-                <AvatarFallback className="text-xl font-semibold bg-blue-100 text-blue-700">
+                <AvatarFallback className="text-3xl font-semibold">
                   LC
                 </AvatarFallback>
               </Avatar>
-            </div>
-
-            <h1
-              className="text-3xl sm:text-4xl font-bold text-foreground mb-3 tracking-tight"
-              data-testid="text-profile-title"
-            >
-              I'm {profile.name.split(" ")[0]}'s digital twin
-            </h1>
-
-            <p
-              className="text-lg text-muted-foreground mb-6 font-medium"
-              data-testid="text-profile-subtitle"
-            >
-              Begin your interview with my digital twin.
-            </p>
-
-            <div
-              className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 rounded-full text-sm border border-green-200 shadow-sm"
-              data-testid="status-availability"
-            >
-              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              <span className="font-medium">{profile.availability}</span>
             </div>
           </header>
         )}
@@ -424,79 +431,62 @@ function Portfolio() {
         {/* Main Content Area */}
         <main className="flex-1 flex flex-col">
           {activeTab === "me" && messages.length === 0 ? (
-            /* Initial Chat Interface with Aesthetic Renovations */
+            /* Initial Clean Interface matching reference */
             <>
-              {/* Renovated Chat Area */}
-              <div className="flex-1 p-6">
-                <div className="max-w-4xl mx-auto">
-                  {/* Aesthetic Chat Container */}
-                  <div className="bg-white/70 backdrop-blur-md rounded-3xl shadow-2xl border border-white/50 overflow-hidden">
-                    {/* Chat Messages Area */}
-                    <ScrollArea
-                      className="h-96 p-6"
-                      data-testid="scroll-chat-messages"
-                    >
-                      <div className="space-y-6">
-                        <QuickQuestions
-                          onQuestionClick={handleQuickQuestion}
-                          disabled={isLoading}
-                        />
+              <div className="flex-1 flex flex-col items-center justify-center p-8 max-w-4xl mx-auto">
 
-                        {chatError && (
-                          <div className="text-center py-4">
-                            <div className="inline-block px-6 py-3 bg-red-50/90 backdrop-blur-sm text-red-600 rounded-2xl border border-red-200 shadow-lg">
-                              {chatError}
-                            </div>
-                          </div>
-                        )}
+                <h1 className="text-2xl font-medium text-gray-700 mb-12 text-center">Hey there! How are you doing today?</h1>
+                
+                <div className="w-full max-w-2xl">
+                  <QuickQuestions
+                    activeTab={activeTab}
+                    onTabChange={setActiveTab}
+                    onQuestionClick={handleQuickQuestion}
+                    disabled={isLoading}
+                    showTabs={false}
+                  />
+                </div>
 
-                        <div ref={messagesEndRef} />
-                      </div>
-                    </ScrollArea>
-
-                    {/* Renovated Chat Input */}
-                    <div className="border-t border-gray-200/50 bg-white/50 backdrop-blur-sm p-6">
-                      <div className="flex items-center gap-4">
-                        <Input
-                          ref={inputRef}
-                          type="text"
-                          placeholder="Ask me anything about Lance..."
-                          value={inputValue}
-                          onChange={(e) => setInputValue(e.target.value)}
-                          onKeyDown={handleKeyDown}
-                          disabled={isLoading}
-                          className="flex-1 h-12 px-6 bg-white/95 border-2 border-gray-300/50 rounded-full focus:border-blue-400 focus:ring-4 focus:ring-blue-400/20 transition-all duration-300 shadow-lg text-base font-bold text-gray-900 placeholder:text-gray-500 placeholder:font-semibold"
-                          style={{
-                            fontWeight: "700",
-                            color: "#111827",
-                            fontSize: "16px",
-                          }}
-                        />
-                        <Button
-                          onClick={handleSendMessage}
-                          disabled={!inputValue.trim() || isLoading}
-                          className="h-12 w-12 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50"
-                        >
-                          <Send className="w-5 h-5 text-white" />
-                        </Button>
-                      </div>
+                {/* Chat Error */}
+                {chatError && (
+                  <div className="text-center py-4">
+                    <div className="inline-block px-6 py-3 bg-red-50/90 backdrop-blur-sm text-red-600 rounded-2xl border border-red-200 shadow-lg">
+                      {chatError}
                     </div>
                   </div>
+                )}
+              </div>
+
+              {/* Chat Input at Bottom */}
+              <div className="p-4 relative z-20">
+                <div className="flex gap-3">
+                  <Input
+                    ref={inputRef}
+                    type="text"
+                    placeholder="Ask me anything"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    disabled={isLoading}
+                    className="flex-1 bg-gray-100 border-gray-200 rounded-full px-4 py-3 text-base text-gray-700 placeholder-gray-500 focus:bg-white focus:border-blue-500 h-12"
+                  />
+                  <Button
+                    onClick={handleSendMessage}
+                    disabled={!inputValue.trim() || isLoading}
+                    className="rounded-full bg-blue-500 hover:bg-blue-600 text-white w-12 h-12"
+                  >
+                    <Send className="w-5 h-5" />
+                  </Button>
                 </div>
               </div>
             </>
           ) : activeTab === "me" && messages.length > 0 ? (
-            /* Chat with Messages - Renovated */
-            <>
-              <div className="flex-1 p-6">
-                <div className="max-w-4xl mx-auto">
-                  {/* Aesthetic Chat Container */}
-                  <div className="bg-white/70 backdrop-blur-md rounded-3xl shadow-2xl border border-white/50 overflow-hidden">
-                    {/* Chat Messages Area */}
-                    <ScrollArea
-                      className="h-[600px] p-6"
-                      data-testid="scroll-chat-messages"
-                    >
+            /* Chat with Messages - Clean Interface */
+            <div className="flex-1 flex flex-col relative z-20">
+              {/* Chat Messages Area - Centered */}
+              <div className="flex-1 flex items-center justify-center p-8">
+                <div className="w-full max-w-4xl">
+                  <ScrollArea className="h-[500px] p-6" data-testid="scroll-chat-messages">
                       <div className="space-y-6">
                         {messages.map((message) => (
                           <div key={message.id}>
@@ -508,89 +498,104 @@ function Portfolio() {
                           </div>
                         ))}
 
-                        {/* Aesthetic Loading Indicator */}
+                        {/* Professional Loading Indicator */}
                         {isLoading && (
-                          <div className="flex items-start gap-3">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center shadow-lg">
-                              <Bot className="w-5 h-5 text-white" />
+                          <div className="flex items-start gap-4 mb-8">
+                            <div className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm border-2 bg-white border-gray-200 text-gray-600">
+                              <Bot className="w-5 h-5" />
                             </div>
-                            <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-4 shadow-lg border border-gray-200/50">
-                              <div className="flex space-x-2">
-                                <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full animate-bounce"></div>
-                                <div
-                                  className="w-2 h-2 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full animate-bounce"
-                                  style={{ animationDelay: "0.1s" }}
-                                ></div>
-                                <div
-                                  className="w-2 h-2 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full animate-bounce"
-                                  style={{ animationDelay: "0.2s" }}
-                                ></div>
+                            <div className="max-w-[70%]">
+                              <div className="px-6 py-4 shadow-sm border bg-white border-gray-200 text-gray-800 rounded-2xl rounded-tl-md">
+                                <div className="flex space-x-1">
+                                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                                  <div
+                                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                                    style={{ animationDelay: "0.1s" }}
+                                  ></div>
+                                  <div
+                                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                                    style={{ animationDelay: "0.2s" }}
+                                  ></div>
+                                </div>
                               </div>
                             </div>
                           </div>
                         )}
 
+                        <div ref={messagesEndRef} />
+
                         {chatError && (
-                          <div className="text-center py-4">
-                            <div className="inline-block px-6 py-3 bg-red-50/90 backdrop-blur-sm text-red-600 rounded-2xl border border-red-200 shadow-lg">
+                          <div className="text-center py-6">
+                            <div className="inline-block px-6 py-4 bg-red-50 text-red-700 rounded-xl border border-red-200 shadow-sm font-medium">
                               {chatError}
                             </div>
                           </div>
                         )}
 
-                        <div ref={messagesEndRef} />
+
                       </div>
                     </ScrollArea>
-
-                    {/* Renovated Chat Input */}
-                    <div className="border-t border-gray-200/50 bg-white/50 backdrop-blur-sm p-6">
-                      <div className="flex items-center gap-4">
-                        <Input
-                          ref={inputRef}
-                          type="text"
-                          placeholder="Ask me anything about Lance..."
-                          value={inputValue}
-                          onChange={(e) => setInputValue(e.target.value)}
-                          onKeyDown={handleKeyDown}
-                          disabled={isLoading}
-                          className="flex-1 h-12 px-6 bg-white/95 border-2 border-gray-300/50 rounded-full focus:border-blue-400 focus:ring-4 focus:ring-blue-400/20 transition-all duration-300 shadow-lg text-base font-bold text-gray-900 placeholder:text-gray-500 placeholder:font-semibold"
-                          style={{
-                            fontWeight: "700",
-                            color: "#111827",
-                            fontSize: "16px",
-                          }}
-                        />
-                        <Button
-                          onClick={handleSendMessage}
-                          disabled={!inputValue.trim() || isLoading}
-                          className="h-12 w-12 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50"
-                        >
-                          <Send className="w-5 h-5 text-white" />
-                        </Button>
-                      </div>
-                    </div>
+                  </div>
+                </div>
+              
+              {/* Fixed Chat Input at Bottom */}
+              <div className="p-6 bg-white/95 backdrop-blur-sm border-t border-gray-200/50">
+                <div className="max-w-4xl mx-auto">
+                  <div className="flex items-center gap-4">
+                    <Input
+                      ref={inputRef}
+                      type="text"
+                      placeholder="Type your message..."
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                      disabled={isLoading}
+                      className="flex-1 h-14 px-6 bg-white border border-gray-200 rounded-xl focus:border-gray-300 focus:ring-0 transition-all duration-200 text-[15px] font-normal text-gray-700 placeholder:text-gray-400 shadow-sm hover:shadow-md"
+                    />
+                    <Button
+                      onClick={handleSendMessage}
+                      disabled={!inputValue.trim() || isLoading}
+                      className="h-14 w-14 rounded-xl bg-white border border-gray-200 hover:bg-gray-50 shadow-sm hover:shadow-md transition-all duration-200 disabled:opacity-50 text-gray-600 hover:text-gray-700"
+                    >
+                      <Send className="w-5 h-5" />
+                    </Button>
                   </div>
                 </div>
               </div>
-            </>
+            </div>
           ) : (
-            /* Other Tab Content */
+            /* Other Tab Content - Original Design with Background */
             <div className="p-6">
-              <TabContent activeTab={activeTab} profile={profile} />
+              <div className="max-w-4xl mx-auto">
+                <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 p-8">
+                  <TabContent activeTab={activeTab} profile={profile} />
+                </div>
+              </div>
             </div>
           )}
         </main>
       </div>
 
-      {/* Modern Footer - Kept from previous design */}
-      <footer className="border-t border-white/30 bg-white/50 backdrop-blur-xl mt-16">
+      {/* Enhanced Footer with Quality Watermark */}
+      <footer className="border-t border-gray-200/50 bg-gradient-to-r from-gray-50/80 to-white/80 backdrop-blur-xl mt-16">
         <div className="max-w-6xl mx-auto px-6 py-8 text-center">
-          <p className="text-gray-600 font-medium">
-            Developed by {profile.name} Combining Modern Web Technologies and AI
+          <p className="text-gray-700 font-semibold text-lg mb-2">
+            Developed by {profile.name}
           </p>
-          <p className="text-sm text-gray-500 mt-2">
-            Powered by LancyyAI • React • TypeScript • Tailwind CSS
+          <p className="text-gray-600 font-medium mb-3">
+            Combining Modern Web Technologies and AI
           </p>
+          <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-bold">
+              Powered by LancyyAI
+            </span>
+            <span>•</span>
+            <span>React</span>
+            <span>•</span>
+            <span>TypeScript</span>
+            <span>•</span>
+            <span>Tailwind CSS</span>
+          </div>
         </div>
       </footer>
     </div>

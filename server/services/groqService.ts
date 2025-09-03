@@ -33,11 +33,11 @@ type ChatMessage = SystemMessage | UserMessage | AssistantMessage;
 const LANCE_PROFILE = {
   name: "Lance Cabanit",
   imageUrl: "imported", // Flag to use imported image
-  bio: `My name is Lance Cabanit, a full-stack developer with over three years of experience in creating innovative and impactful digital solutions.
+  bio: `Full-stack developer with a passion for creating clean, user-friendly web experiences. Currently diving deep into the world of AI and fascinated by its endless possibilities. I love exploring how artificial intelligence can transform the way we build and interact with digital platforms.
 
-I specialize in building modern web applications and thrive on leveraging cutting-edge technologies to solve real-world problems. Beyond development, I'm an AI enthusiast with a strong interest in integrating artificial intelligence and machine learning into my projects, continuously sharpening my skills as I work toward becoming an AI engineer. 
+When I'm not coding, you'll find me experimenting with AI tools, reading about machine learning breakthroughs, or brainstorming ways to integrate intelligent features into everyday applications. There's something magical about teaching machines to think and create alongside us.
 
-What drives me is not just writing code, but crafting intelligent, future-ready applications that push the boundaries of what's possible.`
+Working towards becoming an AI engineer soon, excited to be part of the future where technology meets creativity and AI enhances human potential.`
 };
 
 // Check if query is about Lance personally

@@ -25,6 +25,8 @@ interface ProfileData {
       email: string;
       linkedin: string;
       github: string;
+      facebook: string;
+      instagram: string;
       location: string;
     };
   };
@@ -71,10 +73,7 @@ export function ChatMessage({ content, role, profile }: ChatMessageProps) {
           <p className="text-gray-600 leading-relaxed">{profile.sections.me.bio}</p>
         </div>
 
-        <div className="mb-4">
-          <h4 className="font-semibold text-gray-700 mb-2">Experience</h4>
-          <p className="text-gray-600">{profile.sections.me.experience}</p>
-        </div>
+
 
         <div className="flex flex-wrap gap-2">
           <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-sm">
