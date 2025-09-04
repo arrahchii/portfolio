@@ -11,9 +11,11 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, User, Bot } from "lucide-react";
+
 import { QuickQuestions, type TabType } from "@/components/QuickQuestions";
 import TabContent from "@/components/TabContent";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { TypewriterText } from "@/components/TypewriterText";
 import lanceProfileImage from "@/assets/ICONN.jpg";
 
 interface Message {
@@ -189,7 +191,10 @@ function AestheticChatMessage({
         {role === "user" ? (
           <User className="w-5 h-5" />
         ) : (
-          <Bot className="w-5 h-5" />
+          <Avatar className="w-5 h-5">
+            <AvatarImage src={lanceProfileImage} alt="Lance" className="object-cover" />
+            <AvatarFallback>LC</AvatarFallback>
+          </Avatar>
         )}
       </div>
 
@@ -224,6 +229,7 @@ function Portfolio() {
   const [error, setError] = useState<string | null>(null);
   // Chat state
   const [inputValue, setInputValue] = useState("");
+
   const [activeTab, setActiveTab] = useState<TabType>("me");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -333,6 +339,7 @@ function Portfolio() {
   const handleQuickQuestion = async (question: string) => {
     await sendMessage(question, true);
   };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -410,20 +417,64 @@ function Portfolio() {
         {/* Header Section - Only show avatar and greeting for initial state */}
         {activeTab === "me" && messages.length === 0 && (
           <header
-            className="flex-shrink-0 p-6 text-center"
+            className="flex-shrink-0 p-4 md:p-6 text-center"
             data-testid="header-profile"
           >
-            <div className="mb-6">
-              <Avatar className="w-52 h-52 mx-auto border-2 border-border">
-                <AvatarImage
-                  src={lanceProfileImage}
-                  alt={`${profile.name} Professional Avatar`}
-                  className="object-cover"
+            {/* Mobile-First Professional Layout */}
+            <div className="mb-4 md:mb-6 relative">
+              {/* Enhanced Mobile Background Effects */}
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 blur-3xl"></div>
+              <div className="md:hidden absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-full blur-2xl"></div>
+              
+              {/* Professional Avatar with Mobile Enhancements */}
+              <div className="relative inline-block">
+                <Avatar className="w-28 h-28 sm:w-40 sm:h-40 md:w-52 md:h-52 mx-auto relative ring-3 sm:ring-8 ring-white/60 shadow-2xl">
+                  <AvatarImage
+                    src={lanceProfileImage}
+                    alt={`${profile.name} Professional Avatar`}
+                    className="object-cover"
+                  />
+                  <AvatarFallback className="text-xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+                    LC
+                  </AvatarFallback>
+                </Avatar>
+                {/* Mobile-Optimized Status Ring */}
+                <div className="absolute -bottom-1 -right-1 w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-emerald-400 to-green-500 rounded-full border-3 border-white shadow-xl animate-pulse md:hidden"></div>
+                {/* Desktop Status Ring */}
+                <div className="hidden md:block absolute -bottom-2 -right-2 w-10 h-10 bg-gradient-to-r from-emerald-400 to-green-500 rounded-full border-4 border-white shadow-xl animate-pulse"></div>
+              </div>
+            </div>
+            
+            {/* Mobile-Enhanced Typography */}
+            <div className="space-y-3 sm:space-y-4">
+              <h1 className="text-2xl leading-tight sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
+                <span className="block md:inline">I'm {profile.name.split(' ')[0]}'s</span>
+                <span className="block md:inline text-3xl sm:text-4xl md:text-5xl lg:text-6xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-extrabold"> AI</span>
+              </h1>
+              
+              <p className="text-sm leading-relaxed sm:text-lg md:text-xl text-gray-600 font-medium max-w-2xl mx-auto px-2">
+                <TypewriterText 
+                  text="Intelligent conversations with Lance's digital twin"
+                  speed={80}
+                  delay={500}
+                  className="md:hidden"
                 />
-                <AvatarFallback className="text-3xl font-semibold">
-                  LC
-                </AvatarFallback>
-              </Avatar>
+                <TypewriterText 
+                  text="Experience intelligent conversations with Lance's digital twin"
+                  speed={80}
+                  delay={500}
+                  className="hidden md:inline"
+                />
+              </p>
+            </div>
+            
+            {/* Enhanced Mobile Status Badge */}
+            <div className="mt-6 sm:mt-8">
+              <div className="inline-flex items-center gap-2 sm:gap-3 px-5 py-3 sm:px-6 sm:py-3 bg-gradient-to-r from-white/90 to-white/80 backdrop-blur-lg text-green-700 rounded-2xl border border-green-200/60 shadow-xl">
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-gradient-to-r from-emerald-400 to-green-500 rounded-full animate-pulse shadow-sm"></div>
+                <span className="font-semibold text-sm sm:text-base tracking-wide">{profile.availability}</span>
+                <div className="md:hidden w-1 h-1 bg-green-400 rounded-full opacity-60"></div>
+              </div>
             </div>
           </header>
         )}
@@ -433,19 +484,15 @@ function Portfolio() {
           {activeTab === "me" && messages.length === 0 ? (
             /* Initial Clean Interface matching reference */
             <>
-              <div className="flex-1 flex flex-col items-center justify-center p-8 max-w-4xl mx-auto">
+              <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-8 max-w-4xl mx-auto">
 
-                <h1 className="text-2xl font-medium text-gray-700 mb-12 text-center">Hey there! How are you doing today?</h1>
-                
-                <div className="w-full max-w-2xl">
-                  <QuickQuestions
-                    activeTab={activeTab}
-                    onTabChange={setActiveTab}
-                    onQuestionClick={handleQuickQuestion}
-                    disabled={isLoading}
-                    showTabs={false}
+                <h1 className="text-xl md:text-2xl font-medium text-gray-700 mb-8 md:mb-12 text-center px-4">
+                  <TypewriterText 
+                    text="Hey there! How are you doing today?"
+                    speed={100}
+                    delay={1000}
                   />
-                </div>
+                </h1>
 
                 {/* Chat Error */}
                 {chatError && (
@@ -457,26 +504,48 @@ function Portfolio() {
                 )}
               </div>
 
-              {/* Chat Input at Bottom */}
-              <div className="p-4 relative z-20">
-                <div className="flex gap-3">
-                  <Input
-                    ref={inputRef}
-                    type="text"
-                    placeholder="Ask me anything"
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    disabled={isLoading}
-                    className="flex-1 bg-gray-100 border-gray-200 rounded-full px-4 py-3 text-base text-gray-700 placeholder-gray-500 focus:bg-white focus:border-blue-500 h-12"
-                  />
-                  <Button
-                    onClick={handleSendMessage}
-                    disabled={!inputValue.trim() || isLoading}
-                    className="rounded-full bg-blue-500 hover:bg-blue-600 text-white w-12 h-12"
-                  >
-                    <Send className="w-5 h-5" />
-                  </Button>
+              {/* Enhanced Mobile Chat Input */}
+              <div className="p-3 sm:p-6 border-t bg-gradient-to-r from-white/60 via-white/70 to-white/60 backdrop-blur-xl relative z-20">
+                {/* Mobile-First Input Container */}
+                <div className="max-w-2xl mx-auto">
+                  {/* Mobile Input Wrapper with Professional Styling */}
+                  <div className="relative flex gap-2 sm:gap-3 p-2 sm:p-0 bg-white/80 sm:bg-transparent rounded-2xl sm:rounded-none shadow-lg sm:shadow-none border sm:border-0 border-gray-200/50">
+                    {/* Enhanced Input Field */}
+                    <div className="flex-1 relative">
+                      <Input
+                        ref={inputRef}
+                        type="text"
+                        placeholder="Ask me anything about Lance..."
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        disabled={isLoading}
+                        className="w-full text-sm sm:text-base py-3 sm:py-3 px-4 sm:px-4 rounded-xl sm:rounded-full border-2 border-gray-200/60 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300 bg-white/90 placeholder:text-gray-500 shadow-sm sm:shadow-lg h-12 md:h-14 !font-bold text-gray-900"
+                      />
+                      {/* Mobile Input Enhancement Indicator */}
+                      <div className="md:hidden absolute right-3 top-1/2 transform -translate-y-1/2 w-1 h-6 bg-gradient-to-b from-blue-400 to-purple-400 rounded-full opacity-30"></div>
+                    </div>
+                    
+                    {/* Professional Send Button */}
+                    <Button
+                      onClick={handleSendMessage}
+                      disabled={!inputValue.trim() || isLoading}
+                      className="px-4 sm:px-6 py-3 sm:py-3 bg-gradient-to-r from-blue-600 via-blue-700 to-purple-600 hover:from-blue-700 hover:via-blue-800 hover:to-purple-700 text-white rounded-xl sm:rounded-full transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 w-12 h-12 flex-shrink-0"
+                    >
+                      {isLoading ? (
+                        <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      ) : (
+                        <Send className="w-4 h-4 sm:w-5 sm:h-5" />
+                      )}
+                    </Button>
+                  </div>
+                  
+                  {/* Mobile-Only Professional Footer */}
+                  <div className="md:hidden mt-3 text-center">
+                    <p className="text-xs text-gray-500 font-medium tracking-wide">
+                      Powered by AI • Secure & Private
+                    </p>
+                  </div>
                 </div>
               </div>
             </>
@@ -502,7 +571,10 @@ function Portfolio() {
                         {isLoading && (
                           <div className="flex items-start gap-4 mb-8">
                             <div className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm border-2 bg-white border-gray-200 text-gray-600">
-                              <Bot className="w-5 h-5" />
+                              <Avatar className="w-5 h-5">
+                                <AvatarImage src={lanceProfileImage} alt="Lance" className="object-cover" />
+                                <AvatarFallback>LC</AvatarFallback>
+                              </Avatar>
                             </div>
                             <div className="max-w-[70%]">
                               <div className="px-6 py-4 shadow-sm border bg-white border-gray-200 text-gray-800 rounded-2xl rounded-tl-md">
@@ -550,7 +622,7 @@ function Portfolio() {
                       onChange={(e) => setInputValue(e.target.value)}
                       onKeyDown={handleKeyDown}
                       disabled={isLoading}
-                      className="flex-1 h-14 px-6 bg-white border border-gray-200 rounded-xl focus:border-gray-300 focus:ring-0 transition-all duration-200 text-[15px] font-normal text-gray-700 placeholder:text-gray-400 shadow-sm hover:shadow-md"
+                      className="flex-1 h-14 px-6 bg-white border border-gray-200 rounded-xl focus:border-gray-300 focus:ring-0 transition-all duration-200 text-[15px] !font-bold text-gray-900 placeholder:text-gray-400 shadow-sm hover:shadow-md"
                     />
                     <Button
                       onClick={handleSendMessage}

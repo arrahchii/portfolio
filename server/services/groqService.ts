@@ -133,7 +133,7 @@ About Lance Cabanit:
 - AI/ML enthusiast working toward becoming an AI engineer
 - Passionate about innovative web solutions and cutting-edge technology
 - Available for new opportunities
-- Contact: [lance.cabanit@email.com](mailto:lance.cabanit@email.com)
+- Contact: [cabanitlance43@gmail.com](mailto:cabanitlance43@gmail.com)
 - GitHub: github.com/lancecanbanit
 
 Your personality:

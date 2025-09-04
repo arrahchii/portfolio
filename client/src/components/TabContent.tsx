@@ -194,7 +194,11 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
           <CardContent className="space-y-4">
             <div>
               <h3 className="text-lg font-semibold mb-2">About Me</h3>
-              <p className="text-muted-foreground">{profile.sections.me.bio}</p>
+              <div className="text-muted-foreground space-y-4">
+                {profile.sections.me.bio.split('\n\n').map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
+              </div>
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-2">Experience</h3>
@@ -213,64 +217,86 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
   if (activeTab === 'projects') {
     return (
       <div className="space-y-8" data-testid="content-projects">
-        {/* Enhanced Header Section */}
-        <div className="text-center space-y-4">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl shadow-lg mb-4">
-            <Code className="w-8 h-8 text-white" />
+        {/* Mobile-Enhanced Header Section */}
+        <div className="text-center space-y-4 px-4">
+          {/* Professional Mobile Icon Container */}
+          <div className="relative inline-flex items-center justify-center">
+            <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 rounded-3xl shadow-xl mb-4 relative">
+              <Code className="w-7 h-7 md:w-8 md:h-8 text-white" />
+              {/* Mobile-Specific Accent Ring */}
+              <div className="md:hidden absolute -inset-1 bg-gradient-to-r from-blue-400 to-purple-400 rounded-3xl opacity-30 animate-pulse"></div>
+            </div>
           </div>
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
-            Featured Projects
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            A showcase of innovative solutions and technical excellence, demonstrating expertise across full-stack development and modern technologies.
-          </p>
+          
+          {/* Mobile-Optimized Typography */}
+          <div className="space-y-3">
+            <h2 className="text-2xl leading-tight md:text-4xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
+              <span className="block sm:inline">Featured</span>
+              <span className="block sm:inline"> Projects</span>
+            </h2>
+            <p className="text-sm leading-relaxed md:text-lg text-muted-foreground max-w-2xl mx-auto px-2">
+              <span className="md:hidden">Innovative solutions showcasing technical excellence</span>
+              <span className="hidden md:inline">A showcase of innovative solutions and technical excellence, demonstrating expertise across full-stack development and modern technologies.</span>
+            </p>
+          </div>
+          
+          {/* Mobile-Only Professional Divider */}
+          <div className="md:hidden flex items-center justify-center pt-2">
+            <div className="w-16 h-1 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"></div>
+          </div>
         </div>
 
-        {/* Advanced Project Grid */}
-        <div className="grid gap-8 lg:grid-cols-2">
+        {/* Mobile-Enhanced Project Grid */}
+        <div className="grid gap-5 md:gap-8 lg:grid-cols-2 px-3 md:px-4">
           {profile.sections.projects.map((project, index) => (
             <div key={index} className="group relative">
-              {/* Project Card with Advanced Styling */}
-              <div className="relative bg-gradient-to-br from-white to-gray-50/50 backdrop-blur-sm border border-gray-200/60 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden">
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              {/* Professional Mobile-First Project Card */}
+              <div className="relative bg-gradient-to-br from-white via-white to-gray-50/30 backdrop-blur-sm border border-gray-200/60 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 md:hover:-translate-y-2 overflow-hidden">
+                {/* Enhanced Mobile Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/3 via-purple-500/3 to-pink-500/3 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 
-                {/* Status Badge */}
-                <div className="absolute top-6 right-6 z-10">
-                  <div className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg ${
+                {/* Mobile-Optimized Status Badge */}
+                <div className="absolute top-4 right-4 md:top-6 md:right-6 z-10">
+                  <div className={`inline-flex items-center px-2 py-1 md:px-2 md:py-1 rounded-xl md:rounded-full text-xs font-medium shadow-lg backdrop-blur-sm ${
                     project.status === 'Live' 
-                      ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white' 
-                      : 'bg-gradient-to-r from-amber-500 to-orange-500 text-white'
+                      ? 'bg-gradient-to-r from-emerald-500 via-green-500 to-emerald-600 text-white border border-green-300/30' 
+                      : 'bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white border border-orange-300/30'
                   }`}>
-                    <div className={`w-2 h-2 rounded-full mr-2 ${
+                    <div className={`w-1.5 h-1.5 rounded-full mr-1.5 ${
                       project.status === 'Live' ? 'bg-green-200 animate-pulse' : 'bg-amber-200 animate-pulse'
                     }`}></div>
                     {project.status}
                   </div>
                 </div>
+                
+                {/* Mobile-Specific Corner Accent */}
+                <div className="md:hidden absolute top-0 left-0 w-16 h-16 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-br-3xl"></div>
 
-                {/* Card Content */}
-                <div className="relative p-8">
-                  {/* Project Header */}
-                  <div className="mb-6">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">
+                {/* Enhanced Mobile Card Content */}
+                <div className="relative p-5 md:p-8">
+                  {/* Mobile-Optimized Project Header */}
+                  <div className="mb-5 md:mb-6">
+                    <h3 className="text-xl leading-tight md:text-2xl font-bold text-gray-900 mb-3 md:mb-3 group-hover:text-blue-600 transition-colors duration-300">
                       {project.name}
                     </h3>
-                    <p className="text-gray-600 leading-relaxed text-base">
+                    <p className="text-gray-600 leading-relaxed text-sm md:text-base">
                       {project.description}
                     </p>
                   </div>
 
-                  {/* Technology Stack */}
-                  <div className="mb-8">
-                    <h4 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
-                      Technology Stack
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
+                  {/* Enhanced Mobile Technology Stack */}
+                  <div className="mb-6 md:mb-8">
+                    <div className="flex items-center gap-2 mb-3 md:mb-3">
+                      <div className="w-1 h-4 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full md:hidden"></div>
+                      <h4 className="text-sm md:text-sm font-bold text-gray-700 uppercase tracking-wider">
+                        Tech Stack
+                      </h4>
+                    </div>
+                    <div className="flex flex-wrap gap-2 md:gap-2">
                       {project.tech.map((tech, techIndex) => (
                         <span
                           key={techIndex}
-                          className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 text-sm font-medium rounded-lg border border-blue-200/50 hover:from-blue-100 hover:to-indigo-100 hover:border-blue-300/50 transition-all duration-300 cursor-default"
+                          className="inline-flex items-center px-3 md:px-3 py-2 md:py-1.5 bg-gradient-to-r from-blue-50/80 via-white to-indigo-50/80 text-blue-700 text-xs md:text-sm font-semibold rounded-xl md:rounded-lg border border-blue-200/60 hover:from-blue-100/80 hover:to-indigo-100/80 hover:border-blue-300/60 transition-all duration-300 cursor-default shadow-sm backdrop-blur-sm"
                         >
                           {tech}
                         </span>
@@ -278,15 +304,19 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
                     </div>
                   </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex gap-3">
-                    <button className="flex-1 inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl group/btn">
-                      <ExternalLink className="w-4 h-4 mr-2 group-hover/btn:rotate-12 transition-transform duration-300" />
-                      Live Demo
+                  {/* Enhanced Mobile Action Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-3 md:gap-3">
+                    <button className="flex-1 inline-flex items-center justify-center px-5 md:px-6 py-3.5 md:py-3 bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 text-white font-bold rounded-2xl md:rounded-xl hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 transform hover:scale-105 active:scale-95 transition-all duration-300 shadow-xl hover:shadow-2xl group/btn border border-blue-500/20">
+                      <ExternalLink className="w-4 h-4 md:w-4 md:h-4 mr-2 md:mr-2 group-hover/btn:rotate-12 transition-transform duration-300" />
+                      <span className="text-sm md:text-base tracking-wide">Live Demo</span>
+                      {/* Mobile-Specific Button Accent */}
+                      <div className="md:hidden absolute top-1 right-1 w-2 h-2 bg-gradient-to-r from-cyan-400 to-blue-300 rounded-full opacity-60"></div>
                     </button>
-                    <button className="flex-1 inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white font-semibold rounded-xl hover:from-gray-900 hover:to-black transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl group/btn">
-                      <Github className="w-4 h-4 mr-2 group-hover/btn:rotate-12 transition-transform duration-300" />
-                      Source Code
+                    <button className="flex-1 inline-flex items-center justify-center px-5 md:px-6 py-3.5 md:py-3 bg-gradient-to-r from-gray-800 via-gray-900 to-black text-white font-bold rounded-2xl md:rounded-xl hover:from-gray-900 hover:via-black hover:to-gray-900 transform hover:scale-105 active:scale-95 transition-all duration-300 shadow-xl hover:shadow-2xl group/btn border border-gray-700/30">
+                      <Github className="w-4 h-4 md:w-4 md:h-4 mr-2 md:mr-2 group-hover/btn:rotate-12 transition-transform duration-300" />
+                      <span className="text-sm md:text-base tracking-wide">Source Code</span>
+                      {/* Mobile-Specific Button Accent */}
+                      <div className="md:hidden absolute top-1 right-1 w-2 h-2 bg-gradient-to-r from-gray-400 to-gray-300 rounded-full opacity-60"></div>
                     </button>
                   </div>
                 </div>
@@ -401,53 +431,53 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
     return (
       <div className="space-y-8" data-testid="content-skills">
         {/* Enhanced Header Section */}
-        <div className="text-center space-y-4">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-blue-600 rounded-2xl shadow-lg mb-4">
-            <Brain className="w-8 h-8 text-white" />
+        <div className="text-center space-y-4 px-4">
+          <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-green-500 to-blue-600 rounded-2xl shadow-lg mb-4">
+            <Brain className="w-6 h-6 md:w-8 md:h-8 text-white" />
           </div>
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-green-800 to-blue-800 bg-clip-text text-transparent">
+          <h2 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 via-green-800 to-blue-800 bg-clip-text text-transparent">
             Skills & Expertise
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             A comprehensive overview of technical proficiencies, accumulated through years of hands-on experience and continuous learning in cutting-edge technologies.
           </p>
         </div>
 
         {/* Skills Grid */}
-        <div className="grid gap-8">
+        <div className="grid gap-6 md:gap-8 px-4">
           {enhancedSkills.map((skillGroup, index) => (
             <div key={index} className="group">
               {/* Category Header */}
-              <div className="flex items-center mb-6">
-                <div className={`inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r ${skillGroup.color} rounded-xl shadow-lg mr-4 text-white`}>
+              <div className="flex items-center mb-4 md:mb-6">
+                <div className={`inline-flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r ${skillGroup.color} rounded-xl shadow-lg mr-3 md:mr-4 text-white`}>
                   {skillGroup.icon}
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900">{skillGroup.category}</h3>
-                  <div className={`w-16 h-1 bg-gradient-to-r ${skillGroup.color} rounded-full mt-1`}></div>
+                  <h3 className="text-lg md:text-2xl font-bold text-gray-900">{skillGroup.category}</h3>
+                  <div className={`w-12 md:w-16 h-1 bg-gradient-to-r ${skillGroup.color} rounded-full mt-1`}></div>
                 </div>
               </div>
 
               {/* Skills Grid */}
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-3 md:gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {skillGroup.skills.map((skill, skillIndex) => (
                   <div key={skillIndex} className="group/skill relative">
                     {/* Skill Card */}
-                    <div className="relative bg-white border border-gray-200/60 rounded-2xl p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+                    <div className="relative bg-white border border-gray-200/60 rounded-2xl p-4 md:p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
                       {/* Background Gradient */}
                       <div className={`absolute inset-0 bg-gradient-to-br ${skillGroup.color} opacity-0 group-hover/skill:opacity-5 transition-opacity duration-300`}></div>
                       
                       {/* Skill Header */}
-                      <div className="relative z-10 mb-4">
+                      <div className="relative z-10 mb-3 md:mb-4">
                         <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-semibold text-gray-900 text-lg">{skill.name}</h4>
-                          <span className="text-sm font-medium text-gray-500">{skill.years}</span>
+                          <h4 className="font-semibold text-gray-900 text-sm md:text-lg leading-tight">{skill.name}</h4>
+                          <span className="text-xs md:text-sm font-medium text-gray-500 ml-2 flex-shrink-0">{skill.years}</span>
                         </div>
                         
                         {/* Proficiency Level */}
-                        <div className="flex items-center justify-between mb-3">
-                          <span className="text-sm text-gray-600">Proficiency</span>
-                          <span className="text-sm font-bold text-gray-900">{skill.level}%</span>
+                        <div className="flex items-center justify-between mb-2 md:mb-3">
+                          <span className="text-xs md:text-sm text-gray-600">Proficiency</span>
+                          <span className="text-xs md:text-sm font-bold text-gray-900">{skill.level}%</span>
                         </div>
                         
                         {/* Progress Bar */}
@@ -957,21 +987,21 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
     return (
       <div className="space-y-8" data-testid="content-contact">
         {/* Enhanced Header Section */}
-        <div className="text-center space-y-4">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl shadow-lg mb-4">
-            <Mail className="w-8 h-8 text-white" />
+        <div className="text-center space-y-4 px-4">
+          <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl shadow-lg mb-4">
+            <Mail className="w-6 h-6 md:w-8 md:h-8 text-white" />
           </div>
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-purple-800 to-pink-800 bg-clip-text text-transparent">
+          <h2 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 via-purple-800 to-pink-800 bg-clip-text text-transparent">
             Let's Connect
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Ready to bring your ideas to life? I'm always excited to discuss new projects, 
             innovative solutions, and potential collaborations. Let's start a conversation!
           </p>
         </div>
 
         {/* Contact Methods Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12 px-4">
           {contactMethods.map((method, index) => (
             <a
               key={index}
@@ -980,22 +1010,22 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
               rel={method.href.startsWith('http') ? 'noopener noreferrer' : undefined}
               className="group block"
             >
-              <div className="relative bg-white border border-gray-200/60 rounded-2xl p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 overflow-hidden">
+              <div className="relative bg-white border border-gray-200/60 rounded-2xl p-4 md:p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 overflow-hidden">
                 {/* Background Gradient */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${method.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
                 
                 {/* Icon */}
-                <div className={`inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r ${method.color} rounded-xl shadow-lg mb-4 text-white group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`inline-flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r ${method.color} rounded-xl shadow-lg mb-3 md:mb-4 text-white group-hover:scale-110 transition-transform duration-300`}>
                   {method.icon}
                 </div>
                 
                 {/* Content */}
                 <div className="relative z-10">
-                  <h3 className="font-bold text-gray-900 text-lg mb-2 group-hover:text-purple-600 transition-colors">
+                  <h3 className="font-bold text-gray-900 text-base md:text-lg mb-1 md:mb-2 group-hover:text-purple-600 transition-colors">
                     {method.label}
                   </h3>
-                  <p className="text-gray-600 text-sm mb-3">{method.description}</p>
-                  <p className="text-gray-800 font-medium text-sm truncate">{method.value}</p>
+                  <p className="text-gray-600 text-xs md:text-sm mb-2 md:mb-3">{method.description}</p>
+                  <p className="text-gray-800 font-medium text-xs md:text-sm truncate">{method.value}</p>
                 </div>
                 
                 {/* Decorative Corner */}

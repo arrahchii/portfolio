@@ -318,7 +318,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             },
           ],
           contact: {
-            email: "cabanitlance43@email.com",
+            email: "cabanitlance43@gmail.com",
             linkedin: "linkedin.com/in/lance-cabanit",
             github: "github.com/lancecanbanit",
             location: "General Santos City, Philippines",

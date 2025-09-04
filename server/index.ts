@@ -120,7 +120,7 @@ const portfolioProfile = {
       }
     ],
     contact: {
-      email: "lance.cabanit@gmail.com",
+      email: "cabanitlance43@gmail.com",
       linkedin: "https://linkedin.com/in/lance-cabanit",
       github: "https://github.com/lance-cabanit",
       facebook: "https://www.facebook.com/lancyy",

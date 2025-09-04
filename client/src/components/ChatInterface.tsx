@@ -71,97 +71,97 @@ function ModernChatMessage({ content, role, profile }: { content: string; role: 
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 rounded-3xl opacity-50 group-hover:opacity-70 transition-opacity duration-500"></div>
             
             {/* Profile Header */}
-            <div className="relative flex items-center gap-6 mb-8">
+            <div className="relative flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
               <div className="relative">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 p-1 shadow-xl">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 p-1 shadow-xl">
                   <Avatar className="w-full h-full ring-4 ring-white/50 shadow-lg">
                     <AvatarImage 
                       src={lanceProfileImage} 
                       alt={`${profile.name} Profile`}
                       className="object-cover"
                     />
-                    <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xl font-bold">
+                    <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-600 text-white text-lg sm:text-xl font-bold">
                       {profile.name.split(' ').map(n => n[0]).join('')}
                     </AvatarFallback>
                   </Avatar>
                 </div>
                 {/* Status Indicator */}
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-4 border-white shadow-lg animate-pulse"></div>
+                <div className="absolute -bottom-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-green-500 rounded-full border-4 border-white shadow-lg animate-pulse"></div>
               </div>
               
-              <div className="flex-1">
-                <h3 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent mb-2">
+              <div className="flex-1 text-center sm:text-left">
+                <h3 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent mb-2">
                   {profile.name}
                 </h3>
-                <p className="text-lg font-semibold text-blue-600 mb-3">{profile.title}</p>
-                <span className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-full text-sm font-medium shadow-lg">
-                  <Sparkles className="w-4 h-4 mr-2" />
+                <p className="text-base sm:text-lg font-semibold text-blue-600 mb-3">{profile.title}</p>
+                <span className="inline-flex items-center px-3 py-2 sm:px-4 sm:py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-full text-xs sm:text-sm font-medium shadow-lg">
+                  <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                   {profile.availability}
                 </span>
               </div>
             </div>
 
             {/* Content Grid */}
-            <div className="relative grid md:grid-cols-2 gap-6">
+            <div className="relative grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               {/* About Section */}
-              <div className="space-y-4">
-                <h4 className="text-lg font-bold text-gray-800 flex items-center">
-                  <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full mr-3"></div>
+              <div className="space-y-3 sm:space-y-4">
+                <h4 className="text-base sm:text-lg font-bold text-gray-800 flex items-center">
+                  <div className="w-2 h-6 sm:h-8 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full mr-2 sm:mr-3"></div>
                   About Lance
                 </h4>
-                <p className="text-gray-600 leading-relaxed text-base">{profile.sections.me.bio}</p>
+                <p className="text-gray-600 leading-relaxed text-sm sm:text-base">{profile.sections.me.bio}</p>
               </div>
 
 
             </div>
 
             {/* Skills Preview */}
-            <div className="relative mt-8">
-              <h4 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                <div className="w-2 h-8 bg-gradient-to-b from-pink-500 to-red-500 rounded-full mr-3"></div>
+            <div className="relative mt-6 sm:mt-8">
+              <h4 className="text-base sm:text-lg font-bold text-gray-800 mb-3 sm:mb-4 flex items-center">
+                <div className="w-2 h-6 sm:h-8 bg-gradient-to-b from-pink-500 to-red-500 rounded-full mr-2 sm:mr-3"></div>
                 Key Skills
               </h4>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2 sm:gap-3">
                 {profile.sections.skills.slice(0, 2).map((skillGroup, index) => 
                   skillGroup.items.slice(0, 4).map((skill, skillIndex) => (
                     <span key={`${index}-${skillIndex}`} 
-                          className="px-4 py-2 bg-gradient-to-r from-blue-500/10 to-purple-500/10 text-blue-700 rounded-full text-sm font-medium border border-blue-200/50 backdrop-blur-sm hover:from-blue-500/20 hover:to-purple-500/20 transition-all duration-300">
+                          className="px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-blue-500/10 to-purple-500/10 text-blue-700 rounded-full text-xs sm:text-sm font-medium border border-blue-200/50 backdrop-blur-sm hover:from-blue-500/20 hover:to-purple-500/20 transition-all duration-300">
                       {skill}
                     </span>
                   ))
                 )}
-                <span className="px-4 py-2 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-600 rounded-full text-sm font-medium">
+                <span className="px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-600 rounded-full text-xs sm:text-sm font-medium">
                   +{profile.sections.skills.reduce((total, group) => total + group.items.length, 0) - 8} more
                 </span>
               </div>
             </div>
 
             {/* Contact Section */}
-            <div className="relative mt-8 pt-6 border-t border-gray-200/50">
-              <h4 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                <div className="w-2 h-8 bg-gradient-to-b from-green-500 to-blue-500 rounded-full mr-3"></div>
+            <div className="relative mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200/50">
+              <h4 className="text-base sm:text-lg font-bold text-gray-800 mb-3 sm:mb-4 flex items-center">
+                <div className="w-2 h-6 sm:h-8 bg-gradient-to-b from-green-500 to-blue-500 rounded-full mr-2 sm:mr-3"></div>
                 Get In Touch
               </h4>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-2 sm:gap-4">
                 <a href={`mailto:${profile.sections.contact.email}`} 
-                   className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium">
-                  <span className="mr-2">📧</span> Email
+                   className="inline-flex items-center px-3 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium text-xs sm:text-sm">
+                  <span className="mr-1 sm:mr-2">📧</span> Email
                 </a>
                 <a href={profile.sections.contact.linkedin} target="_blank" rel="noopener noreferrer"
-                   className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl hover:from-purple-700 hover:to-purple-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium">
-                  <span className="mr-2">💼</span> LinkedIn
+                   className="inline-flex items-center px-3 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl hover:from-purple-700 hover:to-purple-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium text-xs sm:text-sm">
+                  <span className="mr-1 sm:mr-2">💼</span> LinkedIn
                 </a>
                 <a href={profile.sections.contact.github} target="_blank" rel="noopener noreferrer"
-                   className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-xl hover:from-gray-800 hover:to-gray-900 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium">
-                  <span className="mr-2">🐙</span> GitHub
+                   className="inline-flex items-center px-3 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-xl hover:from-gray-800 hover:to-gray-900 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium text-xs sm:text-sm">
+                  <span className="mr-1 sm:mr-2">🐙</span> GitHub
                 </a>
                 <a href={profile.sections.contact.facebook} target="_blank" rel="noopener noreferrer"
-                   className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-xl hover:from-blue-700 hover:to-blue-900 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium">
-                  <span className="mr-2">📘</span> Facebook
+                   className="inline-flex items-center px-3 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-xl hover:from-blue-700 hover:to-blue-900 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium text-xs sm:text-sm">
+                  <span className="mr-1 sm:mr-2">📘</span> Facebook
                 </a>
                 <a href={profile.sections.contact.instagram} target="_blank" rel="noopener noreferrer"
-                   className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl hover:from-pink-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium">
-                  <span className="mr-2">📷</span> Instagram
+                   className="inline-flex items-center px-3 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl hover:from-pink-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium text-xs sm:text-sm">
+                  <span className="mr-1 sm:mr-2">📷</span> Instagram
                 </a>
               </div>
             </div>
@@ -183,7 +183,10 @@ function ModernChatMessage({ content, role, profile }: { content: string; role: 
         {role === 'user' ? (
           <User className="w-5 h-5 text-white" />
         ) : (
-          <Bot className="w-5 h-5 text-white" />
+          <Avatar className="w-5 h-5">
+            <AvatarImage src={lanceProfileImage} alt="Lance" className="object-cover" />
+            <AvatarFallback>LC</AvatarFallback>
+          </Avatar>
         )}
       </div>
       
@@ -389,7 +392,7 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
                       onChange={(e) => setInputValue(e.target.value)}
                       onKeyDown={handleKeyDown}
                       disabled={isLoading}
-                      className="flex-1 h-14 px-6 text-base bg-white/90 border-2 border-gray-200/50 rounded-full focus:border-blue-400 focus:ring-4 focus:ring-blue-400/20 transition-all duration-300 shadow-lg"
+                      className="flex-1 h-14 px-6 text-base !font-bold bg-white/90 border-2 border-gray-200/50 rounded-full focus:border-blue-400 focus:ring-4 focus:ring-blue-400/20 transition-all duration-300 shadow-lg"
                     />
                     <Button
                       onClick={handleSendMessage}
@@ -422,7 +425,10 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
                     {isLoading && (
                       <div className="flex items-start gap-3">
                         <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center shadow-lg">
-                          <Bot className="w-5 h-5 text-white" />
+                          <Avatar className="w-5 h-5">
+                  <AvatarImage src={lanceProfileImage} alt="Lance" className="object-cover" />
+                  <AvatarFallback>LC</AvatarFallback>
+                </Avatar>
                         </div>
                         <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-4 shadow-lg border border-gray-200/50">
                           <div className="flex space-x-2">
@@ -457,7 +463,7 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
                       onChange={(e) => setInputValue(e.target.value)}
                       onKeyDown={handleKeyDown}
                       disabled={isLoading}
-                      className="flex-1 h-14 px-6 text-base bg-white/90 border-2 border-gray-200/50 rounded-full focus:border-blue-400 focus:ring-4 focus:ring-blue-400/20 transition-all duration-300 shadow-lg"
+                      className="flex-1 h-14 px-6 text-base !font-bold bg-white/90 border-2 border-gray-200/50 rounded-full focus:border-blue-400 focus:ring-4 focus:ring-blue-400/20 transition-all duration-300 shadow-lg"
                     />
                     <Button
                       onClick={handleSendMessage}
