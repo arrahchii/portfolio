@@ -16,6 +16,10 @@ import { QuickQuestions, type TabType } from "@/components/QuickQuestions";
 import TabContent from "@/components/TabContent";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { TypewriterText } from "@/components/TypewriterText";
+import Projects from "@/components/Projects";
+import Skills from "@/components/Skills";
+import Resume from "@/components/Resume";
+import Contact from "@/components/Contact";
 import lanceProfileImage from "@/assets/ICONN.jpg";
 
 interface Message {
@@ -222,7 +226,7 @@ function AestheticChatMessage({
   );
 }
 // Main Portfolio Component
-function Portfolio() {
+function Portfolio({ activeTab: initialActiveTab = "me" }: { activeTab?: TabType }) {
   const [sessionId] = useState(() => nanoid());
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -230,7 +234,12 @@ function Portfolio() {
   // Chat state
   const [inputValue, setInputValue] = useState("");
 
-  const [activeTab, setActiveTab] = useState<TabType>("me");
+  const [activeTab, setActiveTab] = useState<TabType>(initialActiveTab);
+
+  // Sync activeTab with route changes
+  useEffect(() => {
+    setActiveTab(initialActiveTab);
+  }, [initialActiveTab]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [chatError, setChatError] = useState<string | null>(null);
@@ -686,7 +695,11 @@ function NotFound() {
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Portfolio} />
+      <Route path="/" component={() => <Portfolio activeTab="me" />} />
+      <Route path="/projects" component={() => <Projects />} />
+      <Route path="/skills" component={() => <Skills />} />
+      <Route path="/resume" component={() => <Resume />} />
+      <Route path="/contact" component={() => <Contact />} />
       <Route component={NotFound} />
     </Switch>
   );

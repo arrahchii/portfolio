@@ -72,7 +72,7 @@ class EmailService {
           <p>Thank you for your message through my portfolio website. I've received your inquiry and will get back to you as soon as possible.</p>
           <p>In the meantime, feel free to check out my latest projects and connect with me on:</p>
           <ul>
-            <li><a href="https://linkedin.com/in/lance-cabanit">LinkedIn</a></li>
+            <li><a href="https://www.linkedin.com/in/lance-cabanit-61530b372/">LinkedIn</a></li>
             <li><a href="https://github.com/lance-cabanit">GitHub</a></li>
           </ul>
           <p>Best regards,<br>Lance Cabanit<br>Full-Stack Developer & AI Enthusiast</p>
@@ -302,25 +302,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
               name: "AI Portfolio Assistant",
               description: "Interactive digital twin chatbot with conversational AI",
               tech: ["React", "Groq API", "Node.js", "TypeScript"],
-              status: "Live",
+              status: "ongoing",
             },
             {
               name: "E-Commerce Platform",
               description: "Full-stack marketplace with real-time features",
               tech: ["Next.js", "PostgreSQL", "Stripe", "AWS"],
-              status: "Production",
+              status: "ongoing",
             },
             {
               name: "ML Market Predictor",
               description: "Predictive analytics for market trend analysis",
               tech: ["Python", "TensorFlow", "FastAPI"],
-              status: "Beta",
+              status: "ongoing",
             },
           ],
           contact: {
-            email: "cabanitlance43@gmail.com",
-            linkedin: "linkedin.com/in/lance-cabanit",
-            github: "github.com/lancecanbanit",
+            email: "cabanitlance43@gmail.coma",
+        linkedin: "linkedin.com/in/lance-cabanit-61530b372",
+        github: "github.com/lancyyboii",
+        facebook: "facebook.com/lancyyboii",
             location: "General Santos City, Philippines",
           },
         },

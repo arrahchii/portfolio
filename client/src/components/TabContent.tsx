@@ -32,7 +32,11 @@ import {
   Video,
   TrendingUp,
   Facebook,
-  Instagram
+  Instagram,
+  MessageSquare,
+  Users2,
+  BarChart3,
+  ShoppingCart
 } from 'lucide-react';
 import type { TabType } from './TabNavigation';
 
@@ -354,23 +358,22 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
         icon: <Code className="w-6 h-6" />,
         color: "from-blue-500 to-cyan-500",
         skills: [
-          { name: "Full-Stack Web Development", level: 70, years: "Professional" },
-          { name: "Frontend Development (React, HTML, CSS, JavaScript)", level: 90, years: "Expert" },
-          { name: "Backend Development (Node.js)", level: 80, years: "Advanced" },
-          { name: "API Integration & Development", level: 60, years: "Intermediate" },
-          { name: "Database Management", level: 50, years: "Intermediate" }
+          { name: "Full-Stack Web Development", level: 70, years: "3+ years" },
+          { name: "Frontend Development (React, HTML, CSS, JavaScript)", level: 90, years: "4+ years" },
+          { name: "Backend Development (Node.js)", level: 80, years: "3+ years" },
+          { name: "API Integration & Development", level: 60, years: "2+ years" },
+          { name: "Database Management", level: 50, years: "2+ years" }
         ]
       },
       {
-        category: "Digital Marketing & Content",
+        category: "Marketing & Content",
         icon: <TrendingUp className="w-6 h-6" />,
         color: "from-green-500 to-emerald-500",
         skills: [
-          { name: "Social Media Marketing & Management", level: 80, years: "Advanced" },
-          { name: "Content Writing & Copywriting", level: 90, years: "Expert" },
-          { name: "Search Engine Optimization (SEO)", level: 90, years: "Expert" },
-          { name: "Digital Marketing Strategy", level: 70, years: "Advanced" },
-          { name: "Email Marketing Campaigns", level: 95, years: "Expert" }
+          { name: "Social Media Marketing", level: 90, years: "5+ years" },
+          { name: "Content Writing & Copywriting", level: 90, years: "5+ years" },
+          { name: "Digital Marketing", level: 85, years: "4+ years" },
+          { name: "SEO Expert", level: 90, years: "5+ years" }
         ]
       },
       {
@@ -378,33 +381,34 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
         icon: <Users className="w-6 h-6" />,
         color: "from-purple-500 to-pink-500",
         skills: [
-          { name: "Virtual Assistant Services", level: 90, years: "Expert" },
-          { name: "Executive Assistant Support", level: 90, years: "Expert" },
-          { name: "Administrative Management", level: 80, years: "Advanced" },
-          { name: "Calendar & Task Management", level: 90, years: "Expert" }
+          { name: "Virtual Assistant Services", level: 90, years: "5+ years" },
+          { name: "Executive Assistant Support", level: 90, years: "4+ years" },
+          { name: "Administrative Management", level: 80, years: "5+ years" },
+          { name: "Calendar & Task Management", level: 90, years: "5+ years" }
         ]
       },
       {
-        category: "Technical Support & Hardware",
+        category: "Technical & Tools",
         icon: <Headphones className="w-6 h-6" />,
         color: "from-orange-500 to-red-500",
         skills: [
-          { name: "Computer Hardware Troubleshooting", level: 70, years: "Advanced" },
-          { name: "Technical Support & Help Desk", level: 70, years: "Advanced" },
-          { name: "Basic Electronics & Troubleshooting", level: 80, years: "Advanced" }
+          { name: "Computer Hardware", level: 80, years: "4+ years" },
+          { name: "Technical Support", level: 85, years: "4+ years" },
+          { name: "Basic Electronics & Troubleshooting", level: 80, years: "3+ years" },
+          { name: "Video Editing", level: 80, years: "3+ years" }
         ]
       },
       {
-        category: "Software & Automation Platforms",
+        category: "Software & Platforms",
         icon: <Settings className="w-6 h-6" />,
         color: "from-indigo-500 to-purple-500",
         skills: [
-          { name: "Microsoft Office Suite", level: 90, years: "Expert" },
-          { name: "GoHighLevel (GHL)", level: 90, years: "Expert" },
-          { name: "Notion (Project Management)", level: 90, years: "Expert" },
-          { name: "Zapier (Automation)", level: 90, years: "Expert" },
-          { name: "N8N (Workflow Automation)", level: 90, years: "Expert" },
-          { name: "Kajabi (Course Creation & Marketing)", level: 90, years: "Expert" }
+          { name: "Microsoft Office", level: 90, years: "8+ years" },
+          { name: "GHL", level: 90, years: "2+ years" },
+          { name: "NOTION", level: 90, years: "3+ years" },
+          { name: "ZAPIER", level: 90, years: "2+ years" },
+          { name: "N8N", level: 90, years: "1+ years" },
+          { name: "KAJABI", level: 90, years: "2+ years" }
         ]
       },
       {
@@ -412,18 +416,64 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
         icon: <Video className="w-6 h-6" />,
         color: "from-pink-500 to-rose-500",
         skills: [
-          { name: "Video Editing & Post-Production", level: 80, years: "Advanced" },
-          { name: "Content Creation", level: 80, years: "Advanced" }
+          { name: "Video Editing & Post-Production", level: 80, years: "3+ years" },
+          { name: "Content Creation", level: 80, years: "4+ years" }
         ]
       },
       {
-        category: "Business & Research",
+        category: "Business Skills",
         icon: <TrendingUp className="w-6 h-6" />,
         color: "from-teal-500 to-cyan-500",
         skills: [
-          { name: "Market Research & Analysis", level: 70, years: "Advanced" },
-          { name: "Business Process Optimization", level: 70, years: "Advanced" },
-          { name: "Data Analysis & Reporting", level: 70, years: "Advanced" }
+          { name: "Market Research", level: 85, years: "4+ years" }
+        ]
+      },
+      {
+        category: "Communication & Languages",
+        icon: <MessageSquare className="w-6 h-6" />,
+        color: "from-cyan-500 to-teal-600",
+        skills: [
+          { name: "English (Native/Fluent)", level: 95, years: "Lifetime" },
+          { name: "Client Communication & Relations", level: 90, years: "5+ years" },
+          { name: "Technical Documentation", level: 85, years: "4+ years" },
+          { name: "Presentation & Public Speaking", level: 80, years: "3+ years" },
+          { name: "Cross-Cultural Communication", level: 75, years: "4+ years" }
+        ]
+      },
+      {
+        category: "Project Management & Leadership",
+        icon: <Users2 className="w-6 h-6" />,
+        color: "from-violet-500 to-purple-600",
+        skills: [
+          { name: "Agile Project Management", level: 80, years: "3+ years" },
+          { name: "Team Leadership & Coordination", level: 85, years: "4+ years" },
+          { name: "Resource Planning & Allocation", level: 75, years: "3+ years" },
+          { name: "Risk Assessment & Mitigation", level: 70, years: "2+ years" },
+          { name: "Stakeholder Management", level: 80, years: "4+ years" }
+        ]
+      },
+      {
+        category: "Data & Analytics",
+        icon: <BarChart3 className="w-6 h-6" />,
+        color: "from-emerald-500 to-green-600",
+        skills: [
+          { name: "Google Analytics & Tag Manager", level: 85, years: "3+ years" },
+          { name: "Performance Metrics & KPI Tracking", level: 80, years: "4+ years" },
+          { name: "A/B Testing & Conversion Optimization", level: 75, years: "2+ years" },
+          { name: "Data Visualization & Reporting", level: 70, years: "2+ years" },
+          { name: "Customer Journey Analysis", level: 75, years: "3+ years" }
+        ]
+      },
+      {
+        category: "E-commerce & Sales",
+        icon: <ShoppingCart className="w-6 h-6" />,
+        color: "from-amber-500 to-orange-600",
+        skills: [
+          { name: "E-commerce Platform Management", level: 80, years: "3+ years" },
+          { name: "Sales Funnel Optimization", level: 85, years: "4+ years" },
+          { name: "Customer Relationship Management (CRM)", level: 90, years: "5+ years" },
+          { name: "Lead Generation & Nurturing", level: 85, years: "4+ years" },
+          { name: "Conversion Rate Optimization", level: 80, years: "3+ years" }
         ]
       }
     ];
@@ -529,20 +579,20 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
               Continuous Learning & Growth
             </h3>
             <p className="text-gray-600 mb-6 max-w-3xl mx-auto leading-relaxed">
-              With over 8 years of experience in software development, I'm committed to staying at the forefront of technology. 
+              With over 3 years of experience in software development, I'm committed to staying at the forefront of technology. 
               I regularly update my skills through hands-on projects, online courses, and contributing to open-source initiatives.
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 mb-1">50+</div>
+                <div className="text-3xl font-bold text-blue-600 mb-1">30</div>
                 <div className="text-sm text-gray-600">Technologies</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-green-600 mb-1">8+</div>
+                <div className="text-3xl font-bold text-green-600 mb-1">3</div>
                 <div className="text-sm text-gray-600">Years Experience</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-600 mb-1">100+</div>
+                <div className="text-3xl font-bold text-purple-600 mb-1">20+</div>
                 <div className="text-sm text-gray-600">Projects Completed</div>
               </div>
               <div className="text-center">

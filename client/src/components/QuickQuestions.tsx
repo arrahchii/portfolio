@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ChevronDown, EyeOff, MessageCircle, Code, Cog, Briefcase, Mail, User, FileText, Folder } from 'lucide-react';
@@ -46,6 +47,13 @@ const TABS = [
 ];
 
 export function QuickQuestions({ onQuestionClick, disabled = false, activeTab = 'me', onTabChange, showTabs = false }: QuickQuestionsProps) {
+  const [, setLocation] = useLocation();
+
+  const handleTabClick = (tabId: TabType) => {
+    const path = tabId === 'me' ? '/' : `/${tabId}`;
+    setLocation(path);
+    onTabChange?.(tabId);
+  };
 
   // If showTabs is true, render only the navigation tabs
   if (showTabs) {
@@ -58,7 +66,7 @@ export function QuickQuestions({ onQuestionClick, disabled = false, activeTab = 
           return (
             <button
               key={tab.id}
-              onClick={() => onTabChange?.(tab.id)}
+              onClick={() => handleTabClick(tab.id)}
               className={cn(
                 "flex items-center gap-1 md:gap-2 pb-3 transition-all duration-200 text-xs md:text-sm font-semibold tracking-wide whitespace-nowrap flex-shrink-0",
                 isActive 

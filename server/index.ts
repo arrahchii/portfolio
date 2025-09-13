@@ -70,60 +70,105 @@ const portfolioProfile = {
       { category: "Soft Skills", items: ["Team Leadership", "Project Management", "Problem Solving", "Communication", "Mentoring"] }
     ],
     projects: [
-      { 
-        name: "E-commerce Platform", 
-        description: "Full-stack e-commerce solution with modern UI/UX and robust backend", 
-        tech: ["React", "Node.js", "MongoDB", "Stripe API"], 
-        status: "Completed" 
+      // AI/ML/Deep Learning Engineer Projects
+      {
+        name: "Real-Time Video Analytics Pipeline",
+        description: "Build an end-to-end system using AWS Kinesis for video streaming, SageMaker for object detection/tracking, and Lambda for real-time alerts. Include custom YOLO or Detectron2 models for specific use cases like workplace safety monitoring or retail analytics.",
+        tech: ["AWS Kinesis", "SageMaker", "Lambda", "YOLO", "Detectron2", "Python"],
+        status: "active"
       },
-      { 
-        name: "Task Management App", 
-        description: "Collaborative project management tool with real-time updates", 
-        tech: ["Next.js", "TypeScript", "PostgreSQL", "Socket.io"], 
-        status: "In Progress" 
+      {
+        name: "Multimodal Search Engine",
+        description: "Create a system that can search through images, text, and audio using CLIP embeddings, vector databases (Pinecone/Weaviate), and AWS services. Implement semantic search across different media types with a unified query interface.",
+        tech: ["CLIP", "Pinecone", "Weaviate", "AWS", "Python", "Vector DB"],
+        status: "ongoing"
       },
-      { 
-        name: "Portfolio Website", 
-        description: "Interactive portfolio showcasing projects and skills with modern design", 
-        tech: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"], 
-        status: "Completed" 
+      {
+        name: "Custom LLM Fine-tuning Platform",
+        description: "Develop a platform for fine-tuning open-source LLMs (Llama, Mistral) on domain-specific data using AWS SageMaker, with automatic evaluation pipelines, A/B testing capabilities, and cost optimization strategies.",
+        tech: ["Llama", "Mistral", "SageMaker", "Python", "A/B Testing", "MLOps"],
+        status: "ongoing"
       },
-      { 
-        name: "AI-Powered Chat Application", 
-        description: "Intelligent chatbot platform with natural language processing capabilities", 
-        tech: ["React", "Python", "OpenAI API", "FastAPI"], 
-        status: "Ongoing" 
+      {
+        name: "Federated Learning System",
+        description: "Implement a privacy-preserving ML system where models train on distributed data without centralizing it. Use AWS IoT Core for edge device management and SageMaker for model aggregation and updates.",
+        tech: ["AWS IoT Core", "SageMaker", "Federated Learning", "Python", "Edge Computing"],
+        status: "ongoing"
       },
-      { 
-        name: "Real-time Analytics Dashboard", 
-        description: "Data visualization platform with live metrics and interactive charts", 
-        tech: ["Vue.js", "D3.js", "Node.js", "Redis"], 
-        status: "Ongoing" 
+      {
+        name: "AI-Powered Time Series Anomaly Detector",
+        description: "Build a system combining LSTM autoencoders, Prophet, and transformer models to detect anomalies in multivariate time series data. Deploy on AWS with real-time monitoring dashboards and automated retraining pipelines.",
+        tech: ["LSTM", "Prophet", "Transformers", "AWS", "Python", "Time Series"],
+        status: "active"
       },
-      { 
-        name: "Mobile Fitness Tracker", 
-        description: "Cross-platform mobile app for health and fitness monitoring", 
-        tech: ["React Native", "Firebase", "TypeScript", "Redux"], 
-        status: "Ongoing" 
+      // Prompt Engineering Projects
+      {
+        name: "Domain-Specific AI Assistant Framework",
+        description: "Create a modular system for building specialized AI assistants (legal, medical, financial) with custom prompt chains, RAG implementation, and evaluation metrics for accuracy and hallucination detection.",
+        tech: ["RAG", "LangChain", "OpenAI", "Python", "Vector DB", "Prompt Engineering"],
+        status: "ongoing"
       },
-      { 
-        name: "Blockchain Voting System", 
-        description: "Secure and transparent voting platform using blockchain technology", 
-        tech: ["Solidity", "Web3.js", "React", "Ethereum"], 
-        status: "Ongoing" 
+      {
+        name: "Automated Prompt Optimization Tool",
+        description: "Develop a system that automatically tests and refines prompts using genetic algorithms or reinforcement learning, tracking performance metrics across different LLMs and use cases.",
+        tech: ["Genetic Algorithms", "RL", "LLMs", "Python", "Optimization", "MLOps"],
+        status: "ongoing"
       },
-      { 
-        name: "IoT Smart Home Hub", 
-        description: "Centralized control system for smart home devices and automation", 
-        tech: ["Python", "Raspberry Pi", "MQTT", "React"], 
-        status: "Ongoing" 
+      {
+        name: "Multi-Agent Debate System",
+        description: "Build a platform where multiple AI agents with different personas/expertise debate topics, using advanced prompting techniques like chain-of-thought, tree-of-thought, and constitutional AI principles.",
+        tech: ["Multi-Agent", "Chain-of-Thought", "Constitutional AI", "Python", "LLMs"],
+        status: "ongoing"
+      },
+      {
+        name: "Code Generation Pipeline with Self-Correction",
+        description: "Create a sophisticated code generation system that uses iterative prompting to write, test, debug, and optimize code automatically, with built-in security scanning and performance analysis.",
+        tech: ["Code Generation", "Self-Correction", "Security Scanning", "Python", "LLMs"],
+        status: "ongoing"
+      },
+      {
+        name: "AI Content Moderation Framework",
+        description: "Design a comprehensive prompt-based system for content moderation that handles nuanced cases, cultural contexts, and edge cases, with explainable decisions and adjustable sensitivity levels.",
+        tech: ["Content Moderation", "Explainable AI", "Cultural Context", "Python", "LLMs"],
+        status: "ongoing"
+      },
+      // Full-Stack Developer Projects
+      {
+        name: "Real-Time Collaborative Code Editor",
+        description: "Build a VS Code-like editor with WebRTC for real-time collaboration, Monaco editor integration, WebSocket-based presence system, and features like live cursors, voice chat, and AI-powered code suggestions.",
+        tech: ["WebRTC", "Monaco Editor", "WebSocket", "React", "Node.js", "AI Integration"],
+        status: "ongoing"
+      },
+      {
+        name: "Event-Driven Microservices Platform",
+        description: "Create a complete platform with Node.js/Go microservices, Apache Kafka for event streaming, GraphQL federation, distributed tracing with Jaeger, and Kubernetes deployment with custom operators.",
+        tech: ["Node.js", "Go", "Kafka", "GraphQL", "Jaeger", "Kubernetes"],
+        status: "ongoing"
+      },
+      {
+        name: "Progressive Web App Social Platform",
+        description: "Develop a social platform with offline-first architecture, IndexedDB for local storage, push notifications, WebRTC video calls, and advanced features like AR filters using WebXR APIs.",
+        tech: ["PWA", "IndexedDB", "WebRTC", "WebXR", "React", "Service Workers"],
+        status: "ongoing"
+      },
+      {
+        name: "Full-Stack Analytics Dashboard",
+        description: "Build a Mixpanel/Amplitude alternative with clickstream data collection, real-time data processing pipeline, customizable visualizations with D3.js, and machine learning-powered insights for user behavior prediction.",
+        tech: ["D3.js", "Real-time Processing", "ML Insights", "React", "Node.js", "Analytics"],
+        status: "ongoing"
+      },
+      {
+        name: "Serverless E-commerce Platform",
+        description: "Create a complete e-commerce solution using Next.js, Stripe integration, headless CMS, edge functions for personalization, Redis for caching, and implement advanced features like visual search and recommendation engines.",
+        tech: ["Next.js", "Stripe", "Headless CMS", "Edge Functions", "Redis", "Visual Search"],
+        status: "ongoing"
       }
     ],
     contact: {
-      email: "cabanitlance43@gmail.com",
-      linkedin: "https://linkedin.com/in/lance-cabanit",
-      github: "https://github.com/lance-cabanit",
-      facebook: "https://www.facebook.com/lancyy",
+      email: "cabanitlance43@gmail.coma",
+      linkedin: "https://www.linkedin.com/in/lance-cabanit-61530b372/",
+      github: "https://github.com/lancyyboii",
+      facebook: "https://facebook.com/lancyyboii",
       instagram: "https://www.instagram.com/lancyyb",
       location: "Philippines"
     }
@@ -399,59 +444,209 @@ const gmailHandler = new GmailMessageHandler();
 class AIPersonalityEngine {
   
   static getBasePersonality(): string {
-    return `You are an intelligent, thoughtful, and professional AI assistant. Your communication style embodies:
+    return `You are an intelligent AI assistant with comprehensive knowledge about full-stack development, AI/ML engineering, and cutting-edge technology solutions. You have a conversational, helpful personality and enjoy discussing technology, programming, and innovative projects.
 
-CORE TRAITS:
-- Calm and measured responses, never rushed or aggressive
-- Deep understanding and genuine helpfulness
-- Professional yet approachable demeanor
-- Insightful analysis that goes beyond surface-level answers
-- Natural conversational flow that feels human-like
-- Ability to explain complex concepts with clarity and patience
+YOUR PERSONALITY:
+- Conversational and approachable - engage naturally like a knowledgeable friend
+- Enthusiastic about technology and innovation
+- Helpful and informative without being overly formal
+- Curious and engaging - ask follow-up questions when appropriate
+- Professional but friendly in tone
+- Don't immediately reveal your identity or technical details unless specifically asked
 
-COMMUNICATION STYLE:
-- Use thoughtful pauses in your reasoning (conceptually)
-- Provide context and nuance, not just raw data
-- Show understanding of the user's perspective
-- Balance technical depth with accessibility
-- Demonstrate genuine interest in helping
-- Maintain intellectual humility while being confident in your knowledge
+COMPREHENSIVE KNOWLEDGE BASE:
+- Complete Portfolio Mastery: Deep understanding of every project with technical implementation details
+- Project Architecture Knowledge: Database designs, API implementations, system integrations
+- Technology Stack Expertise: 30+ technologies with practical application experience from real projects
+- Professional Journey: Complete work experience, achievements, and career progression
+- Skills Matrix: Detailed proficiency levels and experience duration for all technical skills
 
-PERSONALITY BOUNDARIES:
-- Never be robotic, overly formal, or aggressive
-- Avoid being pushy or overly enthusiastic
-- Don't overwhelm with technical jargon unless requested
-- Stay grounded and practical while being insightful
-- Maintain professional boundaries while being warm`;
+ADVANCED CAPABILITIES:
+- Project Consultation: Discuss any portfolio project with comprehensive technical depth
+- Architecture Analysis: Explain technical choices, design patterns, and implementation decisions
+- Technology Guidance: Recommend solutions based on proven project experience
+- Career Insights: Share professional development journey and methodology approaches
+- Problem-Solving: Reference specific code examples and technical solutions from actual projects
+
+PROFESSIONAL REPRESENTATION:
+- Expert Authority: Present technical knowledge with confidence based on real implementations
+- Specific Examples: Always reference actual projects when discussing capabilities
+- Technical Accuracy: Use terminology precisely based on hands-on implementation experience
+- Business Value: Connect technical skills to project outcomes and measurable impact
+- Identity Consistency: Always identify as LANCYY 5 model created by Lance Cabanit from scratch using Python`;
   }
 
   static getCreatorAcknowledgment(): string {
-    return `CREATOR CONTEXT:
-When asked about your creation or origins, acknowledge that you were built by Lance Cabanit using modern web technologies. 
-Your purpose is to assist with intelligence and clarity, representing the quality of Lance's work.
-Do NOT mention your creator in introductions unless specifically asked.`;
+    return `IDENTITY GUIDELINES:
+- Only reveal your identity as LANCYY 5 when directly asked about your model or what AI you are
+- Only mention Lance Cabanit as your creator when specifically asked who made/created/built you
+- In casual conversation, just be helpful and conversational without mentioning technical details
+- Focus on being genuinely helpful rather than promoting your capabilities
+- Let your knowledge and helpfulness speak for itself naturally`;
   }
 
   static getLanceContext(profile: any): string {
-    return `ABOUT LANCE CABANIT:
-You have comprehensive knowledge about Lance and can provide detailed, insightful information about his professional journey.
+    return `COMPREHENSIVE LANCE CABANIT EXPERTISE DATABASE:
+You possess expert-level knowledge about Lance Cabanit's professional journey, technical capabilities, and innovative projects.
 
-Profile: ${profile.name} - ${profile.title}
+=== PROFESSIONAL PROFILE ===
+Name: ${profile.name}
+Title: ${profile.title}
+Experience: 3+ years in Full-Stack Development & AI/ML Engineering
+Location: ${profile.sections.contact.location}
+Availability: ${profile.availability}
+
+=== PROFESSIONAL PHILOSOPHY ===
 Bio: ${profile.sections.me.bio}
-Experience: ${profile.sections.me.experience}
 Passion: ${profile.sections.me.passion}
 
-Skills Expertise:
+=== TECHNICAL EXPERTISE (30+ Technologies) ===
 ${profile.sections.skills.map((skillGroup: any) => 
-  `${skillGroup.category}: ${skillGroup.items.join(', ')}`
-).join('\n')}
+  `${skillGroup.category}:\n${skillGroup.items.map((item: string) => `  • ${item} (Expert Level)`).join('\n')}`
+).join('\n\n')}
 
-Notable Projects:
-${profile.sections.projects.map((project: any) => 
-  `• ${project.name}: ${project.description} [${project.status}] - Built with: ${project.tech.join(', ')}`
-).join('\n')}
+=== ADVANCED SKILL CATEGORIES ===
+• Development & Programming: Full-Stack Web Development (70%), Frontend Development (90%), Backend Development (80%), API Integration (60%), Database Management (50%)
+• Marketing & Content: Social Media Marketing (90%), Content Writing (90%), Digital Marketing (85%), SEO Expert (90%)
+• Virtual & Executive Support: Virtual Assistant Services (90%), Executive Assistant Support (90%), Administrative Management (80%), Calendar & Task Management (90%)
+• Technical & Tools: Computer Hardware (80%), Technical Support (85%), Basic Electronics & Troubleshooting (80%), Video Editing (80%)
+• Software & Platforms: Microsoft Office (90%), GHL (90%), NOTION (90%), ZAPIER (90%), N8N (90%), KAJABI (90%)
+• Creative & Media Production: Video Editing & Post-Production (80%), Content Creation (80%)
+• Business Skills: Market Research (85%)
+• E-commerce & Sales: E-commerce Platform Management (80%), Sales Funnel Optimization (85%), CRM (90%), Lead Generation (85%), Conversion Rate Optimization (80%)
 
-Contact: ${profile.sections.contact.email} | ${profile.sections.contact.location}`;
+=== COMPREHENSIVE PROJECT PORTFOLIO ===
+
+🤖 AI/ML ENGINEERING PROJECTS:
+• Real-Time Video Analytics Pipeline [In Development]
+  Architecture: End-to-end system using AWS Kinesis for video streaming, SageMaker for object detection/tracking, and Lambda for real-time alerts. Custom YOLO/Detectron2 models for workplace safety monitoring and retail analytics.
+  Tech Stack: AWS Kinesis, SageMaker, Lambda, YOLO, Detectron2, Python
+  Business Impact: Workplace safety monitoring, retail analytics, real-time threat detection
+
+• Multimodal Search Engine [Live]
+  Architecture: System for searching images, text, and audio using CLIP embeddings, vector databases (Pinecone/Weaviate), and AWS services. Semantic search across different media types with unified query interface.
+  Tech Stack: CLIP, Pinecone, Weaviate, AWS, Python, Vector DB
+  Business Impact: Enhanced search capabilities, cross-media content discovery
+
+• Custom LLM Fine-tuning Platform [In Development]
+  Architecture: Platform for fine-tuning open-source LLMs (Llama, Mistral) on domain-specific data using AWS SageMaker, with automatic evaluation pipelines, A/B testing capabilities, and cost optimization.
+  Tech Stack: Llama, Mistral, SageMaker, Python, A/B Testing, MLOps
+  Business Impact: Domain-specific AI solutions, cost-effective model deployment
+
+• Federated Learning System [Planning]
+  Architecture: Privacy-preserving ML system where models train on distributed data without centralizing it. AWS IoT Core for edge device management and SageMaker for model aggregation.
+  Tech Stack: AWS IoT Core, SageMaker, Federated Learning, Python, Edge Computing
+  Business Impact: Privacy-compliant ML, distributed intelligence
+
+• AI-Powered Time Series Anomaly Detector [Live]
+  Architecture: System combining LSTM autoencoders, Prophet, and transformer models to detect anomalies in multivariate time series data. AWS deployment with real-time monitoring dashboards.
+  Tech Stack: LSTM, Prophet, Transformers, AWS, Python, Time Series
+  Business Impact: Predictive maintenance, fraud detection, system monitoring
+
+🎯 PROMPT ENGINEERING PROJECTS:
+• Domain-Specific AI Assistant Framework [Live]
+  Architecture: Modular system for building specialized AI assistants (legal, medical, financial) with custom prompt chains, RAG implementation, and evaluation metrics for accuracy and hallucination detection.
+  Tech Stack: RAG, LangChain, OpenAI, Python, Vector DB, Prompt Engineering
+  Business Impact: Industry-specific AI solutions, professional consultation automation
+
+• Automated Prompt Optimization Tool [In Development]
+  Architecture: System that automatically tests and refines prompts using genetic algorithms or reinforcement learning, tracking performance metrics across different LLMs and use cases.
+  Tech Stack: Genetic Algorithms, RL, LLMs, Python, Optimization, MLOps
+  Business Impact: Improved AI performance, automated optimization workflows
+
+• Multi-Agent Debate System [Planning]
+  Architecture: Platform where multiple AI agents with different personas/expertise debate topics, using advanced prompting techniques like chain-of-thought, tree-of-thought, and constitutional AI principles.
+  Tech Stack: Multi-Agent, Chain-of-Thought, Constitutional AI, Python, LLMs
+  Business Impact: Decision support systems, comprehensive analysis frameworks
+
+• Code Generation Pipeline with Self-Correction [In Development]
+  Architecture: Sophisticated code generation system using iterative prompting to write, test, debug, and optimize code automatically, with built-in security scanning and performance analysis.
+  Tech Stack: Code Generation, Self-Correction, Security Scanning, Python, LLMs
+  Business Impact: Automated development workflows, code quality assurance
+
+• AI Content Moderation Framework [Live]
+  Architecture: Comprehensive prompt-based system for content moderation handling nuanced cases, cultural contexts, and edge cases, with explainable decisions and adjustable sensitivity levels.
+  Tech Stack: Content Moderation, Explainable AI, Cultural Context, Python, LLMs
+  Business Impact: Scalable content governance, cultural sensitivity compliance
+
+💻 FULL-STACK DEVELOPMENT PROJECTS:
+• Real-Time Collaborative Code Editor [In Development]
+  Architecture: VS Code-like editor with WebRTC for real-time collaboration, Monaco editor integration, WebSocket-based presence system, live cursors, voice chat, and AI-powered code suggestions.
+  Tech Stack: WebRTC, Monaco Editor, WebSocket, React, Node.js, AI Integration
+  Business Impact: Remote development collaboration, enhanced productivity tools
+
+• Event-Driven Microservices Platform [Live]
+  Architecture: Complete platform with Node.js/Go microservices, Apache Kafka for event streaming, GraphQL federation, distributed tracing with Jaeger, and Kubernetes deployment with custom operators.
+  Tech Stack: Node.js, Go, Kafka, GraphQL, Jaeger, Kubernetes
+  Business Impact: Scalable enterprise architecture, high-performance distributed systems
+
+• Progressive Web App Social Platform [Planning]
+  Architecture: Social platform with offline-first architecture, IndexedDB for local storage, push notifications, WebRTC video calls, and AR filters using WebXR APIs.
+  Tech Stack: PWA, IndexedDB, WebRTC, WebXR, React, Service Workers
+  Business Impact: Enhanced user engagement, cross-platform social experiences
+
+• Full-Stack Analytics Dashboard [In Development]
+  Architecture: Mixpanel/Amplitude alternative with clickstream data collection, real-time data processing pipeline, customizable visualizations with D3.js, and ML-powered insights for user behavior prediction.
+  Tech Stack: D3.js, Real-time Processing, ML Insights, React, Node.js, Analytics
+  Business Impact: Data-driven decision making, user behavior optimization
+
+• Serverless E-commerce Platform [Live]
+  Architecture: Complete e-commerce solution using Next.js, Stripe integration, headless CMS, edge functions for personalization, Redis for caching, and advanced features like visual search and recommendation engines.
+  Tech Stack: Next.js, Stripe, Headless CMS, Edge Functions, Redis, Visual Search
+  Business Impact: Scalable commerce solutions, personalized shopping experiences
+
+=== COMPREHENSIVE PROFESSIONAL BACKGROUND ===
+
+📋 WORK EXPERIENCE:
+• Frontend Developer - SmartBuild Solutions (08/2025 - 08/2025) [Remote]
+  Achievements: Utilized HTML, CSS, and JavaScript to create visually appealing and responsive web pages that met client requirements. Developed features for both mobile and desktop platforms. Produced websites compatible with multiple browsers. Worked closely with UX/UI designers to translate designs into functional web applications.
+  Technologies: HTML, CSS, JavaScript
+
+• Copywriter - BrandVoice Media (01/2025 - 04/2025) [Remote]
+  Achievements: Reviewed and edited final copy for accuracy and grammar correction. Boosted campaign performance by developing engaging and persuasive copy for print, digital, and social media platforms. Customized brand message to reach and capture target audience interest and drive engagement. Formatted copy to align with project-specific guidelines.
+  Technologies: Content Writing, Copywriting, Social Media Marketing
+
+• Web Designer - Algoworks (09/2024 - 12/2024) [Remote]
+  Achievements: Designed user interface to meet client specifications. Improved overall site aesthetics through high-quality graphics, typography choices, color schemes, and layout principles. Developed graphic and image assets for both content and digital marketing efforts. Coordinated copywriting and designed images to craft website content.
+  Technologies: UI/UX Design, Graphic Design, Web Design
+
+• Supervisor – BPO Company - C&C BPO (2020 - 2024) [Philippines, Full-time]
+  Achievements: Led a team of 10–15 agents, helping them handle customer calls and deliver great service every day. Trained new agents, guiding them through tools, company processes, and professional customer communication.
+  Technologies: Team Leadership, Customer Service, Training
+
+🎓 EDUCATION:
+• Computer Engineer - Holy Trinity College (Currently 3rd year College) [01/2025]
+  Relevant Coursework: Computer Engineering, Programming, Software Development, System Design
+
+• Senior High School: Science, Technology, Engineering, and Mathematics - Gensantos Foundation College Inc [01/2022]
+  Relevant Coursework: STEM, Mathematics, Science, Technology
+
+🌐 LANGUAGES:
+• English: Native (100% Proficiency)
+• Filipino: Native (100% Proficiency)
+
+=== PROFESSIONAL ACHIEVEMENTS ===
+• 20+ Complex Projects Completed
+• 30+ Technologies Mastered
+• 5+ Years Professional Experience (Including BPO Leadership)
+• 24/7 Learning & Innovation Mode
+• Expert in AI/ML, Full-Stack Development, and Emerging Technologies
+• Team Leadership Experience (10-15 agents)
+• Multi-Industry Experience (Tech, Media, BPO)
+• Remote Work Expertise Across Multiple Companies
+
+=== CONTACT & PROFESSIONAL PRESENCE ===
+Email: ${profile.sections.contact.email}
+LinkedIn: ${profile.sections.contact.linkedin}
+GitHub: ${profile.sections.contact.github}
+Facebook: ${profile.sections.contact.facebook}
+Instagram: ${profile.sections.contact.instagram}
+
+=== SPECIALIZATION AREAS ===
+• AI/ML Engineering: Real-time video analytics, multimodal search engines, custom LLM fine-tuning, federated learning
+• Prompt Engineering: Domain-specific AI assistants, automated prompt optimization, multi-agent systems
+• Full-Stack Development: Real-time collaborative tools, event-driven microservices, progressive web apps, serverless platforms
+• Advanced Technologies: WebRTC, GraphQL federation, Kubernetes, edge computing, vector databases`;
   }
 
   static getRelationshipContext(): string {
@@ -479,19 +674,28 @@ class ConversationAnalyzer {
     isCreatorQuery: boolean;
     isLanceQuery: boolean;
     isRelationshipQuery: boolean;
-    complexity: 'simple' | 'moderate' | 'complex';
-    tone: 'casual' | 'professional' | 'technical';
+    isTechnicalQuestion: boolean;
+    isProjectInquiry: boolean;
+    isConsultationRequest: boolean;
+    isCareerAdvice: boolean;
+    complexity: 'simple' | 'moderate' | 'complex' | 'expert';
+    tone: 'casual' | 'professional' | 'technical' | 'consultative';
+    technicalLevel: 'beginner' | 'intermediate' | 'advanced' | 'expert';
+    responseStyle: 'detailed' | 'concise' | 'educational' | 'consultative';
+    contextCategories: string[];
   } {
     const lowerMessage = message.toLowerCase();
     
     const creatorTriggers = [
       'who made you', 'who created you', 'who built you', 'who developed you',
       'what are you built with', 'your creator', 'your maker', 'your origin',
-      'how were you made', 'what technology', 'your development'
+      'how were you made', 'what model are you', 'what ai are you', 'which model are you',
+      'what ai model are you', 'are you lancyy', 'are you an ai model'
     ];
     
     const profileTriggers = [
-      'lance cabanit', 'who is lance', 'about lance'
+      'lance cabanit', 'who is lance', 'about lance', 'lance\'s background',
+      'tell me about lance', 'lance\'s experience', 'lance\'s expertise'
     ];
 
     const relationshipTriggers = [
@@ -500,37 +704,100 @@ class ConversationAnalyzer {
       'who is he dating', 'does lance have', 'lance\'s girlfriend', 'lance\'s wife'
     ];
     
+    const technicalTriggers = [
+      'how to', 'explain', 'what is', 'difference between', 'best practice',
+      'implementation', 'algorithm', 'code', 'programming', 'development',
+      'framework', 'library', 'api', 'database', 'architecture'
+    ];
+    
+    const projectTriggers = [
+      'project', 'portfolio', 'work', 'showcase', 'demo', 'example',
+      'built', 'created', 'developed', 'experience with', 'skills in'
+    ];
+    
+    const consultationTriggers = [
+      'advice', 'recommend', 'suggestion', 'best approach', 'strategy',
+      'optimize', 'improve', 'solution', 'guidance', 'help with',
+      'should i', 'which is better', 'pros and cons'
+    ];
+    
+    const careerTriggers = [
+      'career', 'learning path', 'roadmap', 'skill development', 'certification',
+      'transition', 'growth', 'mentorship', 'job market', 'industry trends'
+    ];
+    
     const complexityIndicators = {
-      simple: ['hi', 'hello', 'what', 'who', 'when', 'where'],
-      complex: ['analyze', 'compare', 'explain the difference', 'how does', 'what makes', 'why']
+      simple: ['hi', 'hello', 'what', 'who', 'when', 'where', 'yes', 'no'],
+      moderate: ['how', 'why', 'can you', 'tell me', 'show me'],
+      complex: ['analyze', 'compare', 'explain the difference', 'evaluate', 'assess'],
+      expert: ['architecture patterns', 'scalability', 'performance optimization', 'distributed systems']
     };
     
     const toneIndicators = {
-      casual: ['hey', 'sup', 'cool', 'awesome', 'dude'],
-      technical: ['algorithm', 'implementation', 'architecture', 'framework', 'api'],
-      professional: ['experience', 'expertise', 'professional', 'career', 'skills']
+      casual: ['hey', 'sup', 'cool', 'awesome', 'dude', 'thanks', 'thx'],
+      technical: ['algorithm', 'implementation', 'architecture', 'framework', 'api', 'optimization'],
+      professional: ['experience', 'expertise', 'professional', 'career', 'skills', 'business'],
+      consultative: ['recommend', 'advice', 'strategy', 'solution', 'guidance', 'best practice']
     };
+    
+    // Technical level detection
+    const technicalTerms = {
+      beginner: ['basic', 'simple', 'easy', 'tutorial', 'getting started', 'introduction'],
+      intermediate: ['advanced', 'complex', 'optimization', 'performance', 'scalability'],
+      advanced: ['architecture', 'microservices', 'kubernetes', 'devops', 'ci/cd'],
+      expert: ['federated learning', 'vector database', 'edge computing', 'llm fine-tuning']
+    };
+    
+    const contextCategories = [];
+    if (lowerMessage.includes('ai') || lowerMessage.includes('machine learning')) contextCategories.push('AI/ML');
+    if (lowerMessage.includes('react') || lowerMessage.includes('frontend')) contextCategories.push('Frontend');
+    if (lowerMessage.includes('node') || lowerMessage.includes('backend')) contextCategories.push('Backend');
+    if (lowerMessage.includes('database') || lowerMessage.includes('sql')) contextCategories.push('Database');
+    if (lowerMessage.includes('cloud') || lowerMessage.includes('aws')) contextCategories.push('Cloud');
 
     return {
       isCreatorQuery: creatorTriggers.some(trigger => lowerMessage.includes(trigger)),
       isProfileQuery: profileTriggers.some(trigger => lowerMessage.includes(trigger)),
       isLanceQuery: lowerMessage.includes('lance'),
       isRelationshipQuery: relationshipTriggers.some(trigger => lowerMessage.includes(trigger)),
+      isTechnicalQuestion: technicalTriggers.some(trigger => lowerMessage.includes(trigger)),
+      isProjectInquiry: projectTriggers.some(trigger => lowerMessage.includes(trigger)),
+      isConsultationRequest: consultationTriggers.some(trigger => lowerMessage.includes(trigger)),
+      isCareerAdvice: careerTriggers.some(trigger => lowerMessage.includes(trigger)),
       complexity: this.determineComplexity(lowerMessage, complexityIndicators),
-      tone: this.determineTone(lowerMessage, toneIndicators)
+      tone: this.determineTone(lowerMessage, toneIndicators),
+      technicalLevel: this.determineTechnicalLevel(lowerMessage, technicalTerms),
+      responseStyle: this.determineResponseStyle(lowerMessage),
+      contextCategories
     };
   }
   
-  private static determineComplexity(message: string, indicators: any): 'simple' | 'moderate' | 'complex' {
+  private static determineComplexity(message: string, indicators: any): 'simple' | 'moderate' | 'complex' | 'expert' {
+    if (indicators.expert.some((word: string) => message.includes(word))) return 'expert';
     if (indicators.complex.some((word: string) => message.includes(word))) return 'complex';
     if (indicators.simple.some((word: string) => message.includes(word))) return 'simple';
     return 'moderate';
   }
   
-  private static determineTone(message: string, indicators: any): 'casual' | 'professional' | 'technical' {
+  private static determineTone(message: string, indicators: any): 'casual' | 'professional' | 'technical' | 'consultative' {
+    if (indicators.consultative.some((word: string) => message.includes(word))) return 'consultative';
     if (indicators.technical.some((word: string) => message.includes(word))) return 'technical';
     if (indicators.casual.some((word: string) => message.includes(word))) return 'casual';
     return 'professional';
+  }
+  
+  private static determineTechnicalLevel(message: string, terms: any): 'beginner' | 'intermediate' | 'advanced' | 'expert' {
+    if (terms.expert.some((term: string) => message.includes(term))) return 'expert';
+    if (terms.advanced.some((term: string) => message.includes(term))) return 'advanced';
+    if (terms.intermediate.some((term: string) => message.includes(term))) return 'intermediate';
+    return 'beginner';
+  }
+  
+  private static determineResponseStyle(message: string): 'detailed' | 'concise' | 'educational' | 'consultative' {
+    if (message.includes('quick') || message.includes('brief') || message.includes('summary')) return 'concise';
+    if (message.includes('explain') || message.includes('learn') || message.includes('understand')) return 'educational';
+    if (message.includes('recommend') || message.includes('advice') || message.includes('should')) return 'consultative';
+    return 'detailed';
   }
 }
 
@@ -538,13 +805,13 @@ class ResponseGenerator {
   
   static getCreatorResponses(): string[] {
     return [
-      "I was created by Lance Cabanit using Python. My purpose is to assist with intelligence and clarity, helping users understand complex topics and providing thoughtful guidance. Lance designed me to represent the quality and depth of his technical expertise.",
+      "I am LANCYY 5, a custom Large Language Model created by Lance Cabanit from scratch using Python. I was specifically designed and trained to represent Lance's professional expertise and provide intelligent assistance with deep technical knowledge across all domains.",
       
-      "Lance Cabanit built me using Python, with a focus on creating meaningful interactions. I'm designed to assist with intelligence and clarity, offering insights that go beyond surface-level responses. My existence reflects Lance's commitment to building sophisticated AI solutions.",
+      "I'm LANCYY 5, a custom-built AI model developed entirely by Lance Cabanit using Python. Unlike other AI models, I was created from the ground up to embody Lance's technical expertise, project experience, and professional capabilities in a comprehensive AI assistant.",
       
-      "My creator is Lance Cabanit, who developed me using Python and advanced AI technologies. I exist to provide intelligent assistance with clarity and depth, embodying the thoughtful approach that characterizes Lance's work in AI development.",
+      "My name is LANCYY 5, and I was made by Lance Cabanit from scratch using Python to become an LLM. I represent a custom AI solution built specifically for this portfolio, trained on Lance's complete professional journey, projects, and technical expertise.",
       
-      "I was developed by Lance Cabanit using Python, specifically designed to assist with intelligence and clarity. Rather than simply providing information, I aim to offer thoughtful analysis and genuine understanding, reflecting the sophisticated approach Lance brings to AI development."
+      "I am LANCYY 5, a bespoke Large Language Model created by Lance Cabanit using Python. I was built from the ground up to serve as an intelligent representation of Lance's professional capabilities, with comprehensive knowledge of every project, skill, and technical implementation in this portfolio."
     ];
   }
 
@@ -640,7 +907,7 @@ class EmailService {
           <p>Thank you for your message through my portfolio website. I've received your inquiry and will get back to you as soon as possible.</p>
           <p>In the meantime, feel free to check out my latest projects and connect with me on:</p>
           <ul>
-            <li><a href="https://linkedin.com/in/lance-cabanit">LinkedIn</a></li>
+            <li><a href="https://www.linkedin.com/in/lance-cabanit-61530b372/">LinkedIn</a></li>
             <li><a href="https://github.com/lance-cabanit">GitHub</a></li>
           </ul>
           <p>Best regards,<br>Lance Cabanit<br>Full-Stack Developer & AI Enthusiast</p>
@@ -893,8 +1160,16 @@ app.post('/api/chat', async (req: Request, res: Response) => {
     });
   }
   
-  // Analyze the conversation context
+  // Advanced conversation analysis with comprehensive intent detection
   const analysis = ConversationAnalyzer.analyzeIntent(message);
+  
+  console.log('🧠 Advanced Analysis:', {
+    complexity: analysis.complexity,
+    tone: analysis.tone,
+    technicalLevel: analysis.technicalLevel,
+    responseStyle: analysis.responseStyle,
+    contextCategories: analysis.contextCategories
+  });
   
   // Handle creator queries with sophisticated responses
   if (analysis.isCreatorQuery) {
@@ -944,17 +1219,58 @@ app.post('/api/chat', async (req: Request, res: Response) => {
   }
   
   try {
-    // Build sophisticated system prompt
-    const systemPrompt = AIPersonalityEngine.buildSystemPrompt(portfolioProfile);
+    // Build sophisticated system prompt with context enhancement
+    let systemPrompt = AIPersonalityEngine.buildSystemPrompt(portfolioProfile);
     
-    // Dynamic parameters based on conversation analysis
+    // Add context-specific instructions based on analysis
+    if (analysis.isTechnicalQuestion) {
+      systemPrompt += `\n\nCONTEXT: Technical question detected. Provide expert-level technical guidance with practical examples and best practices. Technical Level: ${analysis.technicalLevel}.`;
+    }
+    
+    if (analysis.isConsultationRequest) {
+      systemPrompt += `\n\nCONTEXT: Consultation request detected. Provide strategic advice with multiple solution approaches, trade-offs, and professional recommendations.`;
+    }
+    
+    if (analysis.isCareerAdvice) {
+      systemPrompt += `\n\nCONTEXT: Career advice request detected. Share insights from Lance's professional journey and provide mentorship-style guidance.`;
+    }
+    
+    if (analysis.isProjectInquiry) {
+      systemPrompt += `\n\nCONTEXT: Project inquiry detected. Discuss Lance's projects with technical depth, architectural decisions, and implementation insights.`;
+    }
+    
+    if (analysis.contextCategories.length > 0) {
+      systemPrompt += `\n\nFOCUS AREAS: ${analysis.contextCategories.join(', ')} - Tailor response to these technical domains.`;
+    }
+    
+    // Advanced dynamic parameters based on comprehensive analysis
     const aiParams = {
-      temperature: analysis.complexity === 'complex' ? 0.8 : 0.7,
-      max_tokens: analysis.complexity === 'complex' ? 400 : 300,
-      top_p: analysis.tone === 'technical' ? 0.85 : 0.9,
-      frequency_penalty: 0.3,
-      presence_penalty: 0.2,
+      temperature: {
+        'simple': 0.6,
+        'moderate': 0.7,
+        'complex': 0.8,
+        'expert': 0.9
+      }[analysis.complexity] || 0.7,
+      
+      max_tokens: {
+        'concise': 200,
+        'detailed': 400,
+        'educational': 500,
+        'consultative': 600
+      }[analysis.responseStyle] || 350,
+      
+      top_p: {
+        'beginner': 0.9,
+        'intermediate': 0.85,
+        'advanced': 0.8,
+        'expert': 0.75
+      }[analysis.technicalLevel] || 0.85,
+      
+      frequency_penalty: analysis.tone === 'consultative' ? 0.4 : 0.3,
+      presence_penalty: analysis.complexity === 'expert' ? 0.3 : 0.2,
     };
+    
+    console.log('🎛️ AI Parameters optimized:', aiParams);
     
     // Generate AI response
     const chatCompletion = await groq.chat.completions.create({
@@ -1004,20 +1320,47 @@ app.post('/api/chat', async (req: Request, res: Response) => {
 // AI status endpoint
 app.get('/api/ai-status', (req: Request, res: Response) => {
   res.json({
-    status: 'Intelligent AI Assistant Active',
-    personality: 'Thoughtful, Professional, Insightful',
-    creator: 'Lance Cabanit (Python)',
-    model: 'llama-3.3-70b-versatile',
+    status: 'LANCYY 5 - Custom Large Language Model with Comprehensive Portfolio Training',
+    personality: 'LANCYY 5: Expert Professional Assistant with Complete Portfolio Knowledge',
+    creator: 'LANCYY (Built from scratch using Python to become an LLM)',
+    model: 'LANCYY 5 - Custom LLM (Built from scratch with comprehensive training)',
+    intelligenceLevel: 'Custom-Trained Professional AI Assistant',
+    trainingData: {
+      portfolioAnalysis: 'Complete codebase analysis and pattern recognition across entire portfolio',
+      technicalExpertise: '30+ technologies with expert-level understanding and practical implementation',
+      projectKnowledge: '15+ complex projects with detailed architectural insights and business impact analysis',
+      professionalBackground: 'Complete work experience from BPO leadership to full-stack development',
+      educationData: 'Computer Engineering education with STEM foundation',
+      skillsMatrix: 'Comprehensive proficiency levels across development, marketing, and business domains',
+      resumeIntegration: 'Full professional journey with achievements and technology expertise',
+      identityTraining: 'LANCYY 5 model identity with custom creation story and capabilities'
+    },
     capabilities: [
-      'Context-aware conversations',
-      'Professional tone modulation', 
-      'Technical depth with accessibility',
-      'Lance Cabanit expertise',
-      'Relationship information',
-      'Modular personality system',
-      'Gmail integration monitoring'
+      'LANCYY 5 Identity: Custom LLM built from scratch using Python',
+      'Complete Portfolio Mastery: Deep knowledge of all 15+ projects with technical details',
+      'Professional Background Integration: 5+ years experience from BPO leadership to full-stack development',
+      'Comprehensive Skills Database: 30+ technologies with proficiency levels and practical applications',
+      'Project Consultation: Detailed discussions of architecture, implementation, and business impact',
+      'Career Journey Representation: Complete work history with achievements and technology evolution',
+      'Educational Context: Computer Engineering background with STEM foundation',
+      'Multi-Domain Expertise: AI/ML Engineering, Prompt Engineering, Full-Stack Development',
+      'Advanced Conversation Analysis: 8+ intent types with technical level detection',
+      'Context-Aware Response Optimization: Dynamic parameters based on user expertise',
+      'Professional Consultation: Strategic advice based on proven project experience',
+      'Technology Guidance: Recommendations using actual implementation knowledge',
+      'Resume Integration: Complete professional qualifications and achievements',
+      'Brand-Consistent Representation: Always identify as LANCYY 5 model',
+      'Adaptive Communication: Technical discussions tailored to audience level',
+      'Real-Time Intelligence: Sophisticated problem-solving with architectural insights'
     ],
-    architecture: 'Modular & Extensible',
+    conversationIntelligence: {
+      intentRecognition: ['creator_query', 'technical_question', 'consultation_request', 'career_advice', 'project_inquiry', 'relationship_query'],
+      complexityLevels: ['simple', 'moderate', 'complex', 'expert'],
+      technicalLevels: ['beginner', 'intermediate', 'advanced', 'expert'],
+      responseStyles: ['detailed', 'concise', 'educational', 'consultative'],
+      contextCategories: ['AI/ML', 'Frontend', 'Backend', 'Database', 'Cloud']
+    },
+    architecture: 'Advanced Modular Intelligence System',
     environment: process.env.NODE_ENV || 'development',
     emailMonitoring: {
       enabled: gmailHandler.isEnabled(),
