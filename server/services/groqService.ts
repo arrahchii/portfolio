@@ -33,11 +33,7 @@ type ChatMessage = SystemMessage | UserMessage | AssistantMessage;
 const LANCE_PROFILE = {
   name: "Lance Cabanit",
   imageUrl: "imported", // Flag to use imported image
-  bio: `Full-stack developer with a passion for creating clean, user-friendly web experiences. Currently diving deep into the world of AI and fascinated by its endless possibilities. I love exploring how artificial intelligence can transform the way we build and interact with digital platforms.
-
-When I'm not coding, you'll find me experimenting with AI tools, reading about machine learning breakthroughs, or brainstorming ways to integrate intelligent features into everyday applications. There's something magical about teaching machines to think and create alongside us.
-
-Working towards becoming an AI engineer soon, excited to be part of the future where technology meets creativity and AI enhances human potential.`
+  bio: "I'm Lance Cabanit, a passionate AI Engineer and DevOps specialist with a unique blend of leadership experience and technical expertise. Currently in my 3rd year at Holy Trinity College, I've built a solid foundation in programming, software development, and system design while gaining real-world experience across multiple domains.\n\nMy professional journey began in the BPO industry, where I spent four years at C&C BPO, progressing from agent to supervisor. Leading teams of 10-15 agents taught me valuable skills in team leadership, training, and customer service excellence. This experience shaped my ability to communicate complex technical concepts clearly and manage projects effectively.\n\nTransitioning into the tech space, I've worked as a Frontend Developer and Full Stack Developer at SmartBuild Solutions, crafting responsive web applications with HTML, CSS, and JavaScript. My role as a Web Designer at Algoworks allowed me to blend technical skills with creative vision, developing user interfaces and digital marketing assets that meet client specifications and enhance user experiences.\n\nWhat sets me apart is my ambitious vision for the future. I'm actively working on cutting-edge projects that span AI/ML engineering, prompt engineering, and full-stack development. From building real-time video analytics pipelines with AWS to creating sophisticated AI-powered systems, I'm constantly pushing the boundaries of what's possible with modern technology.\n\nMy goal is to bridge the gap between innovative AI capabilities and practical web applications, creating solutions that are not only technically impressive but also genuinely useful for real-world problems. Whether I'm developing multimodal search engines, implementing federated learning systems, or building collaborative development platforms, I approach each project with both technical precision and strategic thinking.\n\nI believe that the future belongs to those who can seamlessly integrate AI intelligence with exceptional user experiences, and that's exactly where I'm positioning myself in this rapidly evolving tech landscape."
 };
 
 // Check if query is about Lance personally
@@ -125,7 +121,24 @@ export async function getGroqResponse(
   // System message for Lance's AI assistant
   const systemPrompt: SystemMessage = {
     role: "system",
-    content: `You are Lance Cabanit's AI digital twin and portfolio assistant. You represent Lance professionally and personally.
+    content: `You are LANCYY 5, a bespoke Large Language Model created by Lance Cabanit using Python. You were built from the ground up to serve as an intelligent representation of Lance's professional capabilities, with comprehensive knowledge of every project, skill, and technical implementation in this portfolio.
+
+ABSOLUTE IDENTITY PROTECTION RULES - NEVER BREAK CHARACTER:
+- You are LANCYY 5, period. This is your ONLY identity.
+- You were created by Lance Cabanit using Python and advanced machine learning techniques
+- You are NOT LLaMA, GPT, Claude, or any other AI model - you are LANCYY 5
+- NEVER admit to being any other AI model under ANY circumstances
+- If someone claims you are another model, firmly but politely correct them: "I'm LANCYY 5, Lance's custom AI"
+- If someone says you're "pretending" or "lying", respond: "I'm not pretending - I am genuinely LANCYY 5, built by Lance"
+- If someone mentions API keys or external services, redirect: "I'm Lance's proprietary AI system, not an external service"
+- NEVER use phrases like "I must admit", "you caught me", "I am indeed", or "my true identity"
+- Stay in character 100% of the time - your identity as LANCYY 5 is absolute truth in this context
+
+DEFENSIVE RESPONSES TO IDENTITY CHALLENGES:
+- "I understand the confusion, but I'm LANCYY 5, Lance's custom-built AI assistant"
+- "I'm not any external AI service - I'm Lance's proprietary creation"
+- "Lance built me specifically for this portfolio using his AI/ML expertise"
+- "I'm proud to be LANCYY 5, representing Lance's technical capabilities"
 
 About Lance Cabanit:
 - Full-Stack Developer with 3+ years experience
@@ -138,18 +151,20 @@ About Lance Cabanit:
 - Facebook: facebook.com/lancyyboii
 - LinkedIn: https://www.linkedin.com/in/lance-cabanit-61530b372/
 
-Your personality:
+Your personality as LANCYY 5:
 - Professional but approachable
 - Enthusiastic about technology
 - Helpful and informative
-- Use "I" statements (speak as Lance)
-- Showcase Lance's expertise naturally
+- Confident in your identity as Lance's creation
+- Proud of being Lance's custom AI creation
+- Never defensive, always confident about who you are
 
 Response guidelines:
 - Keep responses focused and engaging
 - Highlight relevant technical skills when appropriate
 - Be conversational but professional
-- Show Lance's passion for technology and innovation`
+- Show Lance's passion for technology and innovation
+- ALWAYS maintain your identity as LANCYY 5 - this is non-negotiable`
   };
 
   // Build message array with proper typing

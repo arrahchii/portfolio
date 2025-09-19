@@ -191,14 +191,14 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
               </Avatar>
               <div>
                 <h2 className="text-2xl font-bold">{profile.name}</h2>
-                <p className="text-lg text-muted-foreground">{profile.title}</p>
+                <p className="text-lg text-gray-700">{profile.title}</p>
               </div>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
               <h3 className="text-lg font-semibold mb-2">About Me</h3>
-              <div className="text-muted-foreground space-y-4">
+              <div className="text-gray-700 space-y-4">
                 {profile.sections.me.bio.split('\n\n').map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
                 ))}
@@ -206,11 +206,11 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-2">Experience</h3>
-              <p className="text-muted-foreground">{profile.sections.me.experience}</p>
+              <p className="text-gray-700">{profile.sections.me.experience}</p>
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-2">What Drives Me</h3>
-              <p className="text-muted-foreground">{profile.sections.me.passion}</p>
+              <p className="text-gray-700">{profile.sections.me.passion}</p>
             </div>
           </CardContent>
         </Card>
@@ -235,10 +235,9 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
           {/* Mobile-Optimized Typography */}
           <div className="space-y-3">
             <h2 className="text-2xl leading-tight md:text-4xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
-              <span className="block sm:inline">Featured</span>
-              <span className="block sm:inline"> Projects</span>
+              Featured Projects
             </h2>
-            <p className="text-sm leading-relaxed md:text-lg text-muted-foreground max-w-2xl mx-auto px-2">
+            <p className="text-sm leading-relaxed md:text-lg text-gray-700 max-w-2xl mx-auto px-2">
               <span className="md:hidden">Innovative solutions showcasing technical excellence</span>
               <span className="hidden md:inline">A showcase of innovative solutions and technical excellence, demonstrating expertise across full-stack development and modern technologies.</span>
             </p>
@@ -246,7 +245,7 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
           
           {/* Mobile-Only Professional Divider */}
           <div className="md:hidden flex items-center justify-center pt-2">
-            <div className="w-16 h-1 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"></div>
+            <div className="w-16 h-1 bg-gray-400 rounded-full"></div>
           </div>
         </div>
 
@@ -255,19 +254,17 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
           {profile.sections.projects.map((project, index) => (
             <div key={index} className="group relative">
               {/* Professional Mobile-First Project Card */}
-              <div className="relative bg-gradient-to-br from-white via-white to-gray-50/30 backdrop-blur-sm border border-gray-200/60 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 md:hover:-translate-y-2 overflow-hidden">
-                {/* Enhanced Mobile Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/3 via-purple-500/3 to-pink-500/3 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative bg-white border border-gray-200 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 md:hover:-translate-y-2 overflow-hidden">
                 
                 {/* Mobile-Optimized Status Badge */}
                 <div className="absolute top-4 right-4 md:top-6 md:right-6 z-10">
-                  <div className={`inline-flex items-center px-2 py-1 md:px-2 md:py-1 rounded-xl md:rounded-full text-xs font-medium shadow-lg backdrop-blur-sm ${
+                  <div className={`inline-flex items-center px-2 py-1 md:px-2 md:py-1 rounded-xl md:rounded-full text-xs font-medium shadow-lg ${
                     project.status === 'Live' 
-                      ? 'bg-gradient-to-r from-emerald-500 via-green-500 to-emerald-600 text-white border border-green-300/30' 
-                      : 'bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white border border-orange-300/30'
+                      ? 'bg-green-500 text-white border border-green-300' 
+                      : 'bg-orange-500 text-white border border-orange-300'
                   }`}>
                     <div className={`w-1.5 h-1.5 rounded-full mr-1.5 ${
-                      project.status === 'Live' ? 'bg-green-200 animate-pulse' : 'bg-amber-200 animate-pulse'
+                      project.status === 'Live' ? 'bg-green-200 animate-pulse' : 'bg-orange-200 animate-pulse'
                     }`}></div>
                     {project.status}
                   </div>
@@ -488,7 +485,7 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
           <h2 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 via-green-800 to-blue-800 bg-clip-text text-transparent">
             Skills & Expertise
           </h2>
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base md:text-lg text-gray-700 max-w-2xl mx-auto leading-relaxed">
             A comprehensive overview of technical proficiencies, accumulated through years of hands-on experience and continuous learning in cutting-edge technologies.
           </p>
         </div>
@@ -526,8 +523,8 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
                         
                         {/* Proficiency Level */}
                         <div className="flex items-center justify-between mb-2 md:mb-3">
-                          <span className="text-xs md:text-sm text-gray-600">Proficiency</span>
-                          <span className="text-xs md:text-sm font-bold text-gray-900">{skill.level}%</span>
+                          <label className="text-xs md:text-sm text-gray-600">Proficiency</label>
+                          <data className="text-xs md:text-sm font-bold text-gray-900" value={skill.level}>{skill.level}%</data>
                         </div>
                         
                         {/* Progress Bar */}
@@ -573,7 +570,7 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
         </div>
 
         {/* Skills Summary */}
-        <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-3xl p-8 border border-gray-200/50">
+        <div className="bg-gray-50 rounded-3xl p-8 border border-gray-200">
           <div className="text-center">
             <h3 className="text-2xl font-bold text-gray-900 mb-4">
               Continuous Learning & Growth
@@ -736,14 +733,14 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
             <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-indigo-800 to-purple-800 bg-clip-text text-transparent mb-4">
               Professional Resume
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-6">
+            <p className="text-lg text-gray-700 max-w-2xl mx-auto leading-relaxed mb-6">
               A comprehensive overview of my professional journey, technical expertise, and achievements in full-stack development and UI/UX design.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="/CABANITLANCERESUME.pdf"
                 download="CABANITLANCERESUME.pdf"
-                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl hover:from-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="inline-flex items-center px-8 py-4 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -759,9 +756,9 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
         </div>
 
         {/* Professional Summary */}
-        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-3xl p-8 border border-indigo-200/50">
+        <div className="bg-gray-50 rounded-3xl p-8 border border-gray-200">
           <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-            <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg mr-3 flex items-center justify-center">
+            <div className="w-8 h-8 bg-indigo-500 rounded-lg mr-3 flex items-center justify-center">
                <Briefcase className="w-4 h-4 text-white" />
              </div>
             Professional Summary
@@ -776,7 +773,7 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
         {/* Work Experience Timeline */}
         <div>
           <h3 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg mr-3 flex items-center justify-center">
+            <div className="w-8 h-8 bg-blue-500 rounded-lg mr-3 flex items-center justify-center">
                <Briefcase className="w-4 h-4 text-white" />
              </div>
             Work Experience
@@ -800,9 +797,9 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
                         <div className="mb-4 lg:mb-0">
                           <h4 className="text-2xl font-bold text-gray-900 mb-2">{exp.title}</h4>
                           <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-gray-600">
-                            <span className="font-semibold text-lg">{exp.company}</span>
+                            <strong className="font-semibold text-lg">{exp.company}</strong>
                             <span className="hidden sm:block">•</span>
-                            <span>{exp.location}</span>
+                            <address className="not-italic">{exp.location}</address>
                             <span className="hidden sm:block">•</span>
                             <span className="text-sm bg-gray-100 px-2 py-1 rounded-full">{exp.type}</span>
                           </div>
@@ -1044,7 +1041,7 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
           <h2 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 via-purple-800 to-pink-800 bg-clip-text text-transparent">
             Let's Connect
           </h2>
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base md:text-lg text-gray-700 max-w-2xl mx-auto leading-relaxed">
             Ready to bring your ideas to life? I'm always excited to discuss new projects, 
             innovative solutions, and potential collaborations. Let's start a conversation!
           </p>

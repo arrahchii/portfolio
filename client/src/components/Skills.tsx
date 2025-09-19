@@ -149,10 +149,10 @@ const Skills: React.FC<SkillsProps> = ({ skills = [] }) => {
   }
 
   return (
-    <div className="relative flex h-auto min-h-screen w-full flex-col bg-gradient-to-br from-gray-50 via-white to-blue-50/30 overflow-x-hidden" style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}>
+    <div className="relative flex h-auto min-h-screen w-full flex-col bg-white overflow-x-hidden" style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}>
       <div className="layout-container flex h-full grow flex-col">
         {/* Tab Navigation - Top */}
-        <div className="sticky top-0 z-50 border-b border-gray-200/50 bg-white/80 backdrop-blur-sm">
+        <div className="sticky top-0 z-50 border-b border-gray-200 bg-white">
           <div className="flex items-center justify-between px-6 py-4">
             <div className="flex items-center">
               <QuickQuestions 
@@ -221,22 +221,22 @@ const Skills: React.FC<SkillsProps> = ({ skills = [] }) => {
                                     <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold border ${skillLevel.color} mb-1`}>
                                       {skillLevel.label}
                                     </span>
-                                    <span className="text-xs font-medium text-gray-500">{skill.years}</span>
+                                    <time className="text-xs font-medium text-gray-500">{skill.years}</time>
                                   </div>
                                 </div>
                                 
                                 {/* Enhanced Proficiency Display */}
                                 <div className="space-y-2">
                                   <div className="flex items-center justify-between">
-                                    <span className="text-xs font-medium text-gray-600">Proficiency</span>
-                                    <span className="text-sm font-bold text-gray-900">{skill.level}%</span>
+                                    <label className="text-xs font-medium text-gray-600">Proficiency</label>
+                                    <data className="text-sm font-bold text-gray-900" value={skill.level}>{skill.level}%</data>
                                   </div>
                                   
                                   {/* Enhanced Progress Bar */}
                                   <div className="relative">
                                     <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden shadow-inner">
                                       <div 
-                                        className={`h-full bg-gradient-to-r ${skillGroup.color} rounded-full transition-all duration-1000 ease-out transform origin-left shadow-sm`}
+                                        className={`h-full bg-blue-500 rounded-full transition-all duration-1000 ease-out transform origin-left shadow-sm`}
                                         style={{ width: `${skill.level}%` }}
                                       ></div>
                                     </div>
@@ -249,9 +249,6 @@ const Skills: React.FC<SkillsProps> = ({ skills = [] }) => {
                                 </div>
                               </div>
                               
-                              {/* Decorative Elements */}
-                              <div className={`absolute -top-1 -right-1 w-12 h-12 bg-gradient-to-br ${skillGroup.color} opacity-10 rounded-full blur-lg group-hover/skill:scale-150 transition-transform duration-500`}></div>
-                              <div className={`absolute -bottom-1 -left-1 w-8 h-8 bg-gradient-to-tr ${skillGroup.color} opacity-5 rounded-full blur-md group-hover/skill:scale-125 transition-transform duration-700`}></div>
                             </div>
                           </div>
                         );

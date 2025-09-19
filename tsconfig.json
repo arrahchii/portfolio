@@ -3,6 +3,8 @@
     "incremental": true,
     "noEmit": false,  // Ensure emitted files are generated
     "module": "ESNext",  // Enable support for ES modules
+    "target": "ES2020",  // Set target to ES2020 for better iteration support
+    "downlevelIteration": true,  // Enable downlevel iteration for Map/Set
     "strict": true,
     "lib": ["esnext", "dom", "dom.iterable"],
     "jsx": "react-jsx",  // For React 17+ JSX syntax

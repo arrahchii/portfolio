@@ -152,7 +152,7 @@ const Resume: React.FC<ResumeProps> = ({ experiences = [], education = [], langu
 
   if (loading) {
     return (
-      <div className="relative flex h-auto min-h-screen w-full flex-col bg-gradient-to-br from-gray-50 via-white to-blue-50/30 overflow-x-hidden" style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}>
+      <div className="relative flex h-auto min-h-screen w-full flex-col bg-white overflow-x-hidden" style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}>
         <div className="layout-container flex h-full grow flex-col">
           <div className="px-40 flex flex-1 justify-center py-5">
             <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
@@ -169,10 +169,10 @@ const Resume: React.FC<ResumeProps> = ({ experiences = [], education = [], langu
   }
 
   return (
-    <div className="relative flex h-auto min-h-screen w-full flex-col bg-gradient-to-br from-gray-50 via-white to-blue-50/30 overflow-x-hidden" style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}>
+    <div className="relative flex h-auto min-h-screen w-full flex-col bg-white overflow-x-hidden" style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}>
       <div className="layout-container flex h-full grow flex-col">
         {/* Tab Navigation - Top */}
-        <div className="sticky top-0 z-50 border-b border-gray-200/50 bg-white/80 backdrop-blur-sm">
+        <div className="sticky top-0 z-50 border-b border-gray-200 bg-white">
           <div className="flex items-center justify-between px-6 py-4">
             <div className="flex items-center">
               <QuickQuestions 

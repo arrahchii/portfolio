@@ -281,14 +281,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const profile = {
         name: "Lance Cabanit",
-        title: "Full-Stack Developer & AI Enthusiast",
+        title: "AI Engineer & DevOps",
         availability: "Available for Opportunities",
         avatar: "/src/assets/ICONN.jpg",
         sections: {
           me: {
-            bio: "Passionate full-stack developer with expertise in modern web technologies and AI integration. I love creating interactive applications that solve real-world problems.",
-            experience: "3+ years of professional development experience",
-            passion: "Building innovative solutions with cutting-edge technology",
+            bio: "I'm Lance Cabanit, a passionate AI Engineer and DevOps specialist with a unique blend of leadership experience and technical expertise. Currently in my 3rd year at Holy Trinity College, I've built a solid foundation in programming, software development, and system design while gaining real-world experience across multiple domains.\n\nMy professional journey began in the BPO industry, where I spent four years at C&C BPO, progressing from agent to supervisor. Leading teams of 10-15 agents taught me valuable skills in team leadership, training, and customer service excellence. This experience shaped my ability to communicate complex technical concepts clearly and manage projects effectively.\n\nTransitioning into the tech space, I've worked as a Frontend Developer and Full Stack Developer at SmartBuild Solutions, crafting responsive web applications with HTML, CSS, and JavaScript. My role as a Web Designer at Algoworks allowed me to blend technical skills with creative vision, developing user interfaces and digital marketing assets that meet client specifications and enhance user experiences.\n\nWhat sets me apart is my ambitious vision for the future. I'm actively working on cutting-edge projects that span AI/ML engineering, prompt engineering, and full-stack development. From building real-time video analytics pipelines with AWS to creating sophisticated AI-powered systems, I'm constantly pushing the boundaries of what's possible with modern technology.\n\nMy goal is to bridge the gap between innovative AI capabilities and practical web applications, creating solutions that are not only technically impressive but also genuinely useful for real-world problems. Whether I'm developing multimodal search engines, implementing federated learning systems, or building collaborative development platforms, I approach each project with both technical precision and strategic thinking.\n\nI believe that the future belongs to those who can seamlessly integrate AI intelligence with exceptional user experiences, and that's exactly where I'm positioning myself in this rapidly evolving tech landscape.",
+            experience: "5+ years of professional development experience",
+            passion: "Building innovative AI-integrated solutions with cutting-edge technology",
           },
           skills: [
             { category: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind CSS"] },
