@@ -906,13 +906,16 @@ app.use(cors({
     // Log origin requests for security monitoring
     console.log(`🔒 CORS Origin Request: ${origin || 'no-origin'}`);
     
-    // Allow requests with no origin (mobile apps, postman, etc.) only in development
-    if (!origin && process.env.NODE_ENV !== 'production') {
+    // Allow requests with no origin (same-origin requests, mobile apps, postman, etc.)
+    // This is common in production when requests come from the same domain
+    if (!origin) {
+      console.log(`✅ CORS allowing same-origin request`);
       return callback(null, true);
     }
     
     // Validate origin against whitelist
-    if (origin && allowedOrigins.includes(origin)) {
+    if (allowedOrigins.includes(origin)) {
+      console.log(`✅ CORS allowing whitelisted origin: ${origin}`);
       return callback(null, true);
     } else {
       console.warn(`🚨 CORS blocked origin: ${origin}`);
