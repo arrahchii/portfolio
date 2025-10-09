@@ -22,7 +22,7 @@ import Resume from "@/components/Resume";
 import Contact from "@/components/Contact";
 import LoadingIntro from "@/components/LoadingIntro";
 import VantaBackground from "@/components/VantaBackground";
-import EnvironmentDebug from "@/components/EnvironmentDebug";
+
 import lanceProfileImage from "@/assets/ICONN.jpg";
 
 // API Base URL - Uses environment variable in production, localhost in development
@@ -776,8 +776,7 @@ export default function App() {
         {/* Vanta.js NET Background */}
         <VantaBackground />
         <Toaster />
-        {/* Temporary Debug Component */}
-        <EnvironmentDebug />
+
         <div className="relative z-10 min-h-screen">
           {showIntro ? (
             <LoadingIntro onComplete={handleIntroComplete} />
