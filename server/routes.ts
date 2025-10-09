@@ -158,12 +158,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log("🔑 Session:", sessionId);
       console.log("⚡ Quick question:", isQuickQuestion);
 
+      // Ensure conversation exists
+      let conversation = await storage.getConversation(sessionId);
+      if (!conversation) {
+        console.log("🆕 Creating new conversation for session:", sessionId);
+        conversation = await storage.createConversation({
+          sessionId,
+          title: message.substring(0, 50) + (message.length > 50 ? "..." : ""),
+          messageCount: "0",
+        });
+      }
+
       // Save user message to database
       await storage.saveChatMessage({
         sessionId,
         message,
         role: "user",
         metadata: { isQuickQuestion: isQuickQuestion || false },
+      });
+
+      // Update conversation message count and activity
+      const currentCount = parseInt(conversation.messageCount || "0");
+      await storage.updateConversation(sessionId, {
+        messageCount: (currentCount + 1).toString(),
       });
 
       // Get conversation history (including the message we just saved)
@@ -189,6 +206,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (isPersonalResponse(aiResponse)) {
         console.log("👤 PERSONAL QUERY RESPONSE DETECTED");
         console.log("🖼️ Image URL:", aiResponse.imageUrl);
+        console.log("🔍 aiResponse.response type:", typeof aiResponse.response);
+        console.log("🔍 aiResponse.response value:", aiResponse.response);
         
         responseMessage = aiResponse.response;
         responseMetadata = {
@@ -198,8 +217,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         };
       } else {
         console.log("💬 Regular AI response");
+        console.log("🔍 aiResponse type:", typeof aiResponse);
+        console.log("🔍 aiResponse value:", aiResponse);
         responseMessage = aiResponse as string;
       }
+
+      console.log("🔍 FINAL responseMessage type:", typeof responseMessage);
+      console.log("🔍 FINAL responseMessage value:", responseMessage);
 
       // Save assistant response to database
       const assistantMessage = await storage.saveChatMessage({
@@ -337,6 +361,54 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({
         success: false,
         error: "Failed to retrieve profile data",
+      });
+    }
+  });
+
+  // Get conversation history endpoint
+  app.get("/api/conversations/:sessionId", async (req, res) => {
+    try {
+      const { sessionId } = req.params;
+      console.log("📚 Getting conversation history for session:", sessionId);
+
+      const conversation = await storage.getConversation(sessionId);
+      const messages = await storage.getChatHistory(sessionId);
+
+      res.json({
+        success: true,
+        conversation,
+        messages,
+        messageCount: messages.length,
+      });
+
+    } catch (error) {
+      console.error("Conversation history API Error:", error);
+      res.status(500).json({
+        success: false,
+        error: "Failed to retrieve conversation history",
+      });
+    }
+  });
+
+  // Get recent conversations endpoint
+  app.get("/api/conversations", async (req, res) => {
+    try {
+      const limit = parseInt(req.query.limit as string) || 10;
+      console.log("📋 Getting recent conversations, limit:", limit);
+
+      const conversations = await storage.getRecentConversations(limit);
+
+      res.json({
+        success: true,
+        conversations,
+        count: conversations.length,
+      });
+
+    } catch (error) {
+      console.error("Recent conversations API Error:", error);
+      res.status(500).json({
+        success: false,
+        error: "Failed to retrieve recent conversations",
       });
     }
   });

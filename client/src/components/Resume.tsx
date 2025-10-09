@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { QuickQuestions } from './QuickQuestions';
-import { GraduationCap, Briefcase, Download, MapPin, Calendar, Languages } from 'lucide-react';
+import { GraduationCap, Briefcase, Download, MapPin, Calendar, Languages, Brain, Award, Clock, TrendingUp } from 'lucide-react';
 
 interface Experience {
   title: string;
@@ -40,7 +40,7 @@ const Resume: React.FC<ResumeProps> = ({ experiences = [], education = [], langu
   // API Base URL - Uses environment variable in production, localhost in development
   const API_BASE_URL = window.location.hostname.endsWith("onrender.com")
     ? "https://lanceport-fullstack.onrender.com"
-    : "http://localhost:5000";
+    : "http://localhost:5001";
 
   // Fetch portfolio data
   useEffect(() => {
@@ -94,30 +94,32 @@ const Resume: React.FC<ResumeProps> = ({ experiences = [], education = [], langu
       technologies: ["Content Writing", "Copywriting", "Social Media Marketing"]
     },
     {
-      title: "Web Designer",
+      title: "Backend Engineer",
       company: "Algoworks",
       period: "09/2024 - 12/2024",
       location: "Remote",
       type: "Remote",
       achievements: [
-        "Designed user interface to meet client specifications",
-        "Improved overall site aesthetics through the use of high-quality graphics, typography choices, color schemes, and layout principles",
-        "Developed graphic and image assets for both content and digital marketing efforts",
-        "Coordinated copywriting and designed images to craft website content"
+        "Developed and maintained RESTful APIs using Node.js and Express.js to support frontend applications",
+        "Designed and optimized database schemas and queries for improved performance and scalability",
+        "Implemented authentication and authorization systems with JWT tokens and role-based access control",
+        "Built microservices architecture and integrated third-party APIs for enhanced functionality"
       ],
-      technologies: ["UI/UX Design", "Graphic Design", "Web Design"]
+      technologies: ["Node.js", "Express.js", "MongoDB", "PostgreSQL", "REST APIs", "JWT Authentication"]
     },
     {
-      title: "Supervisor – BPO Company",
-      company: "C&C BPO",
+      title: "Tech Head & Team Supervisor",
+      company: "C&C Company",
       period: "2020 - 2024",
       location: "Philippines",
       type: "Full-time",
       achievements: [
-        "Led a team of 10–15 agents, helping them handle customer calls and deliver great service every day",
-        "Trained new agents, guiding them through tools, company processes, and how to talk to customers in a professional but friendly way"
+        "Led 10-15 agents in cold calling campaigns for tech solutions and web development services",
+        "Built scalable internal systems to support multiple campaign operations and client management",
+        "Optimized workflows with tech solutions to improve campaign efficiency and lead conversion rates",
+        "Supervised technical aspects of campaigns while ensuring team performance and service quality"
       ],
-      technologies: ["Team Leadership", "Customer Service", "Training"]
+      technologies: ["Team Leadership", "Cold Calling Campaigns", "Tech Solutions", "Web Development", "Campaign Management", "Lead Generation"]
     }
   ];
 
@@ -169,10 +171,10 @@ const Resume: React.FC<ResumeProps> = ({ experiences = [], education = [], langu
   }
 
   return (
-    <div className="relative flex h-auto min-h-screen w-full flex-col bg-white overflow-x-hidden" style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}>
+    <div className="relative flex h-auto min-h-screen w-full flex-col bg-gray-50 overflow-x-hidden" style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}>
       <div className="layout-container flex h-full grow flex-col">
         {/* Tab Navigation - Top */}
-        <div className="sticky top-0 z-50 border-b border-gray-200 bg-white">
+        <div className="sticky top-0 z-50 border-b border-gray-200/50 bg-white/80 backdrop-blur-sm">
           <div className="flex items-center justify-between px-6 py-4">
             <div className="flex items-center">
               <QuickQuestions 
@@ -186,35 +188,32 @@ const Resume: React.FC<ResumeProps> = ({ experiences = [], education = [], langu
           </div>
         </div>
         
-        <div className="px-4 md:px-20 lg:px-40 flex flex-1 justify-center py-5">
-          <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
+        {/* Main Content Area - Full Width */}
+        <div className="px-4 md:px-8 lg:px-12 py-8">
+          <div className="max-w-6xl mx-auto">
             {/* Header Section */}
-            <div className="flex flex-wrap justify-between gap-3 p-4">
-              <div className="flex min-w-72 flex-col gap-3">
-                <p className="text-gray-900 tracking-light text-[32px] font-bold leading-tight">Professional Resume</p>
-                <p className="text-gray-600 text-sm font-normal leading-normal">
-                  A comprehensive overview of my professional journey, technical expertise, and achievements in full-stack development and UI/UX design.
-                </p>
-              </div>
-            </div>
-
-            {/* Download Resume Section */}
-            <div className="p-4">
-              <div className="bg-white rounded-xl border border-gray-200 hover:border-gray-300 transition-colors duration-300 shadow-sm hover:shadow-md p-6">
+            <div className="mb-12">
+              <h1 className="text-3xl md:text-4xl font-light text-slate-900 mb-4">Professional Resume</h1>
+              <p className="text-slate-600 text-lg leading-relaxed max-w-2xl mb-8">
+                A comprehensive overview of my professional journey, technical expertise, and achievements in full-stack development and UI/UX design.
+              </p>
+              
+              {/* Download Resume Section */}
+              <div className="bg-white/60 backdrop-blur-sm border border-gray-200/50 rounded-2xl p-6 hover:bg-white/80 hover:border-gray-300/50 transition-all duration-300">
                 <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg mb-4">
-                    <GraduationCap className="w-6 h-6 text-white" />
+                  <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-gray-700 to-black rounded-xl shadow-lg mb-4">
+                    <Download className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-gray-900 text-xl font-bold leading-tight mb-4">
-                    Download Resume
+                  <h3 className="text-slate-900 text-xl font-medium leading-tight mb-4">
+                    Download Complete Resume
                   </h3>
-                  <p className="text-gray-600 text-sm font-normal leading-normal mb-6">
-                    Get the complete PDF version of my professional resume with detailed experience and qualifications.
+                  <p className="text-slate-600 text-sm mb-6">
+                    Get the full PDF version with detailed information about my experience and qualifications.
                   </p>
                   <a
                     href="/CABANITLANCERESUME.pdf"
                     download="CABANITLANCERESUME.pdf"
-                    className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-lg hover:from-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                    className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-gray-700 to-black text-white font-medium rounded-lg hover:from-gray-800 hover:to-gray-900 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -226,169 +225,140 @@ const Resume: React.FC<ResumeProps> = ({ experiences = [], education = [], langu
             </div>
             
             {/* Work Experience */}
-            <div className="p-4">
-              <div className="bg-white rounded-xl border border-gray-200 hover:border-gray-300 transition-colors duration-300 shadow-sm hover:shadow-md">
-                {/* Section Header */}
-                <div className="flex items-center p-6 border-b border-gray-100">
-                  <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl shadow-lg mr-4 text-white">
-                    <Briefcase className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="text-gray-900 text-xl font-bold leading-tight">Work Experience</h3>
-                    <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full mt-1"></div>
-                  </div>
+            <div className="mb-12">
+              <div className="flex items-center mb-8">
+                <div className="flex items-center justify-center w-10 h-10 bg-slate-100 rounded-lg mr-4">
+                  <Briefcase className="w-5 h-5 text-slate-600" />
                 </div>
+                <div>
+                  <h2 className="text-xl font-medium text-slate-900">Work Experience</h2>
+                  <div className="w-12 h-0.5 bg-slate-300 mt-1"></div>
+                </div>
+              </div>
 
-                {/* Experience Timeline */}
-                <div className="p-6">
-                  <div className="relative">
-                    {/* Timeline Line */}
-                    <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 via-indigo-500 to-purple-500"></div>
-                    
-                    <div className="space-y-8">
-                      {experiencesToDisplay.map((exp, index) => (
-                        <div key={index} className="relative">
-                          {/* Timeline Dot */}
-                          <div className="absolute left-4 w-4 h-4 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full border-4 border-white shadow-lg"></div>
-                          
-                          {/* Experience Card */}
-                          <div className="ml-16 group">
-                            <div className="bg-gray-50 border border-gray-100 rounded-lg p-6 hover:bg-white hover:border-gray-200 transition-all duration-300 hover:shadow-sm">
-                              {/* Header */}
-                              <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                                <div>
-                                  <h4 className="text-gray-900 text-lg font-bold leading-tight">{exp.title}</h4>
-                                  <p className="text-blue-600 font-semibold">{exp.company}</p>
-                                </div>
-                                <div className="text-right mt-2 md:mt-0">
-                                  <p className="text-gray-600 text-sm font-medium">{exp.period}</p>
-                                  <div className="flex items-center justify-end mt-1">
-                                    <MapPin className="w-3 h-3 text-gray-400 mr-1" />
-                                    <span className="text-gray-500 text-xs">{exp.location}</span>
-                                  </div>
-                                </div>
-                              </div>
-                              
-                              {/* Achievements */}
-                              <div className="mb-4">
-                                <h5 className="text-gray-800 font-semibold text-sm mb-2">Key Achievements:</h5>
-                                <ul className="space-y-1">
-                                  {exp.achievements.map((achievement, achIndex) => (
-                                    <li key={achIndex} className="text-gray-600 text-sm leading-relaxed flex items-start">
-                                      <span className="text-blue-500 mr-2 mt-1.5 flex-shrink-0">•</span>
-                                      {achievement}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                              
-                              {/* Technologies */}
-                              <div>
-                                <h5 className="text-gray-800 font-semibold text-sm mb-2">Technologies:</h5>
-                                <div className="flex flex-wrap gap-2">
-                                  {exp.technologies.map((tech, techIndex) => (
-                                    <span key={techIndex} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-md font-medium">
-                                      {tech}
-                                    </span>
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
+              <div className="space-y-6">
+                {experiencesToDisplay.map((exp, index) => (
+                  <div key={index} className="group">
+                    <div className="bg-white/60 backdrop-blur-sm border border-gray-200/50 rounded-2xl p-6 hover:bg-white/80 hover:border-gray-300/50 transition-all duration-300 hover:shadow-lg">
+                      {/* Header */}
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                        <div>
+                          <h4 className="text-slate-900 text-lg font-medium leading-tight">{exp.title}</h4>
+                          <p className="text-gray-800 font-medium">{exp.company}</p>
+                        </div>
+                        <div className="text-right mt-2 md:mt-0">
+                          <p className="text-slate-600 text-sm font-medium">{exp.period}</p>
+                          <div className="flex items-center justify-end mt-1">
+                            <MapPin className="w-3 h-3 text-slate-400 mr-1" />
+                            <span className="text-slate-500 text-xs">{exp.location}</span>
                           </div>
                         </div>
-                      ))}
+                      </div>
+                      
+                      {/* Achievements */}
+                      <div className="mb-4">
+                        <h5 className="text-slate-800 font-medium text-sm mb-3">Key Achievements:</h5>
+                        <ul className="space-y-2">
+                          {exp.achievements.map((achievement, achIndex) => (
+                            <li key={achIndex} className="text-slate-600 text-sm leading-relaxed flex items-start">
+                              <span className="text-gray-600 mr-2 mt-1.5 flex-shrink-0">•</span>
+                              {achievement}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      {/* Technologies */}
+                      <div>
+                        <h5 className="text-slate-800 font-medium text-sm mb-3">Technologies:</h5>
+                        <div className="flex flex-wrap gap-2">
+                          {exp.technologies.map((tech, techIndex) => (
+                            <span key={techIndex} className="px-3 py-1 bg-gray-100/80 text-gray-800 text-xs rounded-lg font-medium backdrop-blur-sm">
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
 
             {/* Education */}
-            <div className="p-4">
-              <div className="bg-white rounded-xl border border-gray-200 hover:border-gray-300 transition-colors duration-300 shadow-sm hover:shadow-md">
-                {/* Section Header */}
-                <div className="flex items-center p-6 border-b border-gray-100">
-                  <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl shadow-lg mr-4 text-white">
-                    <GraduationCap className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="text-gray-900 text-xl font-bold leading-tight">Education</h3>
-                    <div className="w-16 h-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mt-1"></div>
-                  </div>
+            <div className="mb-12">
+              <div className="flex items-center mb-8">
+                <div className="flex items-center justify-center w-10 h-10 bg-slate-100 rounded-lg mr-4">
+                  <GraduationCap className="w-5 h-5 text-slate-600" />
                 </div>
+                <div>
+                  <h2 className="text-xl font-medium text-slate-900">Education</h2>
+                  <div className="w-12 h-0.5 bg-slate-300 mt-1"></div>
+                </div>
+              </div>
 
-                {/* Education List */}
-                <div className="p-6">
-                  <div className="space-y-6">
-                    {educationToDisplay.map((edu, index) => (
-                      <div key={index} className="bg-gray-50 border border-gray-100 rounded-lg p-6 hover:bg-white hover:border-gray-200 transition-all duration-300 hover:shadow-sm">
-                        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                          <div>
-                            <h4 className="text-gray-900 text-lg font-bold leading-tight">{edu.degree}</h4>
-                            <p className="text-green-600 font-semibold">{edu.school}</p>
-                          </div>
-                          <div className="text-right mt-2 md:mt-0">
-                            <div className="flex items-center justify-end">
-                              <Calendar className="w-3 h-3 text-gray-400 mr-1" />
-                              <span className="text-gray-600 text-sm font-medium">{edu.period}</span>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* Relevant Coursework */}
-                        <div>
-                          <h5 className="text-gray-800 font-semibold text-sm mb-2">Relevant Coursework:</h5>
-                          <div className="flex flex-wrap gap-2">
-                            {edu.relevant.map((course, courseIndex) => (
-                              <span key={courseIndex} className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-md font-medium">
-                                {course}
-                              </span>
-                            ))}
-                          </div>
+              <div className="space-y-6">
+                {educationToDisplay.map((edu, index) => (
+                  <div key={index} className="bg-white/60 backdrop-blur-sm border border-gray-200/50 rounded-2xl p-6 hover:bg-white/80 hover:border-gray-300/50 transition-all duration-300 hover:shadow-lg">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                      <div>
+                        <h4 className="text-slate-900 text-lg font-medium leading-tight">{edu.degree}</h4>
+                        <p className="text-gray-800 font-medium">{edu.school}</p>
+                      </div>
+                      <div className="text-right mt-2 md:mt-0">
+                        <div className="flex items-center justify-end">
+                          <Calendar className="w-3 h-3 text-slate-400 mr-1" />
+                          <span className="text-slate-600 text-sm font-medium">{edu.period}</span>
                         </div>
                       </div>
-                    ))}
+                    </div>
+                    
+                    {/* Relevant Coursework */}
+                    <div>
+                      <h5 className="text-slate-800 font-medium text-sm mb-3">Relevant Coursework:</h5>
+                      <div className="flex flex-wrap gap-2">
+                        {edu.relevant.map((course, courseIndex) => (
+                          <span key={courseIndex} className="px-3 py-1 bg-gray-100/80 text-gray-800 text-xs rounded-lg font-medium backdrop-blur-sm">
+                            {course}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
 
             {/* Languages */}
-            <div className="p-4">
-              <div className="bg-white rounded-xl border border-gray-200 hover:border-gray-300 transition-colors duration-300 shadow-sm hover:shadow-md">
-                {/* Section Header */}
-                <div className="flex items-center p-6 border-b border-gray-100">
-                  <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl shadow-lg mr-4 text-white">
-                    <Languages className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="text-gray-900 text-xl font-bold leading-tight">Languages</h3>
-                    <div className="w-16 h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mt-1"></div>
-                  </div>
+            <div className="mb-12">
+              <div className="flex items-center mb-8">
+                <div className="flex items-center justify-center w-10 h-10 bg-slate-100 rounded-lg mr-4">
+                  <Languages className="w-5 h-5 text-slate-600" />
                 </div>
+                <div>
+                  <h2 className="text-xl font-medium text-slate-900">Languages</h2>
+                  <div className="w-12 h-0.5 bg-slate-300 mt-1"></div>
+                </div>
+              </div>
 
-                {/* Languages List */}
-                <div className="p-6">
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {languagesToDisplay.map((language, index) => (
-                      <div key={index} className="bg-gray-50 border border-gray-100 rounded-lg p-4 hover:bg-white hover:border-gray-200 transition-all duration-300 hover:shadow-sm">
-                        <div className="flex justify-between items-center mb-2">
-                          <h4 className="text-gray-900 font-bold">{language.name}</h4>
-                          <p className="text-gray-600 font-medium text-sm">{language.proficiency}</p>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <div className="flex-1 bg-gray-200 rounded-full h-2">
-                            <div 
-                              className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-300" 
-                              style={{ width: `${language.level}%` }}
-                            ></div>
-                          </div>
-                          <span className="text-sm font-semibold text-gray-700">{language.level}%</span>
-                        </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {languagesToDisplay.map((language, index) => (
+                  <div key={index} className="bg-white/60 backdrop-blur-sm border border-gray-200/50 rounded-2xl p-5 hover:bg-white/80 hover:border-gray-300/50 transition-all duration-300 hover:shadow-lg">
+                    <div className="flex justify-between items-center mb-3">
+                      <h4 className="text-slate-900 font-medium">{language.name}</h4>
+                      <p className="text-slate-600 font-medium text-sm">{language.proficiency}</p>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <div className="flex-1 bg-slate-200 rounded-full h-2">
+                        <div 
+                          className="bg-gradient-to-r from-gray-600 to-black h-2 rounded-full transition-all duration-300" 
+                          style={{ width: `${language.level}%` }}
+                        ></div>
                       </div>
-                    ))}
+                      <span className="text-sm font-medium text-slate-700">{language.level}%</span>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>

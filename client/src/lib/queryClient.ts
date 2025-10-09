@@ -1,7 +1,7 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
 // Direct API calls to backend
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = 'http://localhost:5001';
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
@@ -17,8 +17,6 @@ export async function apiRequest(
 ): Promise<Response> {
   // Always use full URL to backend
   const fullUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url}`;
-  
-  console.log(`🌐 API Request: ${method} ${fullUrl}`);
 
   const res = await fetch(fullUrl, {
     method,
@@ -29,8 +27,6 @@ export async function apiRequest(
     mode: "cors",
     credentials: "include",
   });
-
-  console.log(`✅ API Response: ${res.status} ${res.statusText}`);
   await throwIfResNotOk(res);
   return res;
 }

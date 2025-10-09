@@ -39,11 +39,6 @@ interface ChatMessageProps {
 }
 
 export function ChatMessage({ content, role, profile }: ChatMessageProps) {
-  console.log('🚨 CHATMESSAGE COMPONENT IS RUNNING');
-  console.log('🚨 Content type:', typeof content);
-  console.log('🚨 Content value:', content);
-  console.log('🚨 Role:', role);
-
   // Safety check - ensure content is always a string
   const messageContent = typeof content === 'string' ? content : JSON.stringify(content);
 
@@ -51,7 +46,6 @@ export function ChatMessage({ content, role, profile }: ChatMessageProps) {
   const isProfileMessage = messageContent.startsWith('profile:') && role === 'assistant';
   
   if (isProfileMessage) {
-    console.log('🖼️ PROFILE MESSAGE DETECTED BY CONTENT!');
     
     return (
       <div className="w-full p-4 border-4 border-blue-500 bg-blue-50 rounded-lg shadow-lg">

@@ -14,23 +14,17 @@ export function ApiTest() {
   useEffect(() => {
     const testApi = async () => {
       try {
-        console.log('🧪 Testing API connection...');
-        
-        const response = await fetch('http://localhost:5000/api/portfolio/profile', {
+        const response = await fetch('http://localhost:5001/api/portfolio/profile', {
           method: 'GET',
           mode: 'cors',
           credentials: 'include',
         });
-        
-        console.log('📡 Response status:', response.status);
-        console.log('📡 Response ok:', response.ok);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         
         const result = await response.json();
-        console.log('✅ API Response:', result);
         setData(result);
       } catch (err) {
         const message = getErrorMessage(err);

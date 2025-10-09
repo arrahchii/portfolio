@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ChevronDown, EyeOff, MessageCircle, Code, Cog, Briefcase, Mail, User, FileText, Folder } from 'lucide-react';
+import { ChevronDown, EyeOff, MessageCircle, Code, Cog, Briefcase, Mail, User, FileText, Folder, Award } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export type TabType = 'me' | 'projects' | 'skills' | 'resume' | 'contact';
+export type TabType = 'me' | 'projects' | 'skills' | 'resume' | 'contact' | 'certificates';
 
 interface QuickQuestionsProps {
   onQuestionClick: (question: string) => void;
@@ -43,6 +43,7 @@ const TABS = [
   { id: 'projects' as TabType, label: 'Projects', icon: Folder },
   { id: 'skills' as TabType, label: 'Skills', icon: Code },
   { id: 'resume' as TabType, label: 'Resume', icon: FileText },
+  { id: 'certificates' as TabType, label: 'Certificates', icon: Award },
   { id: 'contact' as TabType, label: 'Contact', icon: Mail },
 ];
 
@@ -70,8 +71,8 @@ export function QuickQuestions({ onQuestionClick, disabled = false, activeTab = 
               className={cn(
                 "flex items-center gap-1 md:gap-2 pb-3 transition-all duration-200 text-xs md:text-sm font-semibold tracking-wide whitespace-nowrap flex-shrink-0",
                 isActive 
-                  ? "text-gray-900 border-b-2 border-gray-900" 
-                  : "text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300"
+                  ? "text-slate-900 border-b-2 border-slate-900"
+        : "text-slate-600 hover:text-slate-800 hover:border-b-2 hover:border-slate-400"
               )}
             >
               <IconComponent className="w-3 h-3 md:w-4 md:h-4" />
@@ -90,7 +91,7 @@ export function QuickQuestions({ onQuestionClick, disabled = false, activeTab = 
         {/* Professional Section Header */}
         <div className="flex items-center gap-3 px-2">
           <div className="w-1 h-6 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full md:hidden"></div>
-          <h3 className="text-lg sm:text-lg font-bold text-gray-800 tracking-wide">
+          <h3 className="text-lg sm:text-lg font-bold text-slate-900 tracking-wide">
             <span className="md:hidden">Quick Questions</span>
             <span className="hidden md:inline">Quick Questions</span>
           </h3>
@@ -113,10 +114,10 @@ export function QuickQuestions({ onQuestionClick, disabled = false, activeTab = 
                 <div className="absolute top-2 right-2 w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 md:hidden"></div>
                 
                 <div className="flex items-start gap-3 sm:gap-3">
-                  <div className="flex-shrink-0 w-6 h-6 sm:w-6 sm:h-6 text-blue-600 group-hover:text-blue-700 mt-0.5 transition-colors duration-300">
+                  <div className="flex-shrink-0 w-6 h-6 sm:w-6 sm:h-6 text-indigo-600 group-hover:text-indigo-700 mt-0.5 transition-colors duration-300">
                     <IconComponent className="w-full h-full" />
                   </div>
-                  <span className="text-sm sm:text-base text-gray-700 group-hover:text-gray-900 font-medium leading-relaxed tracking-wide">
+                  <span className="text-sm sm:text-base text-slate-700 group-hover:text-slate-900 font-medium leading-relaxed tracking-wide">
                     {question.text}
                   </span>
                 </div>
@@ -148,7 +149,7 @@ export function QuickQuestions({ onQuestionClick, disabled = false, activeTab = 
                   className={`group relative flex-shrink-0 flex items-center gap-2.5 px-4 py-3 sm:px-4 sm:py-3 rounded-2xl sm:rounded-xl font-semibold text-sm sm:text-base transition-all duration-300 whitespace-nowrap transform hover:scale-105 active:scale-95 ${
                     isActive
                       ? 'bg-gradient-to-r from-blue-600 via-blue-700 to-purple-600 text-white shadow-xl shadow-blue-200/50'
-                      : 'bg-gradient-to-r from-gray-100/80 to-gray-50/80 text-gray-600 hover:from-blue-50/80 hover:to-purple-50/80 hover:text-gray-800 border border-gray-200/50 hover:border-blue-200/60'
+                      : 'bg-gradient-to-r from-gray-100/80 to-gray-50/80 text-slate-700 hover:from-blue-50/80 hover:to-purple-50/80 hover:text-slate-900 border border-gray-200/50 hover:border-blue-200/60'
                   }`}
                 >
                   {/* Mobile-Specific Active Indicator */}
@@ -157,11 +158,11 @@ export function QuickQuestions({ onQuestionClick, disabled = false, activeTab = 
                   )}
                   
                   <IconComponent className={`w-5 h-5 sm:w-5 sm:h-5 flex-shrink-0 transition-all duration-300 ${
-                    isActive ? 'text-white' : 'text-gray-500 group-hover:text-blue-600'
+                    isActive ? 'text-white' : 'text-slate-600 group-hover:text-indigo-600'
                   }`} />
                   
                   <span className={`font-bold tracking-wide transition-all duration-300 ${
-                    isActive ? 'text-white' : 'text-gray-700 group-hover:text-gray-900'
+                    isActive ? 'text-white' : 'text-slate-800 group-hover:text-slate-900'
                   }`}>
                     {tab.label}
                   </span>

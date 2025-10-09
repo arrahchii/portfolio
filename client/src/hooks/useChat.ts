@@ -16,6 +16,7 @@ export function useChat(sessionId: string) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [conversationLoaded, setConversationLoaded] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = useCallback(() => {
@@ -26,12 +27,65 @@ export function useChat(sessionId: string) {
     scrollToBottom();
   }, [messages, scrollToBottom]);
 
+  // Load conversation history when sessionId changes
+  useEffect(() => {
+    const loadConversationHistory = async () => {
+      if (!sessionId || conversationLoaded) return;
+
+      try {
+        // First try to load from localStorage
+        const localStorageKey = `chat_session_${sessionId}`;
+        const localMessages = localStorage.getItem(localStorageKey);
+        
+        if (localMessages) {
+          const parsedMessages = JSON.parse(localMessages).map((msg: any) => ({
+            ...msg,
+            timestamp: new Date(msg.timestamp),
+          }));
+          setMessages(parsedMessages);
+        }
+
+        // Then try to load from server
+        const response = await fetch(`/api/conversations/${sessionId}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.messages.length > 0) {
+            const serverMessages = data.messages.map((msg: any) => ({
+              id: msg.id,
+              role: msg.role,
+              message: msg.message,
+              timestamp: new Date(msg.timestamp),
+              specialFormatting: msg.metadata?.specialFormatting,
+              imageUrl: msg.metadata?.imageUrl,
+            }));
+            setMessages(serverMessages);
+            
+            // Update localStorage with server data
+            localStorage.setItem(localStorageKey, JSON.stringify(serverMessages));
+          }
+        }
+      } catch (error) {
+        console.error("❌ Failed to load conversation history:", error);
+      } finally {
+        setConversationLoaded(true);
+      }
+    };
+
+    loadConversationHistory();
+  }, [sessionId, conversationLoaded]);
+
+  // Save messages to localStorage whenever messages change
+  useEffect(() => {
+    if (messages.length > 0 && conversationLoaded) {
+      const localStorageKey = `chat_session_${sessionId}`;
+      localStorage.setItem(localStorageKey, JSON.stringify(messages));
+    }
+  }, [messages, sessionId, conversationLoaded]);
+
   const sendMessage = useCallback(async (message: string, isQuickQuestion = false) => {
     if (!message.trim() || isLoading) return;
 
     setError(null);
-    
-    console.log("🚀 Client sending message:", message);
     
     // Add user message immediately
     const userMessage: ChatMessage = {
@@ -56,8 +110,6 @@ export function useChat(sessionId: string) {
     setMessages(prev => [...prev, typingMessage]);
 
     try {
-      console.log("📤 Making API request...");
-      
       const response = await apiRequest('POST', '/api/chat', {
         message: message.trim(),
         sessionId,
@@ -65,10 +117,6 @@ export function useChat(sessionId: string) {
       });
 
       const data = await response.json();
-      console.log("📥 RAW API response:", data);
-      console.log("📥 API response keys:", Object.keys(data));
-      console.log("📥 specialFormatting value:", data.specialFormatting);
-      console.log("📥 imageUrl value:", data.imageUrl);
 
       if (data.success) {
         // Remove typing indicator and add assistant response
@@ -79,36 +127,18 @@ export function useChat(sessionId: string) {
           const assistantMessage: ChatMessage = {
             id: data.messageId || `assistant-${Date.now()}`,
             role: 'assistant' as const,
-            message: data.message,
+            message: data.message.content || data.message,
             timestamp: new Date(),
           };
-
-          // EXPLICITLY check for special formatting
-          console.log("🔍 Checking for special formatting...");
-          console.log("   data.specialFormatting:", data.specialFormatting);
-          console.log("   typeof data.specialFormatting:", typeof data.specialFormatting);
-          console.log("   data.imageUrl:", data.imageUrl);
-          console.log("   typeof data.imageUrl:", typeof data.imageUrl);
 
           // Add special formatting properties if they exist
           if (data.specialFormatting) {
             assistantMessage.specialFormatting = data.specialFormatting;
-            console.log("✅ Special formatting SET:", data.specialFormatting);
-          } else {
-            console.log("❌ No special formatting found");
           }
           
           if (data.imageUrl) {
             assistantMessage.imageUrl = data.imageUrl;
-            console.log("✅ Image URL SET:", data.imageUrl);
-          } else {
-            console.log("❌ No image URL found");
           }
-
-          // Debug: Log the final message object
-          console.log("🔍 FINAL assistant message object:", assistantMessage);
-          console.log("🔍 Final message specialFormatting:", assistantMessage.specialFormatting);
-          console.log("🔍 Final message imageUrl:", assistantMessage.imageUrl);
           
           return [...filtered, assistantMessage];
         });
@@ -128,7 +158,27 @@ export function useChat(sessionId: string) {
   const clearChat = useCallback(() => {
     setMessages([]);
     setError(null);
+    // Clear localStorage for this session
+    const localStorageKey = `chat_session_${sessionId}`;
+    localStorage.removeItem(localStorageKey);
+  }, [sessionId]);
+
+  const refreshConversation = useCallback(async () => {
+    setConversationLoaded(false);
+    setMessages([]);
+    // This will trigger the useEffect to reload the conversation
   }, []);
+
+  const getConversationStats = useCallback(() => {
+    const userMessages = messages.filter(msg => msg.role === 'user').length;
+    const assistantMessages = messages.filter(msg => msg.role === 'assistant').length;
+    return {
+      totalMessages: messages.length,
+      userMessages,
+      assistantMessages,
+      hasHistory: messages.length > 0,
+    };
+  }, [messages]);
 
   return {
     messages,
@@ -136,6 +186,9 @@ export function useChat(sessionId: string) {
     isLoading,
     error,
     clearChat,
+    refreshConversation,
+    getConversationStats,
+    conversationLoaded,
     messagesEndRef,
   };
 }

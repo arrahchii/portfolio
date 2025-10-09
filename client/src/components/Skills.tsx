@@ -26,31 +26,31 @@ const Skills: React.FC<SkillsProps> = ({ skills = [] }) => {
   // API Base URL - Uses environment variable in production, localhost in development
   const API_BASE_URL = window.location.hostname.endsWith("onrender.com")
     ? "https://lanceport-fullstack.onrender.com"
-    : "http://localhost:5000";
+    : "http://localhost:5001";
 
   // Temporarily disable API call to fix black screen issue
   useEffect(() => {
     setLoading(false);
   }, []);
 
-  // Enhanced skill data with comprehensive proficiency levels and icons (fallback)
+  // Professional skill data with minimal color scheme
   const defaultSkills: SkillCategory[] = [
     {
       category: "Development & Programming",
-      icon: <Code className="w-6 h-6" />,
-      color: "from-blue-500 to-cyan-500",
+      icon: <Code className="w-5 h-5" />,
+      color: "slate",
       skills: [
         { name: "Full-Stack Web Development", level: 70, years: "Professional" },
-        { name: "Frontend Development (React, HTML, CSS, JavaScript)", level: 90, years: "Expert" },
+        { name: "Frontend Development (React, HTML, CSS, JavaScript)", level: 70, years: "Intermediate" },
         { name: "Backend Development (Node.js)", level: 80, years: "Advanced" },
-        { name: "API Integration & Development", level: 60, years: "Intermediate" },
-        { name: "Database Management", level: 50, years: "Beginner" }
+        { name: "API Integration & Development", level: 80, years: "Advanced" },
+        { name: "Database Management", level: 70, years: "Intermediate" }
       ]
     },
     {
       category: "Marketing & Content",
-      icon: <TrendingUp className="w-6 h-6" />,
-      color: "from-green-500 to-emerald-500",
+      icon: <TrendingUp className="w-5 h-5" />,
+      color: "slate",
       skills: [
         { name: "Social Media Marketing", level: 90, years: "Expert" },
         { name: "Content Writing & Copywriting", level: 90, years: "Expert" },
@@ -60,8 +60,8 @@ const Skills: React.FC<SkillsProps> = ({ skills = [] }) => {
     },
     {
       category: "Virtual & Executive Support",
-      icon: <Users className="w-6 h-6" />,
-      color: "from-purple-500 to-pink-500",
+      icon: <Users className="w-5 h-5" />,
+      color: "slate",
       skills: [
         { name: "Virtual Assistant Services", level: 90, years: "Expert" },
         { name: "Executive Assistant Support", level: 90, years: "Expert" },
@@ -71,8 +71,8 @@ const Skills: React.FC<SkillsProps> = ({ skills = [] }) => {
     },
     {
       category: "Technical & Tools",
-      icon: <Headphones className="w-6 h-6" />,
-      color: "from-orange-500 to-red-500",
+      icon: <Headphones className="w-5 h-5" />,
+      color: "slate",
       skills: [
         { name: "Computer Hardware", level: 80, years: "Advanced" },
         { name: "Technical Support", level: 85, years: "Advanced" },
@@ -82,8 +82,8 @@ const Skills: React.FC<SkillsProps> = ({ skills = [] }) => {
     },
     {
       category: "Software & Platforms",
-      icon: <Settings className="w-6 h-6" />,
-      color: "from-indigo-500 to-purple-500",
+      icon: <Settings className="w-5 h-5" />,
+      color: "slate",
       skills: [
         { name: "Microsoft Office", level: 90, years: "Expert" },
         { name: "GHL", level: 90, years: "Expert" },
@@ -95,8 +95,8 @@ const Skills: React.FC<SkillsProps> = ({ skills = [] }) => {
     },
     {
       category: "Creative & Media Production",
-      icon: <Video className="w-6 h-6" />,
-      color: "from-pink-500 to-rose-500",
+      icon: <Video className="w-5 h-5" />,
+      color: "slate",
       skills: [
         { name: "Video Editing & Post-Production", level: 80, years: "Advanced" },
         { name: "Content Creation", level: 80, years: "Advanced" }
@@ -104,27 +104,24 @@ const Skills: React.FC<SkillsProps> = ({ skills = [] }) => {
     },
     {
       category: "Business Skills",
-      icon: <BarChart3 className="w-6 h-6" />,
-      color: "from-teal-500 to-cyan-500",
+      icon: <BarChart3 className="w-5 h-5" />,
+      color: "slate",
       skills: [
         { name: "Market Research", level: 85, years: "Advanced" }
       ]
     },
-
-
-
-     {
-       category: "E-commerce & Sales",
-       icon: <ShoppingCart className="w-6 h-6" />,
-       color: "from-amber-500 to-orange-600",
-       skills: [
-         { name: "E-commerce Platform Management", level: 80, years: "3+ years" },
-         { name: "Sales Funnel Optimization", level: 85, years: "4+ years" },
-         { name: "Customer Relationship Management (CRM)", level: 90, years: "5+ years" },
-         { name: "Lead Generation & Nurturing", level: 85, years: "4+ years" },
-         { name: "Conversion Rate Optimization", level: 80, years: "3+ years" }
-       ]
-     }
+    {
+      category: "E-commerce & Sales",
+      icon: <ShoppingCart className="w-5 h-5" />,
+      color: "slate",
+      skills: [
+        { name: "E-commerce Platform Management", level: 80, years: "3+ years" },
+        { name: "Sales Funnel Optimization", level: 85, years: "4+ years" },
+        { name: "Customer Relationship Management (CRM)", level: 90, years: "5+ years" },
+        { name: "Lead Generation & Nurturing", level: 85, years: "4+ years" },
+        { name: "Conversion Rate Optimization", level: 80, years: "3+ years" }
+      ]
+    }
   ];
 
   // Use skills from props, then default skills (prioritize our updated skills)
@@ -132,13 +129,13 @@ const Skills: React.FC<SkillsProps> = ({ skills = [] }) => {
 
   if (loading) {
     return (
-      <div className="relative flex h-auto min-h-screen w-full flex-col bg-gradient-to-br from-gray-50 via-white to-blue-50/30 overflow-x-hidden" style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}>
+      <div className="relative flex h-auto min-h-screen w-full flex-col bg-gray-50 overflow-x-hidden" style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}>
         <div className="layout-container flex h-full grow flex-col">
           <div className="px-40 flex flex-1 justify-center py-5">
             <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
               <div className="flex flex-wrap justify-between gap-3 p-4">
                 <div className="flex min-w-72 flex-col gap-3">
-                  <p className="text-gray-900 tracking-light text-[32px] font-bold leading-tight">Loading Skills...</p>
+                  <p className="text-slate-900 tracking-light text-[32px] font-bold leading-tight">Loading Skills...</p>
                 </div>
               </div>
             </div>
@@ -149,10 +146,10 @@ const Skills: React.FC<SkillsProps> = ({ skills = [] }) => {
   }
 
   return (
-    <div className="relative flex h-auto min-h-screen w-full flex-col bg-white overflow-x-hidden" style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}>
+    <div className="relative flex h-auto min-h-screen w-full flex-col bg-gray-50 overflow-x-hidden" style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}>
       <div className="layout-container flex h-full grow flex-col">
         {/* Tab Navigation - Top */}
-        <div className="sticky top-0 z-50 border-b border-gray-200 bg-white">
+        <div className="sticky top-0 z-50 border-b border-gray-200/50 bg-white/80 backdrop-blur-sm">
           <div className="flex items-center justify-between px-6 py-4">
             <div className="flex items-center">
               <QuickQuestions 
@@ -166,131 +163,136 @@ const Skills: React.FC<SkillsProps> = ({ skills = [] }) => {
           </div>
         </div>
         
-        <div className="px-4 md:px-20 lg:px-40 flex flex-1 justify-center py-5">
-          <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
-            {/* Header Section */}
-            <div className="flex flex-wrap justify-between gap-3 p-4">
-              <div className="flex min-w-72 flex-col gap-3">
-                <p className="text-gray-900 tracking-light text-[32px] font-bold leading-tight">Skills & Expertise</p>
-                <p className="text-gray-600 text-sm font-normal leading-normal">
-                  A comprehensive overview of technical proficiencies, accumulated through years of hands-on experience and continuous learning in cutting-edge technologies.
+        <div className="flex">
+          {/* Left Content Area */}
+          <div className="flex-1 px-4 md:px-8 lg:px-12 py-8">
+            <div className="max-w-4xl mx-auto">
+              {/* Header Section */}
+              <div className="mb-12">
+                <h1 className="text-3xl md:text-4xl font-light text-slate-900 mb-4">Skills & Expertise</h1>
+                <p className="text-slate-600 text-lg leading-relaxed max-w-2xl">
+                  Professional competencies developed through hands-on experience and continuous learning.
                 </p>
               </div>
-            </div>
-            
-            {/* Skills Categories */}
-            {skillsToDisplay.map((skillGroup, index) => (
-              <div key={index} className="p-4">
-                <div className="bg-white rounded-xl border border-gray-200 hover:border-gray-300 transition-colors duration-300 shadow-sm hover:shadow-md">
-                  {/* Category Header */}
-                  <div className="flex items-center p-6 border-b border-gray-100">
-                    <div className={`inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r ${skillGroup.color} rounded-xl shadow-lg mr-4 text-white`}>
-                      {skillGroup.icon}
+              
+              {/* Skills Categories */}
+              <div className="space-y-8">
+                {skillsToDisplay.map((skillGroup, index) => (
+                  <div key={index} className="group">
+                    {/* Category Header */}
+                    <div className="flex items-center mb-6">
+                      <div className="flex items-center justify-center w-10 h-10 bg-slate-100 rounded-lg mr-4">
+                        <div className="text-slate-600">
+                          {skillGroup.icon}
+                        </div>
+                      </div>
+                      <div>
+                        <h2 className="text-xl font-medium text-slate-900">{skillGroup.category}</h2>
+                        <div className="w-12 h-0.5 bg-slate-300 mt-1"></div>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-gray-900 text-xl font-bold leading-tight">{skillGroup.category}</h3>
-                      <div className={`w-16 h-1 bg-gradient-to-r ${skillGroup.color} rounded-full mt-1`}></div>
-                    </div>
-                  </div>
 
-                  {/* Skills Grid */}
-                  <div className="p-6">
+                    {/* Skills Grid */}
                     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                       {skillGroup.skills.map((skill, skillIndex) => {
                         const getSkillLevel = (level: number) => {
-                          if (level >= 90) return { label: 'Expert', color: 'bg-green-100 text-green-800 border-green-200' };
-                          if (level >= 80) return { label: 'Advanced', color: 'bg-blue-100 text-blue-800 border-blue-200' };
-                          if (level >= 70) return { label: 'Intermediate', color: 'bg-yellow-100 text-yellow-800 border-yellow-200' };
-                          return { label: 'Beginner', color: 'bg-gray-100 text-gray-800 border-gray-200' };
+                          if (level >= 90) return { label: 'Expert', color: 'text-slate-700' };
+                          if (level >= 80) return { label: 'Advanced', color: 'text-slate-600' };
+                          if (level >= 70) return { label: 'Intermediate', color: 'text-slate-500' };
+                          return { label: 'Beginner', color: 'text-slate-400' };
                         };
                         
                         const skillLevel = getSkillLevel(skill.level);
                         
                         return (
-                          <div key={skillIndex} className="group/skill relative">
-                            {/* Enhanced Skill Card */}
-                            <div className="relative bg-white border-2 border-gray-100 rounded-xl p-5 hover:border-gray-200 transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1">
-                              {/* Background Gradient */}
-                              <div className={`absolute inset-0 bg-gradient-to-br ${skillGroup.color} opacity-0 group-hover/skill:opacity-5 transition-opacity duration-300 rounded-xl`}></div>
-                              
-                              {/* Skill Header */}
-                              <div className="relative z-10 mb-4">
-                                <div className="flex justify-between items-start mb-3">
-                                  <h4 className="font-bold text-gray-900 text-sm leading-tight pr-2">{skill.name}</h4>
-                                  <div className="flex flex-col items-end">
-                                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold border ${skillLevel.color} mb-1`}>
-                                      {skillLevel.label}
-                                    </span>
-                                    <time className="text-xs font-medium text-gray-500">{skill.years}</time>
-                                  </div>
-                                </div>
-                                
-                                {/* Enhanced Proficiency Display */}
-                                <div className="space-y-2">
-                                  <div className="flex items-center justify-between">
-                                    <label className="text-xs font-medium text-gray-600">Proficiency</label>
-                                    <data className="text-sm font-bold text-gray-900" value={skill.level}>{skill.level}%</data>
-                                  </div>
-                                  
-                                  {/* Enhanced Progress Bar */}
-                                  <div className="relative">
-                                    <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden shadow-inner">
-                                      <div 
-                                        className={`h-full bg-blue-500 rounded-full transition-all duration-1000 ease-out transform origin-left shadow-sm`}
-                                        style={{ width: `${skill.level}%` }}
-                                      ></div>
-                                    </div>
-                                    {/* Progress indicator */}
-                                    <div 
-                                      className={`absolute top-0 h-3 w-1 bg-white rounded-full shadow-md transition-all duration-1000 ease-out`}
-                                      style={{ left: `calc(${skill.level}% - 2px)` }}
-                                    ></div>
-                                  </div>
-                                </div>
+                          <div key={skillIndex} className="group/skill">
+                            <div className="bg-white/60 backdrop-blur-sm border border-gray-200/50 rounded-lg p-5 hover:bg-white/80 hover:border-gray-300/50 transition-all duration-300">
+                              <div className="flex justify-between items-start mb-3">
+                                <h3 className="font-medium text-slate-900 text-sm leading-tight pr-2">{skill.name}</h3>
+                                <span className={`text-xs font-medium ${skillLevel.color} whitespace-nowrap`}>
+                                  {skillLevel.label}
+                                </span>
                               </div>
                               
+                              <div className="flex items-center justify-between">
+                                <span className="text-xs text-slate-500">{skill.years}</span>
+                                <div className="flex items-center space-x-1">
+                                  {[...Array(5)].map((_, i) => (
+                                    <div
+                                      key={i}
+                                      className={`w-1.5 h-1.5 rounded-full ${
+                                        i < Math.floor(skill.level / 20) 
+                                          ? 'bg-slate-400' 
+                                          : 'bg-slate-200'
+                                      }`}
+                                    />
+                                  ))}
+                                </div>
+                              </div>
                             </div>
                           </div>
                         );
                       })}
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
+            </div>
+          </div>
 
-            {/* Skills Summary */}
-            <div className="p-4">
-              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-                <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-green-500 to-blue-600 rounded-xl shadow-lg mb-4">
-                    <Brain className="w-6 h-6 text-white" />
+          {/* Right Transparent Sidebar */}
+          <div className="hidden lg:block w-80 relative">
+            <div className="fixed top-0 right-0 w-80 h-full bg-white/30 backdrop-blur-md border-l border-gray-200/30">
+              <div className="p-8 pt-24">
+                {/* Professional Summary */}
+                <div className="mb-8">
+                  <div className="flex items-center mb-4">
+                    <div className="w-8 h-8 bg-slate-100/80 rounded-lg flex items-center justify-center mr-3">
+                      <Brain className="w-4 h-4 text-slate-600" />
+                    </div>
+                    <h3 className="text-lg font-medium text-slate-900">Overview</h3>
                   </div>
-                  <h3 className="text-gray-900 text-xl font-bold leading-tight mb-4">
-                    Continuous Learning & Growth
-                  </h3>
-                  <p className="text-gray-600 text-sm font-normal leading-normal mb-6 max-w-3xl mx-auto">
-                    With over 3 years of experience in software development, I'm committed to staying at the forefront of technology. 
-                    I regularly update my skills through hands-on projects, online courses, and contributing to open-source initiatives.
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    Comprehensive skill set spanning development, marketing, and business operations with a focus on delivering professional results.
                   </p>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6">
+                </div>
+
+                {/* Key Metrics */}
+                <div className="space-y-6">
+                  <div className="bg-white/40 backdrop-blur-sm rounded-lg p-4 border border-gray-200/30">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-blue-600 mb-1">30</div>
-                      <div className="text-xs text-gray-600">Technologies</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-green-600 mb-1">3</div>
-                      <div className="text-xs text-gray-600">Years Experience</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-purple-600 mb-1">20+</div>
-                      <div className="text-xs text-gray-600">Projects Completed</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-orange-600 mb-1">24/7</div>
-                      <div className="text-xs text-gray-600">Learning Mode</div>
+                      <div className="text-2xl font-light text-slate-900 mb-1">30+</div>
+                      <div className="text-xs text-slate-600 uppercase tracking-wide">Technologies</div>
                     </div>
                   </div>
+                  
+                  <div className="bg-white/40 backdrop-blur-sm rounded-lg p-4 border border-gray-200/30">
+                    <div className="text-center">
+                      <div className="text-2xl font-light text-slate-900 mb-1">3+</div>
+                      <div className="text-xs text-slate-600 uppercase tracking-wide">Years Experience</div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/40 backdrop-blur-sm rounded-lg p-4 border border-gray-200/30">
+                    <div className="text-center">
+                      <div className="text-2xl font-light text-slate-900 mb-1">20+</div>
+                      <div className="text-xs text-slate-600 uppercase tracking-wide">Projects</div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/40 backdrop-blur-sm rounded-lg p-4 border border-gray-200/30">
+                    <div className="text-center">
+                      <div className="text-2xl font-light text-slate-900 mb-1">∞</div>
+                      <div className="text-xs text-slate-600 uppercase tracking-wide">Learning</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Professional Note */}
+                <div className="mt-8 p-4 bg-white/20 backdrop-blur-sm rounded-lg border border-gray-200/20">
+                  <p className="text-xs text-slate-600 leading-relaxed italic">
+                    "Committed to continuous improvement and staying current with industry best practices and emerging technologies."
+                  </p>
                 </div>
               </div>
             </div>

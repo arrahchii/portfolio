@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -37,8 +37,8 @@
   --sidebar-accent-foreground: hsl(20, 14%, 17%);
   --sidebar-border: hsl(45, 15%, 80%);
   --sidebar-ring: hsl(9, 75%, 61%);
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-serif: 'Inter', serif;
+  --font-sans: 'Roboto', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Roboto', serif;
   --font-mono: 'JetBrains Mono', 'Monaco', 'Menlo', monospace;
   --radius: 0.4rem;
   --shadow-2xs: 0px 2px 0px 0px hsl(9, 75%, 61% / 0.00);
@@ -88,16 +88,40 @@
   --sidebar-ring: hsl(9, 75%, 61%);
 }
 
+
+
 @layer base {
   * {
     @apply border-border;
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased text-foreground;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
     letter-spacing: -0.01em;
     position: relative;
+    overflow-x: hidden;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% {
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
+    }
+    33% {
+      background-image: 
+        radial-gradient(circle at 70% 30%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 30% 70%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 60% 60%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
+    }
+    66% {
+      background-image: 
+        radial-gradient(circle at 80% 60%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 20% 40%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 50% 20%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
+    }
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -128,6 +152,170 @@
     pointer-events: none;
     letter-spacing: 0.025em;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Loading Intro Styles */
+.loading-intro {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000000;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease-out;
+}
+
+.loading-intro.fade-out {
+  opacity: 0;
+}
+
+.intro-background {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.text-pattern-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 300;
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  color: rgba(255, 255, 255, 0.1);
+  letter-spacing: 0.2em;
+  line-height: 1.2;
+}
+
+.text-pattern-line {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.8s ease-out;
+}
+
+.text-pattern-line.animate-fade-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.center-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10;
+}
+
+.main-logo {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 1s ease-out;
+}
+
+.main-logo.animate-scale-in {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.logo-text {
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+  font-family: 'Inter', sans-serif;
+}
+
+.subtitle {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 1rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease-out;
+}
+
+.subtitle.animate-slide-up {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.loading-indicator {
+  margin-top: 3rem;
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.loading-indicator.animate-pulse {
+  opacity: 1;
+}
+
+.loading-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.loading-dots span {
+  width: 8px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: pulse-dot 1.5s infinite ease-in-out;
+}
+
+.loading-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes pulse-dot {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .text-pattern-container {
+    font-size: 0.8rem;
+    padding: 1rem;
+  }
+  
+  .logo-text {
+    font-size: 3rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
   }
 }
 
@@ -228,6 +416,8 @@
   }
 }
 
+
+
 .animate-float {
   animation: floatUp 20s infinite linear;
 }
@@ -264,4 +454,376 @@
   color: #ffffff;
   border: 1px solid #374151;
   box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+}
+
+
+
+/* Custom Send Message Button - From Uiverse.io by zjssun */
+.send-message-btn {
+  padding: 10px 20px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: 500;
+  color: #ffffff80;
+  text-shadow: none;
+  background: transparent;
+  cursor: pointer;
+  box-shadow: transparent;
+  border: 1px solid #ffffff80;
+  transition: 0.5s ease;
+  user-select: none;
+}
+
+.send-message-btn:hover,
+.send-message-btn:focus {
+  color: #ffffff;
+  background: #008cff;
+  border: 1px solid #008cff;
+  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;
+  box-shadow: 0 0 5px #008cff, 0 0 20px #008cff, 0 0 50px #008cff,
+    0 0 100px #008cff;
+}
+
+/* UIverse.io Contact Page Components - Exact Copy */
+
+/* SOCIALS CARD - From Uiverse.io by aadium */
+.social-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f2f2f2;
+  box-shadow: 0px 0px 15px #00000027;
+  padding: 15px 10px;
+  border-radius: 5em;
+}
+
+.social-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin: 0 10px;
+  background-color: #fff;
+  box-shadow: 0px 0px 4px #00000027;
+  transition: 0.3s;
+}
+
+.social-button:hover {
+  background-color: #f2f2f2;
+  box-shadow: 0px 0px 6px 3px #00000027;
+}
+
+.social-buttons svg {
+  transition: 0.3s;
+  height: 20px;
+}
+
+.facebook {
+  background-color: #3b5998;
+}
+
+.facebook svg {
+  fill: #f2f2f2;
+}
+
+.facebook:hover svg {
+  fill: #3b5998;
+}
+
+.github {
+  background-color: #333;
+}
+
+.github svg {
+  width: 25px;
+  height: 25px;
+  fill: #f2f2f2;
+}
+
+.github:hover svg {
+  fill: #333;
+}
+
+.linkedin {
+  background-color: #0077b5;
+}
+
+.linkedin svg {
+  fill: #f2f2f2;
+}
+
+.linkedin:hover svg {
+  fill: #0077b5;
+}
+
+.instagram {
+  background-color: #c13584;
+}
+
+.instagram svg {
+  fill: #f2f2f2;
+}
+
+.instagram:hover svg {
+  fill: #c13584;
+}
+
+/* LOCATION CARD - From Uiverse.io by Amine-maker */
+#app {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  top: -100px;
+  left: 15%;
+  transition: transform 0.3s cubic-bezier(0.74, -0.03, 0.05, 1.24);
+  width: 160px;
+  height: 95px;
+  will-change: transform;
+  transform-origin: 50% 100%;
+  transform: scale(0);
+  filter: blur(10px);
+  background: white;
+  border-radius: 18px;
+  box-shadow:
+    0 0 0 2px #b0dbbf,
+    1px 4px 5px 4px #ededed54;
+  padding: 2px;
+  animation-duration: 0.3s;
+  animation-delay: 0.1s;
+  animation-fill-mode: both;
+  overflow: hidden;
+}
+
+#app:has(.hover-card:hover) > .reference > .card {
+  transform: scale(1);
+  animation-name: coolfadeIn;
+}
+
+.card:hover {
+  pointer-events: all;
+}
+
+.bg-map {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 0;
+  /* background-image: place your image */
+  background-position: 15px -32px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.elements {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.details {
+  z-index: 1;
+  margin-bottom: -10%;
+  margin-top: -12%;
+  flex: 1 1 0;
+  background: #daecdd;
+  filter: blur(6px);
+}
+.description {
+  padding: 15px;
+  z-index: 1;
+}
+
+.main-title {
+  font-size: 1.2rem;
+  color: #4e8e5b;
+  font-weight: 600;
+}
+
+.second-title {
+  font-size: 0.9em;
+  color: #5e836b;
+  font-weight: 500;
+}
+
+.inner-card {
+  position: relative;
+  border-radius: calc(18px - 2%);
+  height: 100%;
+  width: 100%;
+  border: 2px solid #2d2d2d45;
+  background: #daecdd;
+  overflow: hidden;
+}
+
+.blur-item {
+  left: 0;
+  top: 0;
+  min-width: 60px;
+  filter: blur(10px);
+  background: #daecdd;
+  z-index: -1;
+  height: 110%;
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.location {
+  background-color: #226630;
+  top: 24%;
+  z-index: 1000;
+  left: 60%;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px 7px #c1c1c180;
+  border: 5px solid white;
+  animation: pulse 3s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow:
+      0 0 0 0 rgba(72, 72, 72, 0.7),
+      0 0 8px 5px #d9d9d980;
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow:
+      0 0 0 10px rgba(72, 72, 72, 0),
+      0 0 8px 5px #d9d9d980;
+  }
+
+  100% {
+    transform: scale(0.95);
+    box-shadow:
+      0 0 0 0 rgba(72, 72, 72, 0),
+      0 0 8px 5px #d9d9d980;
+  }
+}
+
+@keyframes coolfadeIn {
+  0% {
+    filter: brightness(1) blur(10px);
+  }
+
+  10% {
+    filter: brightness(1) blur(20px);
+  }
+
+  100% {
+    filter: brightness(1) blur(0px);
+  }
+}
+
+@keyframes movingClouds {
+  from {
+    transform: translateX(-100px);
+  }
+  to {
+    transform: translateX(100px);
+  }
+}
+
+.cloud {
+  z-index: 1;
+  position: absolute;
+  border-radius: 50%;
+  animation-name: movingClouds;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
+}
+
+.cloud:nth-child(1) {
+  animation-duration: 45s;
+  height: 1em;
+  width: 1.4em;
+  top: 3.5em;
+  left: 50%;
+  filter: blur(0.125em) drop-shadow(0.438em 0.188em #ffffffae)
+    drop-shadow(-0.625em 0.313em #ffffffae);
+  background: linear-gradient(to top right, #ffffffae, #ffffffae);
+  transition: 0.4s;
+}
+
+.cloud:nth-child(2) {
+  animation-duration: 30s;
+  top: 0.325em;
+  right: -1em;
+  width: 4.075em;
+  height: 1.575em;
+  background: #ebebebdb;
+  filter: blur(0.425em) drop-shadow(-0.313em 0.812em #e0dfdfae)
+    drop-shadow(-1.625em 0.812em #bbbbbbae) drop-shadow(-1em 0.063em #cfcfcfae);
+}
+
+.cloud:nth-child(3) {
+  animation-duration: 60s;
+  top: 2.45em;
+  right: 4.938em;
+  width: 1.075em;
+  height: 0.575em;
+  background: #ffffff;
+  filter: blur(0.125em) drop-shadow(0.438em 0.188em #ffffffae)
+    drop-shadow(-0.625em 0.313em #ffffffae);
+  transition: 0.8s;
+}
+
+.cloud:nth-child(4) {
+  animation-duration: 40s;
+  top: 4.45em;
+  right: 4.938em;
+  width: 1.075em;
+  height: 0.375em;
+  background: #ffffff;
+  filter: blur(0.125em) drop-shadow(0.438em 0.188em #ffffffae)
+    drop-shadow(-0.625em 0.313em #ffffffae);
+  transition: 0.8s;
+}
+
+/* SEND MESSAGE BUTTON - From Uiverse.io by zjssun */
+#btn {
+  padding: 12px 24px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: none;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  user-select: none;
+  width: 100%;
+}
+
+#btn:hover {
+  color: #ffffff;
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+#btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }

@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type ChatMessage, type InsertChatMessage } from "@shared/schema";
+import { type User, type InsertUser, type ChatMessage, type InsertChatMessage, type Conversation, type InsertConversation } from "@shared/schema";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
@@ -7,15 +7,22 @@ export interface IStorage {
   createUser(user: InsertUser): Promise<User>;
   saveChatMessage(message: InsertChatMessage): Promise<ChatMessage>;
   getChatHistory(sessionId: string): Promise<ChatMessage[]>;
+  // Conversation management
+  createConversation(conversation: InsertConversation): Promise<Conversation>;
+  getConversation(sessionId: string): Promise<Conversation | undefined>;
+  updateConversation(sessionId: string, updates: Partial<Conversation>): Promise<Conversation | undefined>;
+  getRecentConversations(limit?: number): Promise<Conversation[]>;
 }
 
 export class MemStorage implements IStorage {
   private users: Map<string, User>;
   private chatMessages: Map<string, ChatMessage>;
+  private conversations: Map<string, Conversation>;
 
   constructor() {
     this.users = new Map();
     this.chatMessages = new Map();
+    this.conversations = new Map();
   }
 
   async getUser(id: string): Promise<User | undefined> {
@@ -51,6 +58,44 @@ export class MemStorage implements IStorage {
     return Array.from(this.chatMessages.values())
       .filter(msg => msg.sessionId === sessionId)
       .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+  }
+
+  async createConversation(insertConversation: InsertConversation): Promise<Conversation> {
+    const id = randomUUID();
+    const conversation: Conversation = {
+      ...insertConversation,
+      id,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      lastActivity: new Date(),
+      messageCount: insertConversation.messageCount || "0",
+    };
+    this.conversations.set(conversation.sessionId, conversation);
+    return conversation;
+  }
+
+  async getConversation(sessionId: string): Promise<Conversation | undefined> {
+    return this.conversations.get(sessionId);
+  }
+
+  async updateConversation(sessionId: string, updates: Partial<Conversation>): Promise<Conversation | undefined> {
+    const existing = this.conversations.get(sessionId);
+    if (!existing) return undefined;
+
+    const updated: Conversation = {
+      ...existing,
+      ...updates,
+      updatedAt: new Date(),
+      lastActivity: new Date(),
+    };
+    this.conversations.set(sessionId, updated);
+    return updated;
+  }
+
+  async getRecentConversations(limit: number = 10): Promise<Conversation[]> {
+    return Array.from(this.conversations.values())
+      .sort((a, b) => b.lastActivity.getTime() - a.lastActivity.getTime())
+      .slice(0, limit);
   }
 }
 

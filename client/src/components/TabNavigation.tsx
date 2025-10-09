@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
-import { User, Folder, Code, FileText, Mail } from 'lucide-react';
+import { User, Folder, Code, FileText, Mail, Award } from 'lucide-react';
 
-export type TabType = 'me' | 'projects' | 'skills' | 'resume' | 'contact';
+export type TabType = 'me' | 'projects' | 'skills' | 'resume' | 'contact' | 'certificates';
 
 interface TabNavigationProps {
   activeTab: TabType;
@@ -13,10 +13,12 @@ const TABS = [
   { id: 'projects' as TabType, label: 'Projects', icon: Folder, color: 'text-chart-2' },
   { id: 'skills' as TabType, label: 'Skills', icon: Code, color: 'text-chart-3' },
   { id: 'resume' as TabType, label: 'Resume', icon: FileText, color: 'text-chart-4' },
-  { id: 'contact' as TabType, label: 'Contact', icon: Mail, color: 'text-chart-5' },
+  { id: 'certificates' as TabType, label: 'Certificates', icon: Award, color: 'text-chart-5' },
+  { id: 'contact' as TabType, label: 'Contact', icon: Mail, color: 'text-chart-1' },
 ];
 
 export function TabNavigation({ activeTab, onTabChange }: TabNavigationProps) {
+  // Certificate tab added
   return (
     <nav className="flex-shrink-0 bg-card border-t border-border" data-testid="nav-tab-navigation">
       <div className="flex justify-center">

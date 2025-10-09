@@ -7,7 +7,6 @@ import { Send, Sparkles, User, Bot } from 'lucide-react';
 import { QuickQuestions } from './QuickQuestions';
 import { TabNavigation, type TabType } from './TabNavigation';
 import TabContent from './TabContent';
-import { ThemeToggle } from './ThemeToggle';
 import lanceProfileImage from '@/assets/ICONN.jpg';
 
 interface Message {
@@ -60,8 +59,6 @@ function ModernChatMessage({ content, role, profile }: { content: string; role: 
   const isProfileMessage = messageContent.startsWith('profile:') && role === 'assistant';
   
   if (isProfileMessage) {
-    console.log('🖼️ PROFILE MESSAGE DETECTED!');
-    
     return (
       <div className="w-full max-w-4xl mx-auto">
         <div className="relative group">
@@ -216,7 +213,7 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
   // FIXED: Updated API Base URL to match your backend server
   const API_BASE_URL = process.env.NODE_ENV === 'production' 
     ? 'https://lanceport-fullstack.onrender.com/' 
-    : 'http://localhost:10000';
+    : 'http://localhost:5001';
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -261,7 +258,13 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
 
       const data = await response.json();
       if (data.success && data.message) {
-        setMessages(prev => [...prev, data.message]);
+        const assistantMessage: Message = {
+          id: data.messageId || Date.now().toString(),
+          content: data.message,
+          role: 'assistant',
+          timestamp: new Date().toISOString(),
+        };
+        setMessages(prev => [...prev, assistantMessage]);
       } else {
         throw new Error('Invalid response format');
       }
@@ -298,13 +301,12 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       {/* Modern Header with Glassmorphism */}
-      <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/30 shadow-sm">
+      <div className="sticky top-0 z-50 bg-white/10 backdrop-blur-xl border-b border-white/30 shadow-sm">
         <div className="flex items-center justify-between px-6 py-4">
           <TabNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}
           />
-          <ThemeToggle />
         </div>
       </div>
 
@@ -346,7 +348,7 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
             </h1>
             
             <p className="text-xl text-gray-600 mb-8 font-medium max-w-2xl mx-auto">
-              Experience intelligent conversations with Lance's digital twin
+              Intelligent conversation with Lance AI Personal Assistant
             </p>
             
             <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/80 backdrop-blur-sm text-green-700 rounded-full border border-green-200/50 shadow-lg">
@@ -361,7 +363,7 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
           {activeTab === 'me' && messages.length === 0 ? (
             /* Initial Chat Interface */
             <div className="max-w-4xl mx-auto px-6">
-              <div className="bg-white/60 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/30 overflow-hidden">
+              <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/30 overflow-hidden">
                 <ScrollArea className="h-96 p-6">
                   <div className="space-y-6">
                     <QuickQuestions 
@@ -382,7 +384,7 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
                 </ScrollArea>
                 
                 {/* Modern Chat Input */}
-                <div className="p-6 bg-white/80 backdrop-blur-sm border-t border-white/30">
+                <div className="p-6 bg-white/10 backdrop-blur-sm border-t border-white/30">
                   <div className="relative flex items-center gap-4">
                     <Input
                       ref={inputRef}
@@ -392,7 +394,7 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
                       onChange={(e) => setInputValue(e.target.value)}
                       onKeyDown={handleKeyDown}
                       disabled={isLoading}
-                      className="flex-1 h-14 px-6 text-base !font-bold bg-white/90 border-2 border-gray-200/50 rounded-full focus:border-blue-400 focus:ring-4 focus:ring-blue-400/20 transition-all duration-300 shadow-lg"
+                      className="flex-1 h-14 px-6 text-base !font-bold bg-white border-2 border-gray-200/50 rounded-full focus:border-blue-400 focus:ring-4 focus:ring-blue-400/20 transition-all duration-300 shadow-lg"
                     />
                     <Button
                       onClick={handleSendMessage}
@@ -408,7 +410,7 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
           ) : activeTab === 'me' && messages.length > 0 ? (
             /* Chat with Messages */
             <div className="max-w-4xl mx-auto px-6 pt-8">
-              <div className="bg-white/60 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/30 overflow-hidden">
+              <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/30 overflow-hidden">
                 <ScrollArea className="h-[600px] p-6">
                   <div className="space-y-8">
                     {messages.map((message) => (
@@ -430,7 +432,7 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
                   <AvatarFallback>LC</AvatarFallback>
                 </Avatar>
                         </div>
-                        <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-4 shadow-lg border border-gray-200/50">
+                        <div className="bg-white/20 backdrop-blur-sm rounded-3xl p-4 shadow-lg border border-gray-200/50">
                           <div className="flex space-x-2">
                             <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>
                             <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
@@ -453,7 +455,7 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
                 </ScrollArea>
                 
                 {/* Modern Chat Input */}
-                <div className="p-6 bg-white/80 backdrop-blur-sm border-t border-white/30">
+                <div className="p-6 bg-white/10 backdrop-blur-sm border-t border-white/30">
                   <div className="relative flex items-center gap-4">
                     <Input
                       ref={inputRef}
@@ -463,7 +465,7 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
                       onChange={(e) => setInputValue(e.target.value)}
                       onKeyDown={handleKeyDown}
                       disabled={isLoading}
-                      className="flex-1 h-14 px-6 text-base !font-bold bg-white/90 border-2 border-gray-200/50 rounded-full focus:border-blue-400 focus:ring-4 focus:ring-blue-400/20 transition-all duration-300 shadow-lg"
+                      className="flex-1 h-14 px-6 text-base !font-bold bg-white border-2 border-gray-200/50 rounded-full focus:border-blue-400 focus:ring-4 focus:ring-blue-400/20 transition-all duration-300 shadow-lg"
                     />
                     <Button
                       onClick={handleSendMessage}
@@ -479,7 +481,7 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
           ) : (
             /* Other Tab Content */
             <div className="max-w-4xl mx-auto px-6">
-              <div className="bg-white/60 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/30 p-8">
+              <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/30 p-8">
                 <TabContent activeTab={activeTab} profile={profile} />
               </div>
             </div>

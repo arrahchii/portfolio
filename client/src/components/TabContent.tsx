@@ -39,6 +39,7 @@ import {
   ShoppingCart
 } from 'lucide-react';
 import type { TabType } from './TabNavigation';
+import Certificates from './Certificates';
 
 interface ProfileData {
   name: string;
@@ -142,8 +143,6 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
     setIsSubmitting(true);
     setSubmitStatus({ type: null, message: '' });
     
-    console.log('📧 Submitting contact form:', contactForm);
-    
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
@@ -154,7 +153,6 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
       });
 
       const result = await response.json();
-      console.log('📧 Contact form response:', result);
 
       if (result.success) {
         setSubmitStatus({
@@ -169,7 +167,6 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
       }
 
     } catch (error) {
-      console.error('📧 Contact form error:', error);
       setSubmitStatus({
         type: 'error',
         message: error instanceof Error ? error.message : 'Failed to send message. Please try again.'
@@ -182,7 +179,7 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
   if (activeTab === 'me') {
     return (
       <div className="space-y-6" data-testid="content-me">
-        <Card>
+        <Card className="bg-transparent border-transparent shadow-none">
           <CardHeader>
             <CardTitle className="flex items-center gap-3">
               <Avatar className="w-16 h-16">
@@ -190,27 +187,27 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
                 <AvatarFallback>LC</AvatarFallback>
               </Avatar>
               <div>
-                <h2 className="text-2xl font-bold">{profile.name}</h2>
-                <p className="text-lg text-gray-700">{profile.title}</p>
+                <h2 className="text-2xl font-bold text-white">{profile.name}</h2>
+                <p className="text-lg text-gray-200">{profile.title}</p>
               </div>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <h3 className="text-lg font-semibold mb-2">About Me</h3>
-              <div className="text-gray-700 space-y-4">
+              <h3 className="text-lg font-semibold mb-2 text-white">About Me</h3>
+              <div className="text-gray-200 space-y-4">
                 {profile.sections.me.bio.split('\n\n').map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
                 ))}
               </div>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-2">Experience</h3>
-              <p className="text-gray-700">{profile.sections.me.experience}</p>
+              <h3 className="text-lg font-semibold mb-2 text-white">Experience</h3>
+              <p className="text-gray-200">{profile.sections.me.experience}</p>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-2">What Drives Me</h3>
-              <p className="text-gray-700">{profile.sections.me.passion}</p>
+              <h3 className="text-lg font-semibold mb-2 text-white">What Drives Me</h3>
+              <p className="text-gray-200">{profile.sections.me.passion}</p>
             </div>
           </CardContent>
         </Card>
@@ -225,8 +222,22 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
         <div className="text-center space-y-4 px-4">
           {/* Professional Mobile Icon Container */}
           <div className="relative inline-flex items-center justify-center">
-            <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 rounded-3xl shadow-xl mb-4 relative">
-              <Code className="w-7 h-7 md:w-8 md:h-8 text-white" />
+            <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-green-500 via-blue-600 to-purple-600 rounded-3xl shadow-xl mb-4 relative flex items-center justify-center">
+              {/* Updated natural icon design - force refresh */}
+              <svg 
+                className="w-7 h-7 md:w-8 md:h-8 text-white" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2.5} 
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                />
+              </svg>
               {/* Mobile-Specific Accent Ring */}
               <div className="md:hidden absolute -inset-1 bg-gradient-to-r from-blue-400 to-purple-400 rounded-3xl opacity-30 animate-pulse"></div>
             </div>
@@ -356,10 +367,10 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
         color: "from-blue-500 to-cyan-500",
         skills: [
           { name: "Full-Stack Web Development", level: 70, years: "3+ years" },
-          { name: "Frontend Development (React, HTML, CSS, JavaScript)", level: 90, years: "4+ years" },
+          { name: "Frontend Development (React, HTML, CSS, JavaScript)", level: 70, years: "3+ years" },
           { name: "Backend Development (Node.js)", level: 80, years: "3+ years" },
-          { name: "API Integration & Development", level: 60, years: "2+ years" },
-          { name: "Database Management", level: 50, years: "2+ years" }
+          { name: "API Integration & Development", level: 80, years: "3+ years" },
+          { name: "Database Management", level: 70, years: "3+ years" }
         ]
       },
       {
@@ -671,31 +682,33 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
         technologies: ["Content Writing", "Copywriting", "Social Media Marketing"]
       },
       {
-        title: "Web Designer",
+        title: "Backend Engineer",
         company: "Algoworks",
         period: "09/2024 - 12/2024",
         location: "Remote",
         type: "Remote",
         achievements: [
-          "Designed user interface to meet client specifications",
-          "Improved overall site aesthetics through the use of high-quality graphics, typography choices, color schemes, and layout principles",
-          "Developed graphic and image assets for both content and digital marketing efforts",
-          "Coordinated copywriting and designed images to craft website content"
+          "Developed and maintained RESTful APIs using Node.js and Express.js to support frontend applications",
+          "Designed and optimized database schemas and queries for improved performance and scalability",
+          "Implemented authentication and authorization systems with JWT tokens and role-based access control",
+          "Built microservices architecture and integrated third-party APIs for enhanced functionality"
         ],
-        technologies: ["UI/UX Design", "Graphic Design", "Web Design"]
+        technologies: ["Node.js", "Express.js", "MongoDB", "PostgreSQL", "REST APIs", "JWT Authentication"]
       },
       {
-        title: "Supervisor – BPO Company",
-        company: "C&C; BPO",
+        title: "Tech Head & Team Supervisor",
+        company: "C&C Company",
         period: "2020 - 2024",
         location: "Philippines",
         type: "Full-time",
         achievements: [
-          "Led a team of 10–15 agents, helping them handle customer calls and deliver great service every day",
-          "Trained new agents, guiding them through tools, company processes, and how to talk to customers in a professional but friendly way"
+          "Led 10-15 agents in cold calling campaigns for tech solutions and web development services",
+          "Built scalable internal systems to support multiple campaign operations and client management",
+          "Optimized workflows with tech solutions to improve campaign efficiency and lead conversion rates",
+          "Supervised technical aspects of campaigns while ensuring team performance and service quality"
         ],
-        technologies: ["Team Leadership", "Customer Service", "Training"]
-      }
+        technologies: ["Team Leadership", "Cold Calling Campaigns", "Tech Solutions", "Web Development", "Campaign Management", "Lead Generation"]
+      } // Updated resume entry
     ];
 
     const education = [
@@ -917,16 +930,16 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
         </div>
 
         {/* Technical Expertise */}
-        <Card>
+        <Card className="bg-transparent border-transparent shadow-none">
           <CardHeader>
-            <CardTitle>Technical Expertise</CardTitle>
+            <CardTitle className="text-white">Technical Expertise</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4">
               {profile.sections.skills.map((skillCategory, index) => (
                 <div key={index}>
-                  <h4 className="font-semibold mb-2">{skillCategory.category}</h4>
-                  <ul className="text-sm text-muted-foreground space-y-1">
+                  <h4 className="font-semibold mb-2 text-white">{skillCategory.category}</h4>
+                  <ul className="text-sm text-gray-200 space-y-1">
                     {skillCategory.items.map((skill, skillIndex) => (
                       <li key={skillIndex}>• {skill}</li>
                     ))}
@@ -938,17 +951,17 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
         </Card>
 
         {/* Featured Projects */}
-        <Card>
+        <Card className="bg-transparent border-transparent shadow-none">
           <CardHeader>
-            <CardTitle>Featured Projects</CardTitle>
+            <CardTitle className="text-white">Featured Projects</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {profile.sections.projects.map((project, index) => (
-                <div key={index} className="border-l-2 border-primary pl-4">
-                  <h4 className="font-semibold">{project.name}</h4>
-                  <p className="text-sm text-muted-foreground">{project.description}</p>
-                  <p className="text-xs text-muted-foreground mt-1">
+                <div key={index} className="border-l-2 border-blue-400 pl-4">
+                  <h4 className="font-semibold text-white">{project.name}</h4>
+                  <p className="text-sm text-gray-200">{project.description}</p>
+                  <p className="text-xs text-gray-300 mt-1">
                     Technologies: {project.tech.join(', ')}
                   </p>
                 </div>
@@ -978,6 +991,8 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
       </div>
     );
   }
+
+
 
   if (activeTab === 'contact') {
     const contactMethods = [
@@ -1246,6 +1261,14 @@ export default function TabContent({ activeTab, profile }: TabContentProps) {
             </div>
           </div>
         </div>
+      </div>
+    );
+  }
+
+  if (activeTab === 'certificates') {
+    return (
+      <div className="w-full">
+        <Certificates />
       </div>
     );
   }
