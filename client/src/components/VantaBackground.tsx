@@ -25,67 +25,25 @@ const VantaBackground: React.FC<VantaBackgroundProps> = ({
   useEffect(() => {
     let mounted = true;
 
-    const loadScript = (src: string, timeout = 10000): Promise<void> => {
-      return new Promise((resolve, reject) => {
-        // Check if script already exists
-        const existingScript = document.querySelector(`script[src="${src}"]`);
-        if (existingScript) {
-          resolve();
-          return;
-        }
-
-        const script = document.createElement('script');
-        script.src = src;
-        script.async = true;
-        script.crossOrigin = 'anonymous';
-        
-        // Add timeout for slow connections
-        const timeoutId = setTimeout(() => {
-          reject(new Error(`Script loading timeout: ${src}`));
-        }, timeout);
-
-        script.onload = () => {
-          clearTimeout(timeoutId);
-          resolve();
-        };
-        
-        script.onerror = () => {
-          clearTimeout(timeoutId);
-          reject(new Error(`Failed to load script: ${src}`));
-        };
-        
-        document.head.appendChild(script);
-      });
-    };
-
     const initializeVanta = async () => {
       try {
-        // Use HTTPS CDN URLs with specific versions for production stability
-        const threeJsUrl = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js';
-        const vantaUrl = 'https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.net.min.js';
+        // Wait for scripts to be available (they're preloaded in HTML)
+        let attempts = 0;
+        const maxAttempts = 50; // 5 seconds max wait
+        
+        while ((!window.THREE || !window.VANTA) && attempts < maxAttempts) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+          attempts++;
+        }
 
-        // Load Three.js first with timeout
+        // Verify scripts loaded correctly
         if (!window.THREE) {
-          await loadScript(threeJsUrl, 15000);
+          throw new Error('Three.js failed to load from preloaded scripts');
         }
 
-        // Verify Three.js loaded correctly
-        if (!window.THREE) {
-          throw new Error('Three.js failed to load');
-        }
-
-        // Load Vanta.js NET effect with timeout
-        if (!window.VANTA) {
-          await loadScript(vantaUrl, 15000);
-        }
-
-        // Verify Vanta.js loaded correctly
         if (!window.VANTA || !window.VANTA.NET) {
-          throw new Error('Vanta.js NET effect failed to load');
+          throw new Error('Vanta.js NET effect failed to load from preloaded scripts');
         }
-
-        // Longer delay for production environments
-        await new Promise(resolve => setTimeout(resolve, 500));
 
         if (!mounted) return;
 
