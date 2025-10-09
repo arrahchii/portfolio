@@ -14,7 +14,7 @@ export function ApiTest() {
   useEffect(() => {
     const testApi = async () => {
       try {
-        const response = await fetch('http://localhost:5001/api/portfolio/profile', {
+        const response = await fetch('http://localhost:5000/api/portfolio/profile', {
           method: 'GET',
           mode: 'cors',
           credentials: 'include',

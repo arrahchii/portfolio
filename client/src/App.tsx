@@ -27,7 +27,7 @@ import lanceProfileImage from "@/assets/ICONN.jpg";
 // API Base URL - Uses environment variable in production, localhost in development
 const API_BASE_URL = typeof window !== 'undefined' && window.location.hostname.endsWith("onrender.com")
   ? "https://lanceport-fullstack.onrender.com"
-  : "http://localhost:5001";
+  : "http://localhost:5000";
 
 interface Message {
   id: string;

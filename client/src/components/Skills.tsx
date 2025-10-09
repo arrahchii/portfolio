@@ -26,7 +26,7 @@ const Skills: React.FC<SkillsProps> = ({ skills = [] }) => {
   // API Base URL - Uses environment variable in production, localhost in development
   const API_BASE_URL = window.location.hostname.endsWith("onrender.com")
     ? "https://lanceport-fullstack.onrender.com"
-    : "http://localhost:5001";
+    : "http://localhost:5000";
 
   // Temporarily disable API call to fix black screen issue
   useEffect(() => {
