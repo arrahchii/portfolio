@@ -20,11 +20,12 @@ const VantaBackground: React.FC<VantaBackgroundProps> = ({
   const vantaRef = useRef<HTMLDivElement>(null);
   const vantaEffect = useRef<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     let mounted = true;
 
-    const loadScript = (src: string): Promise<void> => {
+    const loadScript = (src: string, timeout = 10000): Promise<void> => {
       return new Promise((resolve, reject) => {
         // Check if script already exists
         const existingScript = document.querySelector(`script[src="${src}"]`);
@@ -36,30 +37,59 @@ const VantaBackground: React.FC<VantaBackgroundProps> = ({
         const script = document.createElement('script');
         script.src = src;
         script.async = true;
-        script.onload = () => resolve();
-        script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+        script.crossOrigin = 'anonymous';
+        
+        // Add timeout for slow connections
+        const timeoutId = setTimeout(() => {
+          reject(new Error(`Script loading timeout: ${src}`));
+        }, timeout);
+
+        script.onload = () => {
+          clearTimeout(timeoutId);
+          resolve();
+        };
+        
+        script.onerror = () => {
+          clearTimeout(timeoutId);
+          reject(new Error(`Failed to load script: ${src}`));
+        };
+        
         document.head.appendChild(script);
       });
     };
 
     const initializeVanta = async () => {
       try {
-        // Load Three.js first
+        // Use HTTPS CDN URLs with specific versions for production stability
+        const threeJsUrl = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js';
+        const vantaUrl = 'https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.net.min.js';
+
+        // Load Three.js first with timeout
         if (!window.THREE) {
-          await loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js');
+          await loadScript(threeJsUrl, 15000);
         }
 
-        // Load Vanta.js NET effect
+        // Verify Three.js loaded correctly
+        if (!window.THREE) {
+          throw new Error('Three.js failed to load');
+        }
+
+        // Load Vanta.js NET effect with timeout
         if (!window.VANTA) {
-          await loadScript('https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js');
+          await loadScript(vantaUrl, 15000);
         }
 
-        // Small delay to ensure scripts are fully initialized
-        await new Promise(resolve => setTimeout(resolve, 200));
+        // Verify Vanta.js loaded correctly
+        if (!window.VANTA || !window.VANTA.NET) {
+          throw new Error('Vanta.js NET effect failed to load');
+        }
+
+        // Longer delay for production environments
+        await new Promise(resolve => setTimeout(resolve, 500));
 
         if (!mounted) return;
 
-        // Initialize Vanta effect
+        // Initialize Vanta effect with error checking
         if (window.VANTA && window.VANTA.NET && window.THREE && vantaRef.current) {
           vantaEffect.current = window.VANTA.NET({
             el: vantaRef.current,
@@ -74,26 +104,44 @@ const VantaBackground: React.FC<VantaBackgroundProps> = ({
             backgroundColor: 0x8a8ab1, // Purple-blue background
             points: 10.00,
             maxDistance: 20.00,
-            spacing: 15.00
+            spacing: 15.00,
+            // Add production-specific settings
+            showDots: true,
+            showLines: true,
+            spacing: 16.00,
+            backgroundAlpha: 1.0
           });
           
-          setIsLoaded(true);
+          // Verify effect was created successfully
+          if (vantaEffect.current) {
+            setIsLoaded(true);
+            console.log('✅ Vanta.js NET effect loaded successfully');
+          } else {
+            throw new Error('Vanta effect initialization failed');
+          }
         }
       } catch (error) {
-        // Silently handle errors - Vanta effect is optional
+        console.warn('⚠️ Vanta.js failed to load:', error);
+        setHasError(true);
+        // Fallback to static background
+        setIsLoaded(false);
       }
     };
 
-    initializeVanta();
+    // Add a small delay before initialization to ensure DOM is ready
+    const timeoutId = setTimeout(() => {
+      initializeVanta();
+    }, 100);
 
     // Cleanup function
     return () => {
+      clearTimeout(timeoutId);
       mounted = false;
       if (vantaEffect.current) {
         try {
           vantaEffect.current.destroy();
         } catch (error) {
-          // Silently handle cleanup errors
+          console.warn('Error destroying Vanta effect:', error);
         }
         vantaEffect.current = null;
       }
@@ -113,10 +161,19 @@ const VantaBackground: React.FC<VantaBackgroundProps> = ({
         width: '100vw',
         height: '100vh',
         backgroundColor: '#8a8ab1', // Purple-blue fallback background
-        background: isLoaded ? 'transparent' : '#8a8ab1'
+        background: isLoaded ? 'transparent' : '#8a8ab1',
+        // Add gradient fallback for better visual appeal when Vanta fails
+        backgroundImage: hasError ? 'linear-gradient(135deg, #8a8ab1 0%, #6366f1 50%, #8b5cf6 100%)' : undefined,
+        transition: 'background 0.5s ease-in-out'
       }}
     >
       {children}
+      {/* Debug info for development */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="fixed bottom-4 right-4 text-xs text-white/70 bg-black/20 p-2 rounded">
+          Vanta: {isLoaded ? '✅ Loaded' : hasError ? '❌ Error' : '⏳ Loading...'}
+        </div>
+      )}
     </div>
   );
 };
