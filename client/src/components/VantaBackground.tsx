@@ -126,12 +126,6 @@ const VantaBackground: React.FC<VantaBackgroundProps> = ({
       }}
     >
       {children}
-      {/* Debug info for development */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="fixed bottom-4 right-4 text-xs text-white/70 bg-black/20 p-2 rounded">
-          Vanta: {isLoaded ? '✅ Loaded' : hasError ? '❌ Error' : '⏳ Loading...'}
-        </div>
-      )}
     </div>
   );
 };
