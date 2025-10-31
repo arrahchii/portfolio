@@ -212,7 +212,7 @@ export function ModernChatInterface({ profile, sessionId }: ChatInterfaceProps) 
 
   // FIXED: Updated API Base URL to match your backend server
   const API_BASE_URL = process.env.NODE_ENV === 'production' 
-    ? 'https://lanceport-fullstack.onrender.com' 
+    ? 'https://lanceport.onrender.com' 
     : 'http://localhost:5000';
 
   const scrollToBottom = () => {

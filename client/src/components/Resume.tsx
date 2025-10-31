@@ -39,7 +39,7 @@ const Resume: React.FC<ResumeProps> = ({ experiences = [], education = [], langu
 
   // API Base URL - Uses environment variable in production, localhost in development
   const API_BASE_URL = window.location.hostname.endsWith("onrender.com")
-    ? "https://lanceport-fullstack.onrender.com"
+    ? "https://lanceport.onrender.com"
     : "http://localhost:5000";
 
   // Fetch portfolio data
