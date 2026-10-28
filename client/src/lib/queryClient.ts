@@ -1,7 +1,5 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
-
-// Direct API calls to backend
-const API_BASE_URL = 'http://localhost:5000';
+import { API_BASE_URL } from "./apiConfig";
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {

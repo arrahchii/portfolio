@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { QuickQuestions } from './QuickQuestions';
 import { GraduationCap, Briefcase, Download, MapPin, Calendar, Languages, Brain, Award, Clock, TrendingUp } from 'lucide-react';
+import { API_BASE_URL } from '@/lib/apiConfig';
 
 interface Experience {
   title: string;
@@ -36,11 +37,6 @@ interface ResumeProps {
 const Resume: React.FC<ResumeProps> = ({ experiences = [], education = [], languages = [] }) => {
   const [profileData, setProfileData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-
-  // API Base URL - Uses environment variable in production, localhost in development
-  const API_BASE_URL = window.location.hostname.endsWith("onrender.com")
-    ? "https://lanceport.onrender.com"
-    : "http://localhost:5000";
 
   // Fetch portfolio data
   useEffect(() => {

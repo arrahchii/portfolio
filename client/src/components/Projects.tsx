@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { QuickQuestions } from './QuickQuestions';
 import { Code, Database, Globe, Filter, ExternalLink, Github, Star, Clock } from 'lucide-react';
+import { API_BASE_URL } from '@/lib/apiConfig';
 
 interface Project {
   name: string;
@@ -23,11 +24,6 @@ const Projects: React.FC<ProjectsProps> = ({ projects = [] }) => {
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState<string>('all');
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
-
-  // API Base URL - Uses environment variable in production, localhost in development
-  const API_BASE_URL = window.location.hostname.endsWith("onrender.com")
-    ? "https://lanceport.onrender.com"
-    : "http://localhost:5000";
 
   // Fetch portfolio data
   useEffect(() => {

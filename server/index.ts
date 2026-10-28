@@ -13,7 +13,6 @@ import crypto from "crypto";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import validator from "validator";
-import bcrypt from "bcrypt";
 import { getGroqResponse, type AIResponse, isPersonalResponse } from "./services/groqService";
 
 // ES module __dirname equivalent
@@ -894,17 +893,24 @@ const groq = new Groq({
 const allowedOrigins = [
   'http://localhost:5173', 
   'http://localhost:5174', // Added for Vite dev server alternate port
+  'http://localhost:3001', // Added for production server port
   'http://127.0.0.1:5173',
   'http://127.0.0.1:5174', // Added for Vite dev server alternate port
-  'https://lanceport-fullstack.onrender.com', // Your actual production URL
+  'http://127.0.0.1:3001', // Added for production server port
+  'https://lanceport.onrender.com', // Production URL - MUST be allowed
   process.env.FRONTEND_URL,
 ].filter(Boolean);
+
+// Log the allowed origins for debugging
+console.log('🔧 CORS Allowed Origins:', allowedOrigins);
+console.log('🔧 FRONTEND_URL env var:', process.env.FRONTEND_URL);
 
 // Security-enhanced CORS with origin validation
 app.use(cors({
   origin: (origin, callback) => {
     // Log origin requests for security monitoring
     console.log(`🔒 CORS Origin Request: ${origin || 'no-origin'}`);
+    console.log(`🔧 Checking against allowed origins:`, allowedOrigins);
     
     // Allow requests with no origin (same-origin requests, mobile apps, postman, etc.)
     // This is common in production when requests come from the same domain
@@ -919,6 +925,7 @@ app.use(cors({
       return callback(null, true);
     } else {
       console.warn(`🚨 CORS blocked origin: ${origin}`);
+      console.warn(`🚨 Origin not found in allowed list:`, allowedOrigins);
       return callback(new Error(`CORS policy violation: Origin ${origin} not allowed`));
     }
   },
@@ -1746,7 +1753,7 @@ class GmailMessageHandler {
           { role: "system", content: systemPrompt },
           { role: "user", content: "Generate an appropriate response to this email." }
         ],
-        model: "llama-3.3-70b-versatile",
+        model: "openai/gpt-oss-20b",
         temperature: 0.7,
         max_tokens: 300
       });
@@ -2458,6 +2465,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ===== STATIC FILE SERVING - FIXED =====
+// Serve built assets from dist/assets directory
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
 // Serve static files from dist directory FIRST
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -5345,7 +5355,9 @@ app.get('*', (req: Request, res: Response) => {
   }
   
   // Only serve React app for actual page routes
-  const indexPath = path.join(__dirname, '../dist', 'index.html');
+  const indexPath = process.env.NODE_ENV === 'production' 
+    ? path.join(__dirname, 'index.html')  // In production, __dirname is the dist folder
+    : path.join(__dirname, '../dist', 'index.html');  // In development, __dirname is the server folder
   res.sendFile(indexPath, (err) => {
     if (err) {
       console.error('❌ React build not found, serving fallback page');

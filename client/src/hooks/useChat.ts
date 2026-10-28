@@ -7,6 +7,7 @@ export interface ChatMessage {
   message: string;
   timestamp: Date;
   isTyping?: boolean;
+  isStreaming?: boolean;
   // Personal query properties
   specialFormatting?: 'profile' | 'standard';
   imageUrl?: string;
@@ -18,9 +19,13 @@ export function useChat(sessionId: string) {
   const [error, setError] = useState<string | null>(null);
   const [conversationLoaded, setConversationLoaded] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
+    }
   }, []);
 
   useEffect(() => {
@@ -109,12 +114,19 @@ export function useChat(sessionId: string) {
     
     setMessages(prev => [...prev, typingMessage]);
 
+    // Minimum "thinking" delay so the AI feels responsive but not instant
+    // Random between 2000-3000ms for natural variation
+    const minDelay = 2000 + Math.random() * 1000;
+
     try {
-      const response = await apiRequest('POST', '/api/chat', {
-        message: message.trim(),
-        sessionId,
-        isQuickQuestion,
-      });
+      const [response] = await Promise.all([
+        apiRequest('POST', '/api/chat', {
+          message: message.trim(),
+          sessionId,
+          isQuickQuestion,
+        }),
+        new Promise(resolve => setTimeout(resolve, minDelay)),
+      ]);
 
       const data = await response.json();
 
@@ -129,6 +141,7 @@ export function useChat(sessionId: string) {
             role: 'assistant' as const,
             message: data.message.content || data.message,
             timestamp: new Date(),
+            isStreaming: true,
           };
 
           // Add special formatting properties if they exist
@@ -169,6 +182,13 @@ export function useChat(sessionId: string) {
     // This will trigger the useEffect to reload the conversation
   }, []);
 
+  // Mark a message as done streaming (called by typewriter when animation finishes)
+  const markStreamingDone = useCallback((messageId: string) => {
+    setMessages(prev => prev.map(msg =>
+      msg.id === messageId ? { ...msg, isStreaming: false } : msg
+    ));
+  }, []);
+
   const getConversationStats = useCallback(() => {
     const userMessages = messages.filter(msg => msg.role === 'user').length;
     const assistantMessages = messages.filter(msg => msg.role === 'assistant').length;
@@ -190,5 +210,7 @@ export function useChat(sessionId: string) {
     getConversationStats,
     conversationLoaded,
     messagesEndRef,
+    scrollContainerRef,
+    markStreamingDone,
   };
 }

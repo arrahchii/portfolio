@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { API_BASE_URL } from '@/lib/apiConfig';
 
 // Helper function to safely get error message
 function getErrorMessage(err: unknown): string {
@@ -14,7 +15,7 @@ export function ApiTest() {
   useEffect(() => {
     const testApi = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/portfolio/profile', {
+        const response = await fetch(`${API_BASE_URL}/api/portfolio/profile`, {
           method: 'GET',
           mode: 'cors',
           credentials: 'include',

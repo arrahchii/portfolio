@@ -14,7 +14,7 @@
     "build:frontend": "vite build",
     "build:backend": "esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
     "start": "NODE_ENV=production node dist/index.js",
-    "postbuild": "cp -r server/node_modules dist/ 2>/dev/null || true",
+    "postbuild": "powershell -Command \"if (Test-Path 'server/node_modules') { Copy-Item -Recurse -Force 'server/node_modules' 'dist/' } else { Write-Host 'node_modules not found, skipping copy' }\"",
     "check": "tsc",
     "db:push": "drizzle-kit push",
     "db:migrate": "drizzle-kit migrate"

@@ -3,14 +3,14 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { nanoid } from "nanoid";
 import { useChat } from "./hooks/useChat";
+import { useTypewriter } from "./hooks/useTypewriter";
 import { SessionManager } from "./lib/sessionManager";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, User, Bot } from "lucide-react";
 
 import { QuickQuestions, type TabType } from "@/components/QuickQuestions";
@@ -24,11 +24,7 @@ import LoadingIntro from "@/components/LoadingIntro";
 import VantaBackground from "@/components/VantaBackground";
 
 import lanceProfileImage from "@/assets/ICONN.jpg";
-
-// API Base URL - Uses environment variable in production, localhost in development
-const API_BASE_URL = process.env.NODE_ENV === 'production'
-  ? "https://lanceport.onrender.com"
-  : "http://localhost:5000";
+import { API_BASE_URL } from "./lib/apiConfig";
 
 interface Message {
   id: string;
@@ -72,12 +68,31 @@ function AestheticChatMessage({
   content,
   role,
   profile,
+  isStreaming,
+  messageId,
+  onStreamDone,
 }: {
   content: string;
   role: "user" | "assistant";
   profile: ProfileData;
+  isStreaming?: boolean;
+  messageId?: string;
+  onStreamDone?: (id: string) => void;
 }) {
   const messageContent = String(content || "");
+
+  // Typewriter effect for streaming assistant messages
+  const { displayText, isDone } = useTypewriter(
+    isStreaming ? messageContent : "",
+    isStreaming ? 25 : 0
+  );
+
+  // Notify parent when streaming finishes
+  useEffect(() => {
+    if (isStreaming && isDone && messageId && onStreamDone) {
+      onStreamDone(messageId);
+    }
+  }, [isStreaming, isDone, messageId, onStreamDone]);
   const isProfileMessage =
     messageContent.startsWith("profile:") && role === "assistant";
   if (isProfileMessage) {
@@ -221,12 +236,19 @@ function AestheticChatMessage({
         <div
           className={`px-6 py-4 shadow-sm border transition-all duration-200 hover:shadow-md backdrop-blur-sm ${
             role === "user"
-              ? "bg-white/20 border-gray-200/50 text-slate-900 rounded-2xl rounded-tr-md"
-        : "bg-white/20 border-gray-200/50 text-slate-900 rounded-2xl rounded-tl-md"
+              ? "bg-white/20 border-gray-200/50 text-white rounded-2xl rounded-tr-md"
+        : "bg-white/20 border-gray-200/50 text-white rounded-2xl rounded-tl-md"
       }`}
     >
-      <p className="text-[15px] leading-relaxed whitespace-pre-wrap font-normal text-slate-800 tracking-wide">
-            {messageContent}
+      <p className="text-[15px] leading-relaxed whitespace-pre-wrap font-normal text-white tracking-wide">
+            {isStreaming ? (
+              <>
+                {displayText}
+                <span className="inline-block w-1.5 h-4 bg-white/80 ml-0.5 animate-pulse align-middle" />
+              </>
+            ) : (
+              messageContent
+            )}
           </p>
         </div>
       </div>
@@ -249,7 +271,9 @@ function Portfolio({ activeTab: initialActiveTab = "me" }: { activeTab?: TabType
     refreshConversation,
     getConversationStats,
     conversationLoaded,
-    messagesEndRef 
+    messagesEndRef,
+    scrollContainerRef,
+    markStreamingDone
   } = useChat(sessionId);
 
   const [inputValue, setInputValue] = useState("");
@@ -292,12 +316,13 @@ function Portfolio({ activeTab: initialActiveTab = "me" }: { activeTab?: TabType
     }
   }, [activeTab, conversationLoaded, clearChat]);
 
-  // Auto-scroll to bottom smoothly when new messages are added
+  // Auto-scroll the chat container (not the page) when messages change
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
     }
-  }, [messages]);
+  }, [messages, scrollContainerRef]);
 
   // Enhanced message handling with the new useChat hook
   const handleSendMessage = async () => {
@@ -531,20 +556,51 @@ function Portfolio({ activeTab: initialActiveTab = "me" }: { activeTab?: TabType
               {/* Chat Messages Area - Centered */}
               <div className="flex-1 flex items-center justify-center p-8">
                 <div className="w-full max-w-4xl">
-                  <ScrollArea className="h-[500px] p-6" data-testid="scroll-chat-messages">
+                  <div
+                    ref={scrollContainerRef}
+                    className="h-[500px] p-6 overflow-y-auto overscroll-contain"
+                    data-testid="scroll-chat-messages"
+                  >
                       <div className="space-y-6">
                         {messages.map((message) => (
-                          <div key={message.id}>
-                            <AestheticChatMessage
-                              content={message.message}
-                              role={message.role}
-                              profile={profile}
-                            />
-                          </div>
+                          message.isTyping ? (
+                            /* Typing indicator message (from useChat hook) */
+                            <div key={message.id} className="flex items-start gap-4 mb-8">
+                              <div className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm border-2 bg-white/20 backdrop-blur-sm border-gray-200/50 text-gray-600">
+                                <Avatar className="w-5 h-5">
+                                  <AvatarImage src={lanceProfileImage} alt="Lance" className="object-cover" />
+                                  <AvatarFallback>LC</AvatarFallback>
+                                </Avatar>
+                              </div>
+                              <div className="max-w-[70%]">
+                                <div className="px-6 py-4 shadow-sm border bg-white/20 backdrop-blur-sm border-gray-200/50 text-white rounded-2xl rounded-tl-md">
+                                  <div className="flex items-center gap-3">
+                                    <span className="text-sm font-medium text-white">Thinking</span>
+                                    <div className="flex space-x-1">
+                                      <div className="w-2 h-2 bg-white rounded-full animate-bounce"></div>
+                                      <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.15s" }}></div>
+                                      <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.3s" }}></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <div key={message.id}>
+                              <AestheticChatMessage
+                                content={message.message}
+                                role={message.role}
+                                profile={profile}
+                                isStreaming={message.isStreaming}
+                                messageId={message.id}
+                                onStreamDone={markStreamingDone}
+                              />
+                            </div>
+                          )
                         ))}
 
-                        {/* Professional Loading Indicator */}
-                        {isLoading && (
+                        {/* Professional Loading Indicator (fallback when isLoading but no typing message) */}
+                        {isLoading && !messages.some(m => m.isTyping) && (
                           <div className="flex items-start gap-4 mb-8">
                             <div className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm border-2 bg-white/20 backdrop-blur-sm border-gray-200/50 text-gray-600">
                               <Avatar className="w-5 h-5">
@@ -553,17 +609,14 @@ function Portfolio({ activeTab: initialActiveTab = "me" }: { activeTab?: TabType
                               </Avatar>
                             </div>
                             <div className="max-w-[70%]">
-                              <div className="px-6 py-4 shadow-sm border bg-white/20 backdrop-blur-sm border-gray-200/50 text-gray-800 rounded-2xl rounded-tl-md">
-                                <div className="flex space-x-1">
-                                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                                  <div
-                                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                                    style={{ animationDelay: "0.1s" }}
-                                  ></div>
-                                  <div
-                                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                                    style={{ animationDelay: "0.2s" }}
-                                  ></div>
+                              <div className="px-6 py-4 shadow-sm border bg-white/20 backdrop-blur-sm border-gray-200/50 text-white rounded-2xl rounded-tl-md">
+                                <div className="flex items-center gap-3">
+                                  <span className="text-sm font-medium text-white">Thinking</span>
+                                  <div className="flex space-x-1">
+                                    <div className="w-2 h-2 bg-white rounded-full animate-bounce"></div>
+                                    <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.15s" }}></div>
+                                    <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.3s" }}></div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -582,8 +635,8 @@ function Portfolio({ activeTab: initialActiveTab = "me" }: { activeTab?: TabType
 
 
                       </div>
-                    </ScrollArea>
                   </div>
+                </div>
                 </div>
               
               {/* Fixed Chat Input at Bottom */}
@@ -598,12 +651,12 @@ function Portfolio({ activeTab: initialActiveTab = "me" }: { activeTab?: TabType
                       onChange={(e) => setInputValue(e.target.value)}
                       onKeyDown={handleKeyDown}
                       disabled={isLoading}
-                      className="flex-1 h-14 px-6 backdrop-blur-sm border border-gray-200/50 rounded-xl focus:border-gray-300 focus:ring-0 transition-all duration-200 text-[15px] !font-bold text-gray-900 placeholder:text-gray-400 shadow-sm hover:shadow-md"
+                      className="flex-1 h-14 px-6 backdrop-blur-sm border border-gray-200/50 rounded-xl focus:border-gray-300 focus:ring-0 transition-all duration-200 text-[15px] !font-bold text-white placeholder:text-gray-300 shadow-sm hover:shadow-md"
                     />
                     <Button
                       onClick={handleSendMessage}
                       disabled={!inputValue.trim() || isLoading}
-                      className="h-14 w-14 rounded-xl backdrop-blur-sm border border-gray-200/50 hover:bg-white/10 shadow-sm hover:shadow-md transition-all duration-200 disabled:opacity-50 text-gray-600 hover:text-gray-700"
+                      className="h-14 w-14 rounded-xl backdrop-blur-sm border border-gray-200/50 hover:bg-white/10 shadow-sm hover:shadow-md transition-all duration-200 disabled:opacity-50 text-white hover:text-white"
                     >
                       <Send className="w-5 h-5" />
                     </Button>

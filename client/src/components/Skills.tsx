@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { QuickQuestions } from './QuickQuestions';
 import { Code, TrendingUp, Users, Headphones, Settings, Video, Brain, BarChart3, MessageSquare, Users2, ShoppingCart } from 'lucide-react';
+import { API_BASE_URL } from '@/lib/apiConfig';
 
 interface Skill {
   name: string;
@@ -22,11 +23,6 @@ interface SkillsProps {
 const Skills: React.FC<SkillsProps> = ({ skills = [] }) => {
   const [profileSkills, setProfileSkills] = useState<SkillCategory[]>([]);
   const [loading, setLoading] = useState(true);
-
-  // API Base URL - Uses environment variable in production, localhost in development
-  const API_BASE_URL = window.location.hostname.endsWith("onrender.com")
-    ? "https://lanceport.onrender.com"
-    : "http://localhost:5000";
 
   // Temporarily disable API call to fix black screen issue
   useEffect(() => {

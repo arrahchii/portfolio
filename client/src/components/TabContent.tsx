@@ -38,7 +38,7 @@ import {
   BarChart3,
   ShoppingCart
 } from 'lucide-react';
-import type { TabType } from './TabNavigation';
+import type { TabType } from './QuickQuestions';
 import Certificates from './Certificates';
 
 interface ProfileData {
