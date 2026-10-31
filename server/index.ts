@@ -769,6 +769,10 @@ const nlpEngine = new AdvancedNLPEngine();
 
 const app = express();
 
+// Azure App Service runs behind a reverse proxy — trust it so
+// express-rate-limit and req.ip work correctly.
+app.set('trust proxy', 1);
+
 // ===== SECURITY & PRIVACY MIDDLEWARE =====
 
 // Security headers with Helmet
