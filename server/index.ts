@@ -897,7 +897,11 @@ const allowedOrigins = [
   'http://127.0.0.1:5173',
   'http://127.0.0.1:5174', // Added for Vite dev server alternate port
   'http://127.0.0.1:3001', // Added for production server port
-  'https://lanceport.onrender.com', // Production URL - MUST be allowed
+  // Azure hosting
+  'https://lanceportfolio-ewfjefd0d3ftd3da.southeastasia-01.azurewebsites.net',
+  // Custom domain
+  'https://www.lancecabanit.site',
+  'https://lancecabanit.site',
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
@@ -5540,7 +5544,7 @@ app.get('/api/privacy/data-export/:sessionId', (req: Request, res: Response) => 
       gdprCompliance: {
         lawfulBasis: 'Legitimate interest (Article 6(1)(f) GDPR)',
         dataController: 'Lance Cabanit Portfolio AI System',
-        contactEmail: process.env.CONTACT_EMAIL || 'privacy@lanceport.com'
+        contactEmail: process.env.CONTACT_EMAIL || 'privacy@lancecabanit.site'
       }
     };
     
@@ -5616,7 +5620,7 @@ app.get('/api/privacy/policy', (req: Request, res: Response) => {
       },
       contact: {
         dataController: 'Lance Cabanit',
-        email: process.env.CONTACT_EMAIL || 'privacy@lanceport.com',
+        email: process.env.CONTACT_EMAIL || 'privacy@lancecabanit.site',
         response: 'We respond to privacy requests within 30 days'
       },
       security: {
