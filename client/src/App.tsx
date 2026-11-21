@@ -118,10 +118,10 @@ function AestheticChatMessage({
               <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-3 border-white shadow-md"></div>
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-1">
+              <h3 className="text-2xl font-bold text-white mb-1">
               {profile.name}
             </h3>
-            <p className="text-indigo-700 font-semibold text-lg mb-2">
+            <p className="text-blue-200 font-semibold text-lg mb-2">
               {profile.title}
             </p>
             <span className="inline-flex items-center px-3 py-1 bg-green-100 text-emerald-800 rounded-full text-sm font-medium">
@@ -132,17 +132,17 @@ function AestheticChatMessage({
           </div>
           {/* Bio Section */}
           <div className="mb-6">
-            <h4 className="font-bold text-slate-900 mb-3 text-lg flex items-center">
+            <h4 className="font-bold text-white mb-3 text-lg flex items-center">
               <span className="mr-2">👋</span> About Lance
             </h4>
-            <p className="text-slate-700 leading-relaxed">
+            <p className="text-gray-200 leading-relaxed">
               {profile.sections.me.bio}
             </p>
           </div>
 
           {/* Skills Preview */}
           <div className="mb-6">
-            <h4 className="font-bold text-slate-900 mb-3 text-lg flex items-center">
+            <h4 className="font-bold text-white mb-3 text-lg flex items-center">
               <span className="mr-2">🚀</span> Key Skills
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -168,7 +168,7 @@ function AestheticChatMessage({
           </div>
           {/* Contact Links */}
           <div className="border-t border-blue-200/50 pt-6">
-            <h4 className="font-bold text-gray-800 mb-3 text-lg flex items-center">
+            <h4 className="font-bold text-white mb-3 text-lg flex items-center">
               <span className="mr-2">📞</span> Get In Touch
             </h4>
             <div className="flex flex-wrap gap-3">
@@ -211,8 +211,8 @@ function AestheticChatMessage({
       <div
         className={`w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm border-2 ${
           role === "user"
-            ? "bg-white/20 backdrop-blur-sm border-gray-200/50 text-slate-700"
-              : "bg-white/20 backdrop-blur-sm border-gray-200/50 text-slate-700"
+            ? "bg-white/20 backdrop-blur-sm border-gray-200/50 text-white"
+              : "bg-white/20 backdrop-blur-sm border-gray-200/50 text-white"
         }`}
       >
         {role === "user" ? (
@@ -559,6 +559,7 @@ function Portfolio({ activeTab: initialActiveTab = "me" }: { activeTab?: TabType
                   <div
                     ref={scrollContainerRef}
                     className="h-[500px] p-6 overflow-y-auto overscroll-contain"
+                    style={{ overscrollBehavior: 'contain' }}
                     data-testid="scroll-chat-messages"
                   >
                       <div className="space-y-6">
@@ -566,7 +567,7 @@ function Portfolio({ activeTab: initialActiveTab = "me" }: { activeTab?: TabType
                           message.isTyping ? (
                             /* Typing indicator message (from useChat hook) */
                             <div key={message.id} className="flex items-start gap-4 mb-8">
-                              <div className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm border-2 bg-white/20 backdrop-blur-sm border-gray-200/50 text-gray-600">
+                              <div className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm border-2 bg-white/20 backdrop-blur-sm border-gray-200/50 text-white">
                                 <Avatar className="w-5 h-5">
                                   <AvatarImage src={lanceProfileImage} alt="Lance" className="object-cover" />
                                   <AvatarFallback>LC</AvatarFallback>
@@ -651,7 +652,7 @@ function Portfolio({ activeTab: initialActiveTab = "me" }: { activeTab?: TabType
                       onChange={(e) => setInputValue(e.target.value)}
                       onKeyDown={handleKeyDown}
                       disabled={isLoading}
-                      className="flex-1 h-14 px-6 backdrop-blur-sm border border-gray-200/50 rounded-xl focus:border-gray-300 focus:ring-0 transition-all duration-200 text-[15px] !font-bold text-white placeholder:text-gray-300 shadow-sm hover:shadow-md"
+                      className="flex-1 h-14 px-6 bg-white/10 backdrop-blur-sm border border-gray-200/50 rounded-xl focus:border-gray-300 focus:ring-0 transition-all duration-200 text-[15px] !font-bold !text-white !placeholder:text-gray-300 shadow-sm hover:shadow-md"
                     />
                     <Button
                       onClick={handleSendMessage}
